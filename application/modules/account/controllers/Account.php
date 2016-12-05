@@ -5,7 +5,7 @@ class Account extends MX_Controller {
 	function __construct() {
 	    parent::__construct();
 	     ini_set('display_errors', 1);
-    error_reporting(E_ALL);
+   		 error_reporting(E_ALL);
     
 		$this->load->module('header/header');
 		$this->load->module('footer/footer');
@@ -430,7 +430,7 @@ class Account extends MX_Controller {
 		 
 		$data['from_select'] = $this->selectEnhanced->render("",'from_ledger','from_ledger','');
 
-		$select = 'site_id,site_name';
+		$select = 'site_id,site_name,pay_slabs';
 		$tableName = 'site_master';
 		$column = "isactive";
 		$value = "1";
@@ -449,6 +449,42 @@ class Account extends MX_Controller {
 		 $narration = isset($_POST['narration']) ? $_POST['narration'] : "";
 		 $referance_no = isset($_POST['referance_no']) ? $_POST['referance_no'] : "";
 		 $site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
+		 $pay_type = isset($_POST['pay_type']) ? $_POST['pay_type'] : "";
+		 $slab_id = isset($_POST['slab_id']) ? $_POST['slab_id'] : "";
+
+
+		if($pay_type==2)
+		{
+		  //slab wise payment add start
+	 	 $slab_data =array(
+ 	 		'site_id' => $site_id,
+ 	 		'slab_no' => $slab_id,
+ 	 		'pay_amt' => $payment_amount,
+			'added_on' => date('Y-m-d h:i:s'),
+			'added_by' => 1
+ 	 		);
+	 	 //print_r($slab_data);
+	 	  $slab_table = SLAB_WISE_TABLE;
+	 	
+	 	 
+	 	 $slab_wise_pay_id = $this->account_model->saveData($slab_table,$slab_data);
+		 	if(isset($slab_wise_pay_id) && !empty($slab_wise_pay_id)){
+				 	 		$this->db->trans_commit();
+				 	 		$response['error'] = false;
+				 	 		$response['success'] = true;
+							$response['successMsg'] = "slab wise payment SuccsessFully !!!";
+							//$response['redirect'] = base_url()."account/ledgerList";
+							//$response['redirect'] = base_url()."driver/driverList";
+			 }else {
+		 		$this->db->trans_rollback();
+		 		$response['error'] = true;
+		 		$response['success'] = false;
+				$response['errorMsg'] = "Error!!! Please contact IT Dept";
+		 	}
+ 	 
+			//echo json_encode($response);
+		 }
+
 		 $cr = CR;
 		 $dr = DR;
 
@@ -461,6 +497,7 @@ class Account extends MX_Controller {
  	 	//echo "ee";
  	 	$from_ledger_name = $ledger_details->ledger_account_name;
  	 	 
+
 	 	// transaction data data insertion start
 		 $from_data = array(
 				'transaction_date' => date('Y-m-d h:i:s'),
@@ -475,9 +512,9 @@ class Account extends MX_Controller {
 				'added_by' => 1,
 				'added_on' => date('Y-m-d h:i:s')
 			);
- 	$transaction_table =  TRANSACTION_TABLE;
+ 	        $transaction_table =  TRANSACTION_TABLE;
 
- 	 
+
  	 //From transaction
  	$from_transaction_id = $this->account_model->saveData($transaction_table,$from_data);
  	if(isset($from_transaction_id) && !empty($from_transaction_id)){
@@ -1853,5 +1890,35 @@ class Account extends MX_Controller {
             
         }
     }
+	public function slab_list()
+	{
+		$s_id = $this->input->post('s_id');
+		$p_type = $this->input->post('p_type');
+		$select = 'pay_slabs';
+		$tableName = 'site_master';
+		$where = "site_id = '$s_id'";
+		
+		$slablist = $this->helper_model->selectwhere($select, $tableName, $where); 
+
+		$cnt=$slablist[0]->pay_slabs;
+		
+		$slabdet = $this->helper_model->selectQuery("SELECT slab_no FROM slab_wise_pay where site_id='".$s_id."' ORDER BY FIELD(slab_no) DESC LIMIT 1");
+		if(!empty($cnt)){
+			$response['success'] = true;
+			$i=1;
+			$list = "";
+			while($cnt>0)
+			{
+				$list .='<option value="'.$i.'">'.$i.'</option>';
+				$i++;
+				$cnt--;
+			}
+			$response['successMsg'] = $list;
+		}else{
+			$response['success'] = false;
+		}
+		echo json_encode($response);
+	}
+	
  
 }

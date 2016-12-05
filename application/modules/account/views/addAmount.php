@@ -34,11 +34,53 @@
 				<div class="col-xs-12">
 					<div class="alert-box"></div>
 					<!-- PAGE CONTENT BEGINS -->
-					<form class="form-horizontal" role="form" id="addamount">						
-						 
-
-						 
-
+					<form class="form-horizontal" role="form" id="addamount">	
+					<div class="form-group">
+					<label class="col-sm-1 no-padding-right" for="form-field-2">Payment Type</label>	
+		                    <div class="col-sm-4">
+		                          <select  name="pay_type" id="pay_type" class="chosen-select form-control">
+                                    <option value="1">Other Payment</option>
+                                    <option value="2">Slab Wise Payment</option>
+                                    
+                                </select>
+                                <span class="help-inline col-xs-12 col-sm-7">
+                                    <span class="middle input-text-error" id="pay_type_errorlabel"></span>
+                                </span>      
+		                    </div>
+                	<label class="col-sm-1 no-padding-right" for="form-field-2">Site Name</label>
+						
+                            <div class="col-sm-4">
+                              <select  name="site_id" id="site_id" class="chosen-select form-control">
+                                    
+									<?php
+										foreach ($sitelist as $val) {
+											if(isset($driver) && $val->site_id == $driver[0]->site_id){
+												echo '<option selected value="'.$val->site_id.'">'.$val->site_name.'</option>';
+											}else{
+												echo '<option value="'.$val->site_id.'">'.$val->site_name.'</option>';
+											}
+										}
+									?>
+                                    
+                                </select>
+                                <span class="help-inline col-xs-12 col-sm-7">
+                                    <span class="middle input-text-error" id="site_id_errorlabel"></span>
+                                </span>
+                            </div>
+                	</div>
+					<div class="form-group">
+                            <label class="col-sm-1 no-padding-right" for="form-field-2">Payment Slab</label>
+							<div class="col-sm-4">
+                                <select  name="slab_id" id="slab_id" class="chosen-select form-control">                        
+		
+                                    
+                                </select>
+                                <span class="help-inline col-xs-12 col-sm-7">
+                                    <span class="middle input-text-error" id="slab_id_errorlabel"></span>
+                                </span>
+                            </div>
+					</div>
+                     
 					<div class="form-group">
                             <label class="col-sm-1 no-padding-right" for="form-field-2"><b class="red"> * </b>FROM</label>
 
@@ -83,29 +125,9 @@
 		                    </div>
                     </div>
 
-                    <div class="form-group">
-                	<label class="col-sm-1 no-padding-right" for="form-field-2">Site Name</label>
-						
-                            <div class="col-sm-4">
-                              <select  name="site_id" id="site_id" class="chosen-select form-control">
-                                    
-									<?php
-										foreach ($sitelist as $val) {
-											if(isset($driver) && $val->site_id == $driver[0]->site_id){
-												echo '<option selected value="'.$val->site_id.'">'.$val->site_name.'</option>';
-											}else{
-												echo '<option value="'.$val->site_id.'">'.$val->site_name.'</option>';
-											}
-										}
-									?>
-                                    
-                                </select>
-                                <span class="help-inline col-xs-12 col-sm-7">
-                                    <span class="middle input-text-error" id="site_id_errorlabel"></span>
-                                </span>
-                            </div>
-                	</div>
-                     
+					
+
+
 						<div class="clearfix form-actions">
 							<div class="col-md-offset-3 col-md-9">
 								<button class="btn btn-info test" type="submit">
@@ -234,8 +256,53 @@ jQuery(function($) {
 				 else $('#form-field-select-4').removeClass('tag-input-style');
 			});
 		}
-	
-	
+		
+		$(document).on('change','#site_id', function() {
+			 
+			var s_id = $(this).val();
+			var p_type = $("#pay_type").val();
+			
+			if(s_id != "" && p_type == "2"){
+				var obj = array.filter(function(obj){
+		            return obj.name === 'get_slab_det'
+		        })[0];
+
+		        var uri = obj['value'];
+
+		        jobject = {
+		            's_id' : s_id,
+		            'p_type' : p_type
+		        }
+		        
+		        $.ajax({
+		            url: uri,
+		            method: 'POST',
+		            crossDomain: true,
+		            data: jobject,
+		            dataType: 'json',
+		            beforeSend: function (xhr) {
+		               
+		            },
+		            success: function (data) {
+		            	 
+		                if(data.success == true){
+		                	 //alert(data);
+							 //console.log(data);
+		      
+		                	$('#slab_id').append(data.successMsg);
+		                	$('#slab_id').trigger("chosen:updated");
+		                	$("#slab_id").trigger("liszt:updated");
+		                
+		                }
+		            },
+		            error: function (xhr, ajaxOptions, thrownError) {
+		                console.log(thrownError);
+		            }
+		        });
+			}
+		});
+
+
 		 
 	
 	});	

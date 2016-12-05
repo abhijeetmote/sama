@@ -20,14 +20,33 @@ class Site extends MX_Controller {
 	}
 	public function addsite()
 	{	
+		 $site_name = isset($_POST['site_name']) ? $_POST['site_name'] : "";
+		 $site_address = isset($_POST['address']) ? $_POST['address'] : "";
+		 $total_amount = isset($_POST['total_amount']) ? $_POST['total_amount'] : "";
+		 $spend_amount = isset($_POST['spend_amount']) ? $_POST['spend_amount'] : "";
+		 $slabs = isset($_POST['slabs']) ? $_POST['slabs'] : "";
+		 $comment = isset($_POST['comment']) ? trim($_POST['comment']) : "";
+		 $start_date = isset($_POST['start_date']) ? trim($_POST['start_date']) : "";
+		 $end_date = isset($_POST['end_date']) ? trim($_POST['end_date']) : "";
+		
+		 //startdate conversion
+		 if(isset($start_date) && !empty($start_date)){
+		 	$start_date = $this->helper_model->dbDate($start_date);
+		 }
+
+		 // end date conversion
+		 if(isset($end_date) && !empty($end_date)){
+		 	$end_date = $this->helper_model->dbDate($end_date);
+		 }
 			$site = array(
-			'site_name' => $_POST['site_name'],
-			'address' => $_POST['address'],
-			'start_date' => $_POST['start_date'],
-			'end_date' => $_POST['end_date'],
-			'total_amount' => $_POST['total_amount'],
-			'spend_amount' => $_POST['spend_amount'],
-			'comment' => $_POST['comment'],
+			'site_name' => $site_name,
+			'address' => $site_address,
+			'start_date' => $start_date,
+			'end_date' => $end_date,
+			'total_amount' => $total_amount,
+			'spend_amount' => $spend_amount,
+			'pay_slabs' => $slabs,
+			'comment' => $comment,
 			'created_by' => 1,
 			'added_on' => date('Y-m-d')
 		);
@@ -45,6 +64,7 @@ class Site extends MX_Controller {
 			    $response['success'] = true;
 				$response['error'] = false;
 				$response['successMsg'] = "Successfully Submit";
+				$response['redirect'] = base_url()."site/viewsite";
 			} else{
 				$response['success'] = false;
 				$response['error'] = true;
@@ -76,8 +96,9 @@ class Site extends MX_Controller {
 		$this->load->view('editsite',$result);
 		$this->footer->index();
 	}
-	 	public function update($id){        
-         $select = '*';
+	public function update($id)
+	{        
+        $select = '*';
 		$tableName = 'site_master';
 		$column = 'site_id';
 		$value = $id;
@@ -88,16 +109,36 @@ class Site extends MX_Controller {
 		$this->footer->index();
  	}
 	public function siteUpdate(){        
-        $site = array(
-			'site_id' => $_POST['site_id'],
-			'site_name' => $_POST['site_name'],
-			'start_date' => $_POST['start_date'],
-			'end_date' => $_POST['end_date'],
-			'total_amount' => $_POST['total_amount'],
-			'spend_amount' => $_POST['spend_amount'],
-			'comment' => $_POST['comment'],
-			'updated_by' => '1',
-			'updated_on' => date('Y-m-d h:i:s')
+        
+		 $site_name = isset($_POST['site_name']) ? $_POST['site_name'] : "";
+		 $site_address = isset($_POST['address']) ? $_POST['address'] : "";
+		 $total_amount = isset($_POST['total_amount']) ? $_POST['total_amount'] : "";
+		 $spend_amount = isset($_POST['spend_amount']) ? $_POST['spend_amount'] : "";
+		 $comment = isset($_POST['comment']) ? trim($_POST['comment']) : "";
+		 $slabs = isset($_POST['slabs']) ? trim($_POST['slabs']) : "";
+		 $start_date = isset($_POST['start_date']) ? trim($_POST['start_date']) : "";
+		 $end_date = isset($_POST['end_date']) ? trim($_POST['end_date']) : "";
+		
+		 //startdate conversion
+		 if(isset($start_date) && !empty($start_date)){
+		 	$start_date = $this->helper_model->dbDate($start_date);
+		 }
+
+		 // end date conversion
+		 if(isset($end_date) && !empty($end_date)){
+		 	$end_date = $this->helper_model->dbDate($end_date);
+		 }
+			$site = array(
+			'site_name' => $site_name,
+			'address' => $site_address,
+			'start_date' => $start_date,
+			'end_date' => $end_date,
+			'total_amount' => $total_amount,
+			'spend_amount' => $spend_amount,
+			'pay_slabs' => $slabs,
+			'comment' => $comment,
+			'updated_by' => 1,
+			'updated_on' => date('Y-m-d')
 		);
 
 		$tableName = 'site_master';
@@ -108,6 +149,7 @@ class Site extends MX_Controller {
 		if($result == true){
 			$response['success'] = true;
 			$response['successMsg'] = "Record Updated";
+			$response['redirect'] = base_url()."site/viewsite";
         }else{
         	$response['success'] = false;
 			$response['successMsg'] = "Something wrong please try again";

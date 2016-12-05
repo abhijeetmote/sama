@@ -27,7 +27,7 @@
 			
 			<div class="page-header">
 				<h1>
-					PayIn Report
+					PayIn/PayOut Report
 				</h1>
 			</div><!-- /.page-header -->
 
@@ -36,42 +36,64 @@
 					<div class="alert-box"></div>
 					<!-- PAGE CONTENT BEGINS -->
 					<form class="form-horizontal" role="form">						
-						 
+					
+                    <div class="form-group">
+                    		<label class="col-sm-1  no-padding-right" for="">From Date</label>
 
-					<div class="form-group">
-                            <label class="col-sm-1 no-padding-right" for="form-field-2"><b class="red"> * </b>For Month</label>
-                             <div class="col-sm-3">
-	                                <select style="width:250px;" data-placeholder="Report Month" name="salary_month" id="salary_month" class="chosen-select form-control">
-											<?php
-												foreach ($months as $key=>$val) 
-												{			
-											?>								
-													<option <?php if(isset($salary_month) && $val[$key] == $salary_month){ echo "selected"; } ?> value="<?php echo $key; ?>" <?php if($key >= date('m')) {if( $key == date('m')): echo "selected"; endif; ?>><?php echo $val; }?></option>
-											<?php
-												}
-											?>
-	                                </select>
-	                                <span class="help-inline col-xs-12 col-sm-7">
-	                                    <span class="middle input-text-error" id="salary_month_errorlabel"></span>
-	                                </span>
-		                    </div>
+							<div class="col-sm-3">
+								<input type="text" data-date-format="dd-mm-yyyy" id="frm_date" name="frm_date" class="date-picker col-xs-10 col-sm-12"/>
+								<span style="width:10px;height:35px;" class="input-group-addon">
+									<i class="fa fa-calendar bigger-110"></i>
+								</span>
+							</div>
+							<label class="col-sm-1  no-padding-right" for="">To Date</label>
 
-                             <label class="col-sm-1 no-padding-right" style="margin-left:85px;" for="form-field-2"><b class="red"> * </b>For Year</label>	
-                   			<div class="col-sm-3">
-	                                <select style="width:250px;" data-placeholder="Salary Year" name="salary_year" id="salary_year" class="chosen-select form-control">
-											<?php
-												foreach ($years as $val) 
-												{			
-											?>								
-													<option <?php if(isset($salary_year) && $val == $salary_year){ echo "selected"; } ?> value="<?php echo $val; ?>" <?php if(  $val == date('Y')): echo "selected"; endif; ?>><?php echo $val; ?></option>
-											<?php
-												}
-											?>
-	                                </select>
-	                                <span class="help-inline col-xs-12 col-sm-7">
-	                                    <span class="middle input-text-error" id="salary_year_errorlabel"></span>
-	                                </span>
-		                    </div>
+							<div class="col-sm-3">
+								<input type="text" data-date-format="dd-mm-yyyy" id="to_date" name="to_date" class="date-picker col-xs-10 col-sm-12"/>
+								<span style="width:10px;height:35px;" class="input-group-addon">
+									<i class="fa fa-calendar bigger-110"></i>
+								</span>
+							</div>
+                    </div>
+
+                    <div class="form-group">
+                    	<label class="col-sm-1 no-padding-right" for="form-field-2">Site Name</label>
+						
+                            <div class="col-sm-3">
+                              <select  name="site_id" id="site_id" class="chosen-select form-control">
+                                    
+									<?php 
+										foreach ($sitelist as $val) {
+											/*if(isset($vendor) && $val->site_id == $vendor[0]->site_id){
+												echo '<option selected value="'.$val->site_id.'">'.$val->site_name.'</option>';
+											}else{*/
+												echo '<option value="'.$val->site_id.'">'.$val->site_name.'</option>';
+											//}
+										}
+									?>
+                                    
+                                </select>
+                                <span class="help-inline col-xs-12 col-sm-7">
+                                    <span class="middle input-text-error" id="site_id_errorlabel"></span>
+                                </span>
+                            </div>
+                               <label class="col-sm-1 no-padding-right" for="form-field-2">Report Type</label>
+						
+                            <div class="col-sm-3">
+                              <select  name="report_type" id="report_type" class="chosen-select form-control">
+                                    
+									<?php 
+										
+											echo '<option value="PayIn">PayIn Report</option>';
+											echo '<option value="PayOut">PayOut Report</option>';
+										
+									?>
+                                    
+                                </select>
+                                <span class="help-inline col-xs-12 col-sm-7">
+                                    <span class="middle input-text-error" id="site_id_errorlabel"></span>
+                                </span>
+                            </div>
                     </div>	
 
                     
@@ -100,7 +122,7 @@
 											<div class="pull-right tableTools-container"></div>
 										</div>
 										<div class="table-header">
-											Pay In Report
+											Pay In/Out Report
 										</div>
 
 										<!-- div.table-responsive -->
@@ -128,7 +150,7 @@
 
 											<tbody>
 												<?php 
-													foreach ($driverAttnData as $key => $val): 
+													foreach ($payindata as $key => $val): 
 												?>
 													<tr>
 														<td class="center">
@@ -901,10 +923,11 @@ jQuery(function($) {
 <script type="text/javascript">
 	$(document).on('click','.salSubmit', function() {
 		var baseUrl = $('#baseUrl').val();
-		var salary_month = $("#salary_month").val();
-		var salary_year = $("#salary_year").val();
+		var from_date = $("#frm_date").val();
+		var to_date = $("#to_date").val();
+		var site_id = $("#site_id").val();
 
-		window.location.href = baseUrl+"payment/payindata/"+salary_month+"/"+salary_year;
+		window.location.href = baseUrl+"payment/payindata/"+from_date+"/"+to_date+"/"+site_id;
 		/*if(salary_month != "" && salary_year != ""){
 			var obj = array.filter(function(obj){
 	            return obj.name === 'get-driver-sal'

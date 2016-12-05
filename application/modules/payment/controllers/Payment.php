@@ -13,7 +13,6 @@ class Payment extends MX_Controller {
 		$this->load->model('helper/selectEnhanced_to');
 		//SelectEnhanced
 		//$this->load->library('session');
-		
 	}
 
 	public function expenseMaster()
@@ -21,7 +20,6 @@ class Payment extends MX_Controller {
 		$this->header->index();
 		$grp_table = LEDGER_TABLE;
 		 
-
 		$ledger_data = $this->payment_model->getDataOrder('*',$grp_table,'parent_id','asc');
 		//echo "<pre>";
 		//print_r($ledger_data);
@@ -132,7 +130,6 @@ class Payment extends MX_Controller {
  	//to leadger trans data insertion start
  	if(isset($from_transaction_id) && !empty($from_transaction_id)) {
 		 
-
 			 	$select = " * ";
 				$ledgertable = LEDGER_TABLE ;
 
@@ -183,6 +180,16 @@ class Payment extends MX_Controller {
  	}
 
  	 
+		 	 	//pay out table entry starts
+ 				$pay_out= array(
+					'site_id' = $site_id,
+					'pay_from' = ,
+					'pay_to' = ,
+					'amount' = ,
+					'added_by' = ,
+					'added_on' = ,
+
+ 				);
 	 
 	echo json_encode($response);
  	}
@@ -830,10 +837,26 @@ public function advancesalaryMaster()
  	public function payindata()
  	{
  		if($this->uri->segment(3) != "" && $this->uri->segment(4) != ""){
-		 $salary_month = $this->uri->segment(3);
- 		 $salary_year = $this->uri->segment(4);exit;
-
+		  $from_date = $this->uri->segment(3);
+		  $f_date=date('Y-m-d', strtotime(str_replace('-', '/', $from_date)));
+ 		  $to_date = $this->uri->segment(4);
+ 		  $t_date=date('Y-m-d', strtotime(str_replace('-', '/', $to_date)));
+ 		  $site_id = $this->uri->segment(5);
+ 			$query=$this->helper_model->selectQuery("SELECT * from ledger_master JOIN ledger_transactions on ledger_master.ledger_account_id=ledger_transactions.ledger_account_id WHERE ledger_master.parent_id='4' AND ledger_transactions.site_id='$site_id' AND ledger_transactions.transaction_date BETWEEN '$f_date' AND '$t_date'");
+ 			echo "<pre>";
+ 			print_r($query);
+ 		if($query == true){
+ 			$data['payindata']=$query;
+ 			$this->load->view(PayInreport,$data);
+ 			
+ 			$response['success'] = true;
+ 			$response['successMsg'] = $detail;
+ 		}else{
+ 			$response['success'] = false;
+			$response['successMsg'] = "Something wrong please try again";
  		}
+ 		echo json_encode($response);
  	}
 
+}
 }

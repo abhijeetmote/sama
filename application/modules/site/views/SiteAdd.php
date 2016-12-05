@@ -40,7 +40,7 @@
  							<label class="col-sm-2 no-padding-right" for="form-field-2"> Enter Site Name *</label>
 
 							<div class="col-sm-4">
-								<input type="text" id="site_name" name="site_name" placeholder="Enter Site Name"  class="col-xs-10 col-sm-12"  mandatory-field" value="<?php if(isset($site)): echo $site[0]->site_name; endif; ?>" />
+								<input type="text" id="site_name" name="site_name" placeholder="Enter Site Name"  class="col-xs-10 col-sm-12 mandatory-field" value="<?php if(isset($site)): echo $site[0]->site_name; endif; ?>" />
 								<span class="help-inline col-xs-12 col-sm-7">
 									<span class="middle input-text-error" id="site_name_errorlabel"></span>
 								</span>
@@ -101,6 +101,14 @@
 						 
 
 						<div class="form-group">
+							<label class="col-sm-2 no-padding-right" for="form-field-2">Add Payment Slabs(In Number)</label>
+
+							<div class="col-sm-4">
+								<input type="text" id="slabs" name="slabs" placeholder="Enter Payment Slabs for site" class="col-xs-10 col-sm-12 mandatory-field" onKeyUp="javascript:return check_isnumeric(event,this,0);" value="<?php if(isset($site)): echo $site[0]->pay_slabs; endif; ?>" />
+								<span class="help-inline col-xs-12 col-sm-7">
+									<span class="middle input-text-error" id="slabs_errorlabel"></span>
+								</span>
+							</div>
 							<label class="col-sm-2 no-padding-right" for="form-field-2"> Enter Comment(if any) </label>
 
 							<div class="col-sm-4">

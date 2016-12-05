@@ -250,7 +250,7 @@
 						<ul class="submenu">
 							
 							<li class="">
-								<a href="<?php echo base_url(); ?>driver/driverMaster">
+								<a href="<?php echo base_url(); ?>labour/labourMaster">
 									<i class="menu-icon fa fa-caret-right"></i>
 
 									Add Labour
@@ -260,7 +260,7 @@
 							</li>
 
 							<li class="">
-								<a href="<?php echo base_url(); ?>driver/driverList">
+								<a href="<?php echo base_url(); ?>labour/labourList">
 									<i class="menu-icon fa fa-caret-right"></i>
 
 									Labour List
@@ -269,7 +269,7 @@
 								<b class="arrow"></b>
 							</li>
 							<li class="">
-								<a href="<?php echo base_url(); ?>driver/driverAttend">
+								<a href="<?php echo base_url(); ?>labour/labourAttend">
 									<i class="menu-icon fa fa-caret-right"></i>
 
 									Labour Attendance
@@ -278,7 +278,7 @@
 								<b class="arrow"></b>
 							</li>
 							<li class="">
-								<a href="<?php echo base_url(); ?>driver/driverAttendReport">
+								<a href="<?php echo base_url(); ?>labour/labourAttendReport">
 									<i class="menu-icon fa fa-caret-right"></i>
 
 									Labour Attendance Report
@@ -452,12 +452,21 @@
 								<a href="<?php echo base_url(); ?>inventory/index">
 									<i class="menu-icon fa fa-caret-right"></i>
 
-									Add Inventory
+									Add Product
 								</a>
 
 								<b class="arrow"></b>
 							</li>
-								<li class="">
+							<li class="">
+								<a href="<?php echo base_url(); ?>inventory/productList">
+									<i class="menu-icon fa fa-caret-right"></i>
+
+									Product list
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+							<li class="">
 								<a href="<?php echo base_url(); ?>inventory/inventoryList">
 									<i class="menu-icon fa fa-caret-right"></i>
 

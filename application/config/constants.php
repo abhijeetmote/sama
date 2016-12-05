@@ -18,6 +18,7 @@ define('FILE_WRITE_MODE', 0666);
 define('DIR_READ_MODE', 0755);
 define('DIR_WRITE_MODE', 0777);
 define('DRIVER_TABLE', 'driver_master');
+define('LABOUR_TABLE', 'labour_master');
 define('CONTRACTOR_TABLE', 'contractors_master');
 define('VENDOR_TABLE', 'vendors_master');
 define('STAFF_MASTER', 'staff_master');
@@ -31,8 +32,10 @@ define('BALANCE_SHEET', 'balance sheet');
 define('REPORT_HEAD_ASSETS', 'assets');
 define('REPORT_HEAD_LIBILITY', 'libility');
 define('DRIVER_CONTEXT', 'driver');
+define('LABOUR_CONTEXT', 'labour');
 define('STAFF_CONTEXT', 'staff');
 define('VENDOR_CONTEXT', 'vendor');
+define('CONTRACTOR_CONTEXT', 'contractor');
 define('CASH_CONTEXT', 'cash');
 define('BANK_CONTEXT', 'bank');
 define('LEDGER_ENTITY', 'ledger');
@@ -48,6 +51,7 @@ define("ACC_TYPE_BANK", "bank");
 define("ACC_TYPE_CASH", "cash");
 define('GROUP_CHILDREN_OPTION_DIS', 'displaychildrenoptionsinselbox');
 define('DRIVER_ATTENDANCE_TABLE', 'driver_attendance');
+define('LABOUR_ATTENDANCE_TABLE', 'labour_attendance');
 define('HOLIDAY_TABLE', 'company_holidays');
 define('TRANSACTION_TABLE', 'ledger_transactions');
 define('ACCOUNT_TABLE', 'account_master');
@@ -57,6 +61,7 @@ define("INDIRECT", "indirect");
 define("ADVANCE_SALARY", "advance_salary");
 define("SALARY_PAID_NARRATION", "salary paid");
 define("INVOICE_PAID_NARRATION", "booking payment");
+define('SLAB_WISE_TABLE', 'slab_wise_payment');
 
 /*
 |--------------------------------------------------------------------------

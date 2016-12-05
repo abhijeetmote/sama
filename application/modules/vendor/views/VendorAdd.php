@@ -180,9 +180,9 @@
                             <div class="col-sm-4">
                               <select  name="site_id" id="site_id" class="chosen-select form-control">
                                     
-									<?php
+									<?php 
 										foreach ($sitelist as $val) {
-											if(isset($driver) && $val->site_id == $driver[0]->site_id){
+											if(isset($vendor) && $val->site_id == $vendor[0]->site_id){
 												echo '<option selected value="'.$val->site_id.'">'.$val->site_name.'</option>';
 											}else{
 												echo '<option value="'.$val->site_id.'">'.$val->site_name.'</option>';

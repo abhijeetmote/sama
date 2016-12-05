@@ -49,7 +49,7 @@
 							<!-- div.table-responsive -->
 
 							<!-- div.dataTables_borderWrap -->
-							<form class="form" id="vendorList"></form>
+							<form class="form" id="contractorList"></form>
 							<div>
 								<table id="dynamic-table" class="table table-striped table-bordered table-hover">
 									<thead>
@@ -71,23 +71,23 @@
 											<tr>
 												 
 
-												<td><?php echo $val->vendor_name; ?></td>
-												<td><?php echo $val->vendor_contact_number; ?></td>
-												<td><?php echo $val->vendor_phone_number; ?></td>
-												<td><?php echo $val->vendor_address; ?></td>
-												<td><?php echo $val->vendor_email; ?></td>
-												<td><?php echo $val->vendor_pan_num; ?></td>
-												<td><?php echo $val->vendor_payee_name; ?></td>
+												<td><?php echo $val->contractor_name; ?></td>
+												<td><?php echo $val->contractor_contact_number; ?></td>
+												<td><?php echo $val->contractor_phone_number; ?></td>
+												<td><?php echo $val->contractor_address; ?></td>
+												<td><?php echo $val->contractor_email; ?></td>
+												<td><?php echo $val->contractor_pan_num; ?></td>
+												<td><?php echo $val->contractor_payee_name; ?></td>
 
 												<td>
 													<div class="hidden-sm hidden-xs action-buttons">
 														
 
-														<a class="green" href="<?php echo base_url().'contractor/update/'.$val->vendor_id; ?>">
+														<a class="green" href="<?php echo base_url().'contractor/update/'.$val->contractor_id; ?>">
 															<i class="ace-icon fa fa-pencil bigger-130"></i>
 														</a>
 
-														<a class="red delete" href="#" id="<?php echo $val->vendor_id; ?>">
+														<a class="red delete" href="#" id="<?php echo $val->contractor_id; ?>">
 															<i class="ace-icon fa fa-trash-o bigger-130"></i>
 														</a>
 													</div>

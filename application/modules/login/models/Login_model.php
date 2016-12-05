@@ -12,5 +12,5 @@ class Login_model extends CI_Model {
 
 		$result = $this->helper_model->selectwhere($select,$tableName,$where);
 		return $result;
-	}	
+	}
 }

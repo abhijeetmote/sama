@@ -28,36 +28,36 @@ class Contractor extends MX_Controller {
 	{	
 		
 		
-		 $vendor_name = isset($_POST['vendor_name']) ? $_POST['vendor_name'] : "";
-		 $vendor_mobile_number = isset($_POST['vendor_contact_number']) ? $_POST['vendor_contact_number'] : "";
-		 $vendor_phone_number = isset($_POST['vendor_phone_number']) ? $_POST['vendor_phone_number'] : "";
-		 $vendor_email = isset($_POST['vendor_email']) ? $_POST['vendor_email'] : "";
-		 $vendor_notes = isset($_POST['vendor_notes']) ? $_POST['vendor_notes'] : "";
-		 $vendor_service_regn = isset($_POST['vendor_service_regn']) ? $_POST['vendor_service_regn'] : "";
-		 $vendor_pan_num = isset($_POST['vendor_pan_num']) ? $_POST['vendor_pan_num'] : "";
-		 $vendor_section_code = isset($_POST['vendor_section_code']) ? $_POST['vendor_section_code'] : "";
-		 $vendor_payee_name = isset($_POST['vendor_payee_name']) ? $_POST['vendor_payee_name'] : "";
-		 $vendor_address = isset($_POST['vendor_address']) ? $_POST['vendor_address'] : "";
+		 $contractor_name = isset($_POST['contractor_name']) ? $_POST['contractor_name'] : "";
+		 $contractor_mobile_number = isset($_POST['contractor_contact_number']) ? $_POST['contractor_contact_number'] : "";
+		 $contractor_phone_number = isset($_POST['contractor_phone_number']) ? $_POST['contractor_phone_number'] : "";
+		 $contractor_email = isset($_POST['contractor_email']) ? $_POST['contractor_email'] : "";
+		 $contractor_notes = isset($_POST['contractor_notes']) ? $_POST['contractor_notes'] : "";
+		 $contractor_service_regn = isset($_POST['contractor_service_regn']) ? $_POST['contractor_service_regn'] : "";
+		 $contractor_pan_num = isset($_POST['contractor_pan_num']) ? $_POST['contractor_pan_num'] : "";
+		 $contractor_section_code = isset($_POST['contractor_section_code']) ? $_POST['contractor_section_code'] : "";
+		 $contractor_payee_name = isset($_POST['contractor_payee_name']) ? $_POST['contractor_payee_name'] : "";
+		 $contractor_address = isset($_POST['contractor_address']) ? $_POST['contractor_address'] : "";
 
-		 $vendor_vat = isset($_POST['vendor_vat']) ? $_POST['vendor_vat'] : "";
-		 $vendor_cst = isset($_POST['vendor_cst']) ? $_POST['vendor_cst'] : "";
-		 $vendor_gst = isset($_POST['vendor_gst']) ? $_POST['vendor_gst'] : "";
+		 $contractor_vat = isset($_POST['contractor_vat']) ? $_POST['contractor_vat'] : "";
+		 $contractor_cst = isset($_POST['contractor_cst']) ? $_POST['contractor_cst'] : "";
+		 $contractor_gst = isset($_POST['contractor_gst']) ? $_POST['contractor_gst'] : "";
 		 $site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
 		 $data = array(
-			'vendor_name' => $vendor_name,
-			'vendor_contact_number' => $vendor_mobile_number,
-			'vendor_phone_number' => $vendor_phone_number,
-			'vendor_email' => $vendor_email,
-			'vendor_notes' => $vendor_notes,
+			'contractor_name' => $contractor_name,
+			'contractor_contact_number' => $contractor_mobile_number,
+			'contractor_phone_number' => $contractor_phone_number,
+			'contractor_email' => $contractor_email,
+			'contractor_notes' => $contractor_notes,
 			'site_id' => $site_id,
-			'vendor_service_regn' => $vendor_service_regn,
-			'vendor_pan_num' => $vendor_pan_num,
-			'vendor_section_code' => $vendor_section_code,
-			'vendor_payee_name' => $vendor_payee_name,
-			'vendor_address' => $vendor_address,
-			'vendor_vat' => $vendor_vat,
-			'vendor_cst' => $vendor_cst,
-			'vendor_gst' => $vendor_gst,
+			'contractor_service_regn' => $contractor_service_regn,
+			'contractor_pan_num' => $contractor_pan_num,
+			'contractor_section_code' => $contractor_section_code,
+			'contractor_payee_name' => $contractor_payee_name,
+			'contractor_address' => $contractor_address,
+			'contractor_vat' => $contractor_vat,
+			'contractor_cst' => $contractor_cst,
+			'contractor_gst' => $contractor_gst,
 			'status' => '1',
 			'added_by' => '1',
 			'added_on' => date('Y-m-d h:i:s')
@@ -66,15 +66,15 @@ class Contractor extends MX_Controller {
 
  	$this->db->trans_begin();
  	 //driver record insertion
- 	$vendor_id = $this->Contractor_model->saveData($contractor_table,$data);
+ 	$contractor_id = $this->Contractor_model->saveData($contractor_table,$data);
 
  	//diver data insertion end
 
  	//Ledger data insertion start
- 	if(isset($vendor_id) && !empty($vendor_id)) {
+ 	if(isset($contractor_id) && !empty($contractor_id)) {
 		$select = " ledger_account_id ";
 		$ledgertable = LEDGER_TABLE ;
-		$context = VENDOR_CONTEXT;
+		$context = CONTRACTOR_CONTEXT;
 		$entity_type = GROUP_ENTITY;
 		$where =  array('context' =>  $context, 'entity_type' => $entity_type);
  	 	$groupid = $this->Contractor_model->getGroupId($select,$ledgertable,$context,$entity_type,$where);
@@ -86,11 +86,11 @@ class Contractor extends MX_Controller {
  	 	// ledger data preparation
 
  	 	$leddata = array(
-		'ledger_account_name' => $vendor_name."_".$vendor_id,
+		'ledger_account_name' => $contractor_name."_".$contractor_id,
 		'parent_id' => $parent_data,	
 		'report_head' => $reporting_head,
 		'nature_of_account' => $nature_of_account,
-		'context_ref_id' => $vendor_id,
+		'context_ref_id' => $contractor_id,
 		'context' => $context,
 		'ledger_start_date' => date('Y-m-d h:i:s'),
 		'behaviour' => $reporting_head,
@@ -120,9 +120,9 @@ class Contractor extends MX_Controller {
  	}
 
  	//Vndor update with ledger id start
- 	$update_data =  array('vendor_ledger_id' => $ledger_id);
- 	$updat_column_Name = "vendor_id";
- 	$update_value = $vendor_id;
+ 	$update_data =  array('contractor_ledger_id' => $ledger_id);
+ 	$updat_column_Name = "contractor_id";
+ 	$update_value = $contractor_id;
  	$update_id = $this->Contractor_model->updateData($contractor_table,$update_data,$updat_column_Name,$update_value);
  	//end
 
@@ -147,7 +147,7 @@ class Contractor extends MX_Controller {
 
  	public function contractorList(){
  		$contractor_table =  CONTRACTOR_TABLE;
- 		$filds = "vendor_id,vendor_name,vendor_contact_number,vendor_phone_number,vendor_address,vendor_email,vendor_pan_num,vendor_payee_name";
+ 		$filds = "contractor_id,contractor_name,contractor_contact_number,contractor_phone_number,contractor_address,contractor_email,contractor_pan_num,contractor_payee_name";
  		$data['list'] = $this->Contractor_model->getVendorLit($filds,$contractor_table);
  		//echo "<pre>";print_r($data['list']);
         $this->header->index();
@@ -156,9 +156,9 @@ class Contractor extends MX_Controller {
  	}
 
  	public function contractorDelete(){
-        $vendor_id = $_POST['id'];
+        $contractor_id = $_POST['id'];
         $contractor_table =  CONTRACTOR_TABLE;
-        $resultMaster = $this->helper_model->delete($contractor_table,'vendor_id',$vendor_id);
+        $resultMaster = $this->helper_model->delete($contractor_table,'contractor_id',$contractor_id);
         if($resultMaster != false){
         	$response['success'] = true;
 			$response['successMsg'] = "Record Deleted";
@@ -173,9 +173,9 @@ class Contractor extends MX_Controller {
  	public function update($id){        
         $select = '*';
 		$tableName = CONTRACTOR_TABLE;
-		$column = 'vendor_id';
+		$column = 'contractor_id';
 		$value = $id;
-		$data['vendor'] = $this->Contractor_model->getData($select, $tableName, $column, $value);
+		$data['contractor'] = $this->Contractor_model->getData($select, $tableName, $column, $value);
 		$data['update'] = true;
 		$select = 'site_id,site_name';
 		$tableName = 'site_master';
@@ -189,39 +189,40 @@ class Contractor extends MX_Controller {
 
  	public function contractorUpdate(){        
 
- 		$vendor_name = isset($_POST['vendor_name']) ? $_POST['vendor_name'] : "";
-		 $vendor_mobile_number = isset($_POST['vendor_contact_number']) ? $_POST['vendor_contact_number'] : "";
-		 $vendor_phone_number = isset($_POST['vendor_phone_number']) ? $_POST['vendor_phone_number'] : "";
-		 $vendor_email = isset($_POST['vendor_email']) ? $_POST['vendor_email'] : "";
-		 $vendor_notes = isset($_POST['vendor_notes']) ? $_POST['vendor_notes'] : "";
-		 $vendor_service_regn = isset($_POST['vendor_service_regn']) ? $_POST['vendor_service_regn'] : "";
-		 $vendor_pan_num = isset($_POST['vendor_pan_num']) ? $_POST['vendor_pan_num'] : "";
-		 $vendor_section_code = isset($_POST['vendor_section_code']) ? $_POST['vendor_section_code'] : "";
-		 $vendor_payee_name = isset($_POST['vendor_payee_name']) ? $_POST['vendor_payee_name'] : "";
-		 $vendor_address = isset($_POST['vendor_address']) ? $_POST['vendor_address'] : "";
+ 		$contractor_name = isset($_POST['contractor_name']) ? $_POST['contractor_name'] : "";
+		 $contractor_mobile_number = isset($_POST['contractor_contact_number']) ? $_POST['contractor_contact_number'] : "";
+		 $contractor_phone_number = isset($_POST['contractor_phone_number']) ? $_POST['contractor_phone_number'] : "";
+		 $contractor_email = isset($_POST['contractor_email']) ? $_POST['contractor_email'] : "";
+		 $contractor_notes = isset($_POST['contractor_notes']) ? $_POST['contractor_notes'] : "";
+		 $contractor_service_regn = isset($_POST['contractor_service_regn']) ? $_POST['contractor_service_regn'] : "";
+		 $contractor_pan_num = isset($_POST['contractor_pan_num']) ? $_POST['contractor_pan_num'] : "";
+		 $contractor_section_code = isset($_POST['contractor_section_code']) ? $_POST['contractor_section_code'] : "";
+		 $contractor_payee_name = isset($_POST['contractor_payee_name']) ? $_POST['contractor_payee_name'] : "";
+		 $contractor_address = isset($_POST['contractor_address']) ? $_POST['contractor_address'] : "";
 
-		 $vendor_vat = isset($_POST['vendor_vat']) ? $_POST['vendor_vat'] : "";
-		 $vendor_cst = isset($_POST['vendor_cst']) ? $_POST['vendor_cst'] : "";
-		 $vendor_gst = isset($_POST['vendor_gst']) ? $_POST['vendor_gst'] : "";
+		 $contractor_vat = isset($_POST['contractor_vat']) ? $_POST['contractor_vat'] : "";
+		 $contractor_cst = isset($_POST['contractor_cst']) ? $_POST['contractor_cst'] : "";
+		 $contractor_gst = isset($_POST['contractor_gst']) ? $_POST['contractor_gst'] : "";
 		 $site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
 
 
-		 $vendor_ledger_id = isset($_POST['vendor_ledger_id']) ? $_POST['vendor_ledger_id'] : "";
 
-		 $vendor_update = array(
-			'vendor_name' => $vendor_name,
-			'vendor_contact_number' => $vendor_mobile_number,
-			'vendor_phone_number' => $vendor_phone_number,
-			'vendor_email' => $vendor_email,
-			'vendor_notes' => $vendor_notes,
-			'vendor_service_regn' => $vendor_service_regn,
-			'vendor_pan_num' => $vendor_pan_num,
-			'vendor_section_code' => $vendor_section_code,
-			'vendor_payee_name' => $vendor_payee_name,
-			'vendor_address' => $vendor_address,
-			'vendor_vat' => $vendor_vat,
-			'vendor_cst' => $vendor_cst,
-			'vendor_gst' => $vendor_gst,
+		 $contractor_ledger_id = isset($_POST['contractor_ledger_id']) ? $_POST['contractor_ledger_id'] : "";
+
+		 $contractor_update = array(
+			'contractor_name' => $contractor_name,
+			'contractor_contact_number' => $contractor_mobile_number,
+			'contractor_phone_number' => $contractor_phone_number,
+			'contractor_email' => $contractor_email,
+			'contractor_notes' => $contractor_notes,
+			'contractor_service_regn' => $contractor_service_regn,
+			'contractor_pan_num' => $contractor_pan_num,
+			'contractor_section_code' => $contractor_section_code,
+			'contractor_payee_name' => $contractor_payee_name,
+			'contractor_address' => $contractor_address,
+			'contractor_vat' => $contractor_vat,
+			'contractor_cst' => $contractor_cst,
+			'contractor_gst' => $contractor_gst,
 			'site_id' =>$site_id,
 			'status' => '1',
 			'updated_by' => '1',
@@ -230,22 +231,22 @@ class Contractor extends MX_Controller {
      
 		$this->db->trans_begin();
 		$contractor_table = CONTRACTOR_TABLE;
-		$vendor_column = 'vendor_id';
-		$vendor_id = $_POST['id'];
+		$contractor_column = 'contractor_id';
+		$contractor_id = $_POST['id'];
 
-		$result = $this->Contractor_model->updateData($contractor_table, $vendor_update, $vendor_column, $vendor_id);
+		$result = $this->Contractor_model->updateData($contractor_table, $contractor_update, $contractor_column, $contractor_id);
 
 		if(isset($result) && $result == true) {
 			$ledgertable = LEDGER_TABLE;
 			$ledger_column = 'ledger_account_id';
 			$ledger_update = array(
-			'ledger_account_name' => $vendor_name."_".$vendor_id,
+			'ledger_account_name' => $contractor_name."_".$contractor_id,
 			'status' => '1',
 			'updated_by' => '1',
 			'updated_on' => date('Y-m-d h:i:s')
 			);
 
-			$ledger_result = $this->Contractor_model->updateData($ledgertable, $ledger_update, $ledger_column, $vendor_ledger_id);
+			$ledger_result = $this->Contractor_model->updateData($ledgertable, $ledger_update, $ledger_column, $contractor_ledger_id);
 
 			if(empty($ledger_result) || $ledger_result == false) {
 
