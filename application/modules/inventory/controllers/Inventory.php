@@ -192,6 +192,9 @@ class Inventory extends MX_Controller {
 		if($inventoryExist){
 			$inventory_map_id = $inventoryExist[0]->inventory_map_id;
 			$qtyExist = $inventoryExist[0]->qty;
+			
+			$this->db->trans_begin(); // transaction begin
+
 			$tableName = 'inventory_map';
 			$data = array(
 				'qty' => $qtyExist + $qty,
@@ -216,9 +219,19 @@ class Inventory extends MX_Controller {
 				);
 				$inventory = $this->helper_model->insert($tableName,$data);
 				if($inventory){
-					$response['success'] = true;
-		 			$response['error'] = false;
-		 			$response['successMsg'] = "Successfully added";
+					$result = $this->addToVendorBill($p_id,$s_id,$v_id,$total_amt,$inventory);
+					if($result){
+
+						$this->db->trans_commit(); // transaction commit
+						
+						$response['success'] = true;
+			 			$response['error'] = false;
+			 			$response['successMsg'] = "Successfully Inward";
+					}else{
+						$response['success'] = false;
+			 			$response['error'] = true;
+			 			$response['errorMsg'] = "Please contact IT dept";
+					}
 				}else{
 					$response['success'] = false;
 		 			$response['error'] = true;
@@ -230,6 +243,8 @@ class Inventory extends MX_Controller {
 		 		$response['errorMsg'] = "Please contact IT dept";
 			}
 		}else{
+
+			$this->db->trans_begin(); // transaction begin
 
 			$tableName = 'inventory_map';
 			$data = array(
@@ -257,9 +272,19 @@ class Inventory extends MX_Controller {
 				);
 				$inventory = $this->helper_model->insert($tableName,$data);
 				if($inventory){
-					$response['success'] = true;
-		 			$response['error'] = false;
-		 			$response['successMsg'] = "Successfully Inward";
+					$result = $this->addToVendorBill($p_id,$s_id,$v_id,$total_amt,$inventory);
+					if($result){
+
+						$this->db->trans_commit(); // transaction commit
+
+						$response['success'] = true;
+			 			$response['error'] = false;
+			 			$response['successMsg'] = "Successfully Inward";
+					}else{
+						$response['success'] = false;
+			 			$response['error'] = true;
+			 			$response['errorMsg'] = "Please contact IT dept";
+					}
 				}else{
 					$response['success'] = false;
 		 			$response['error'] = true;
@@ -275,6 +300,22 @@ class Inventory extends MX_Controller {
 
  		echo json_encode($response);
 
+ 	}
+
+ 	public function addToVendorBill($p_id,$s_id,$v_id,$total_amt,$in_id)
+ 	{
+ 		$tableName = 'vendor_bill_payment_details';
+		$data = array(
+			'product_id' => $p_id,
+			'inventory_id' => $in_id,
+			'site_id' => $s_id,
+			'vendor_id' => $v_id,
+			'vendor_bill_payment_amount' => $total_amt,
+			'status' => '1',
+			'added_by' => 1,
+			'added_on' => date('Y-m-d h:i:s')
+		);
+		return $this->helper_model->insert($tableName,$data);
  	}
 
  	public function outwardSubmit(){
