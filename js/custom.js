@@ -68,6 +68,7 @@ var array = [
 	{name: "product_details", value: baseUrl + "inventory/productDetails"},
 	{name: "inward_submit", value: baseUrl + "inventory/inwardSubmit"},
 	{name: "outward_submit", value: baseUrl + "inventory/outwardSubmit"},
+	{name: "billpayment", value: baseUrl+"vendor/billPayment"},
 	
 	
 
