@@ -10,6 +10,9 @@ class Vendor extends MX_Controller {
 		$this->load->model('payment/payment_model');
 		$this->load->model('vendor/Vendor_model');
 		$this->load->model('helper/helper_model');
+		$this->load->model('helper/selectEnhanced');
+		$this->load->model('helper/selectEnhanced_to');
+		$this->active = "vendor";
 	}
 
 	
@@ -338,6 +341,7 @@ class Vendor extends MX_Controller {
 		/*echo "<pre>";
 		print_r($ledger_data);
  		exit();*/
+
 		$ret_arr = $this->helper_model->_getLedGrpListRecur($ledger_data, array(), 0, array(), $entity_type="");
 		$filter_param_from = array('bank','cash');
 		
@@ -386,4 +390,126 @@ class Vendor extends MX_Controller {
 		$this->load->view('billPayment',$data);
 		$this->footer->index();
 	}
+
+	public function billPayment()
+	{
+		//$this->header->index($this->active);
+		//echo "<pre>";
+		//print_r($_POST);
+		//echo "test";
+		 $from_ledger = isset($_POST['from_ledger']) ? $_POST['from_ledger'] : "";
+		 $to_ledger = isset($_POST['to_ledger']) ? $_POST['to_ledger'] : "";
+		 $payment_amount = isset($_POST['payment_amount']) ? $_POST['payment_amount'] : "";
+		 $narration = isset($_POST['narration']) ? $_POST['narration'] : "";
+		 $payment_mode = isset($_POST['payment_mode']) ? $_POST['payment_mode'] : "";
+		 $referance_no = isset($_POST['referance_no']) ? $_POST['referance_no'] : "";
+		 $bill_payment_id = isset($_POST['bill_payment_id']) ? $_POST['bill_payment_id'] : "";
+		 $cr = CR;
+		 $dr = DR;
+
+	 	$select = "*";
+		$ledgertable = LEDGER_TABLE ;
+		//echo "aa";
+ 	 	$where =  "ledger_account_id = '$from_ledger'";
+ 		$ledger_details = $this->payment_model->getwheresingle($select,$ledgertable,$where);
+ 		//print_r($ledger_details);
+ 	 	//echo "ee";
+ 	 	$from_ledger_name = $ledger_details->ledger_account_name;
+ 	 	 
+	 	// transaction data data insertion start
+		 $from_data = array(
+				'transaction_date' => date('Y-m-d h:i:s'),
+				'ledger_account_id' => $from_ledger,
+				'ledger_account_name' => $from_ledger_name,
+				'transaction_type' => $dr,
+				'payment_reference' => $referance_no,
+				'transaction_amount' => $payment_amount,
+				'txn_from_id' => 0,
+				'memo_desc' => $narration,
+				'added_by' => 1,
+				'added_on' => date('Y-m-d h:i:s')
+			);
+ 	$transaction_table =  TRANSACTION_TABLE;
+
+ 	$this->db->trans_begin();
+ 	 //From transaction
+ 	$from_transaction_id = $this->payment_model->saveData($transaction_table,$from_data);
+ 
+
+ 	//to leadger trans data insertion start
+ 	if(isset($from_transaction_id) && !empty($from_transaction_id)) {
+		 
+
+			 	$select = " * ";
+				$ledgertable = LEDGER_TABLE ;
+
+			 	$where =  "ledger_account_id = '$to_ledger'";
+				$ledger_details = $this->payment_model->getwheresingle($select,$ledgertable,$where);
+				
+			 	$to_ledger_name = $ledger_details->ledger_account_name;
+			 	 
+				  
+			 	// transaction data data insertion start
+				 $to_data = array(
+						'transaction_date' => date('Y-m-d h:i:s'),
+						'ledger_account_id' => $to_ledger,
+						'ledger_account_name' => $to_ledger_name,
+						'transaction_type' => $cr,
+						'payment_reference' => $referance_no,
+						'transaction_amount' => $payment_amount,
+						'txn_from_id' => $from_transaction_id,
+						'memo_desc' => $narration,
+						'added_by' => 1,
+						'added_on' => date('Y-m-d h:i:s')
+					);
+				$transaction_table =  TRANSACTION_TABLE;
+
+				 //From transaction
+				$to_transaction = $this->payment_model->saveData($transaction_table,$to_data);
+
+
+		 	 	if(isset($to_transaction) && !empty($to_transaction)){
+
+
+		 	 		 $vendor_bill_update = array(
+						'status' => 2,
+						'updated_on' => date('Y-m-d h:i:s')
+					);
+			     
+					$vendor_bill_table = 'vendor_bill_payment_details';
+					$vendor_bill_payment_id = 'vendor_bill_payment_id';
+					$bill_payment_id = $bill_payment_id;
+
+					$result = $this->Vendor_model->updateData($vendor_bill_table, $vendor_bill_update, $vendor_bill_payment_id, $bill_payment_id);
+					if(isset($result) && !empty($result)) {
+		 	 		$this->db->trans_commit();
+		 	 		$response['error'] = false;
+		 	 		$response['success'] = true;
+					$response['successMsg'] = "Payment Made SuccsessFully !!!";
+					$response['redirect'] = base_url()."vendor/vendorbillList";
+					} else {
+					$this->db->trans_rollback();
+			 		$response['error'] = true;
+			 		$response['success'] = false;
+					$response['errorMsg'] = "Error!!! Please contact IT Dept";	
+					}
+					//$response['redirect'] = base_url()."driver/driverList";
+		 	 	} else {
+			 		$this->db->trans_rollback();
+			 		$response['error'] = true;
+			 		$response['success'] = false;
+					$response['errorMsg'] = "Error!!! Please contact IT Dept";
+		 		}
+
+ 	} else {
+ 		$this->db->trans_rollback();
+ 		$response['error'] = true;
+ 		$response['success'] = false;
+		$response['errorMsg'] = "Error!!! Please contact IT Dept";
+ 	}
+
+ 	 
+	 
+	echo json_encode($response);
+ 	}
 }
