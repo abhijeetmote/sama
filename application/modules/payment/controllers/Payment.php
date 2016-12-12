@@ -181,7 +181,7 @@ class Payment extends MX_Controller {
 
  	 
 		 	 	//pay out table entry starts
- 				$pay_out= array(
+ 				/*$pay_out= array(
 					'site_id' = $site_id,
 					'pay_from' = ,
 					'pay_to' = ,
@@ -189,7 +189,7 @@ class Payment extends MX_Controller {
 					'added_by' = ,
 					'added_on' = ,
 
- 				);
+ 				);*/
 	 
 	echo json_encode($response);
  	}

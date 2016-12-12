@@ -16,6 +16,7 @@ class Vendor_model extends CI_Model {
 
 	public function updateData($tableName,$data,$columnName,$value){
 		$result = $this->helper_model->update($tableName,$data,$columnName,$value);
+		//echo $this->db->last_query();
 		return $result;
 	}
 

@@ -397,6 +397,7 @@ class Vendor extends MX_Controller {
 		//echo "<pre>";
 		//print_r($_POST);
 		//echo "test";
+		error_reporting(E_ALL);
 		 $from_ledger = isset($_POST['from_ledger']) ? $_POST['from_ledger'] : "";
 		 $to_ledger = isset($_POST['to_ledger']) ? $_POST['to_ledger'] : "";
 		 $payment_amount = isset($_POST['payment_amount']) ? $_POST['payment_amount'] : "";
@@ -472,7 +473,7 @@ class Vendor extends MX_Controller {
 
 
 		 	 		 $vendor_bill_update = array(
-						'status' => 2,
+						'status' => '2',
 						'updated_on' => date('Y-m-d h:i:s')
 					);
 			     
@@ -481,6 +482,9 @@ class Vendor extends MX_Controller {
 					$bill_payment_id = $bill_payment_id;
 
 					$result = $this->Vendor_model->updateData($vendor_bill_table, $vendor_bill_update, $vendor_bill_payment_id, $bill_payment_id);
+					 
+					
+					
 					if(isset($result) && !empty($result)) {
 		 	 		$this->db->trans_commit();
 		 	 		$response['error'] = false;
