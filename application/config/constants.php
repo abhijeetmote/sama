@@ -52,6 +52,7 @@ define("ACC_TYPE_CASH", "cash");
 define('GROUP_CHILDREN_OPTION_DIS', 'displaychildrenoptionsinselbox');
 define('DRIVER_ATTENDANCE_TABLE', 'driver_attendance');
 define('LABOUR_ATTENDANCE_TABLE', 'labour_attendance');
+define('STAFF_ATTENDANCE_TABLE', 'staff_attendance');
 define('HOLIDAY_TABLE', 'company_holidays');
 define('TRANSACTION_TABLE', 'ledger_transactions');
 define('ACCOUNT_TABLE', 'account_master');

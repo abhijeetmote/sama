@@ -278,7 +278,7 @@ class Staff extends MX_Controller {
 
         echo json_encode($response);
  	}
-	public function staffAtten()
+	/*public function staffAtten()
 	{
 		$select = 'staff_id,staff_first_name';
 		$tableName = 'staff_attendance';
@@ -295,53 +295,51 @@ class Staff extends MX_Controller {
 		$this->header->index();
 		$this->load->view('staffAttend',$data);
 		$this->footer->index();
+	}*/
+	public function staffAtten()
+	{
+		$date = date('Y-m-d');
+        $data['staffdetails'] = $this->helper_model->selectQuery("SELECT staff_id,staff_first_name,staff_last_name FROM staff_master where staff_id not in (select staff_id from staff_attendance where DATE_FORMAT(user_check_in, '%Y-%m-%d') = '$date')");
+        //echo "<pre>"; print_r($data);exit();
+        $this->header->index();
+        $this->load->view('staffAttend',$data);
+		$this->footer->index();
 	}
 	
-	public function addattend()
-	{		$temp_data='';
-			$staff_id = isset($_POST['id']) ? $_POST['id'] : "";
-			$tableName = 'staff_attendance';
-			if(isset($staff_id) && !empty($staff_id)) {
-			$select = "staff_id,staff_check_in,staff_check_out";
-			$columnName = 'staff_id';
-			$value = $staff_id;
-			$temp_data = $this->helper_model->select($select, $tableName,$columnName,$value);
-			
-			/*yete check kar data ahi ka chek in madhe flag true bhetla ter msg de allready checkied in ani break kar flow other wise insert karun ghe kk ok*/
-			}
-			//print_r($temp_data);exit;
-			$staff1 = array(
-			'staff_id' => $_POST['id'],
-			'staff_first_name' => $_POST['staff_f_name'],
-			'staff_last_name' => $_POST['staff_l_name'],
-			'staff_type'=>'1',
-			'staff_check_in' => $_POST['staff_in_dt'],
-			//'staff_check_out' => $_POST['staff_out_dt'],
-			'added_on' => date('Y-m-d H:i:s')
-		);
-		
-		$select = 'staff_id';
-		
-		$column = 'staff_id';
-		//$value = $_POST['site_id'];
+	public function staffAttnSubmit(){
+        $staff_id = $_POST['staff_name'];
+        $date = $_POST['staff_in_dt'];
 
-		 //$check = $this->helper_model->select($select, $tableName, $column, $value);
-		
-			$result = $this->helper_model->insert($tableName,$staff1);
-			if($result == true){
-				
-			    $response['success'] = true;
-				$response['error'] = false;
-				$response['successMsg'] = "Successfully Submit";
-			} else{
-				$response['success'] = false;
-				$response['error'] = true;
-				$response['errorMsg'] = "Please contact IT Dept";
-			}
-		
+		$d = date_parse_from_format("Y-m-d", $date);
+		$daytype= $_POST['daytype'];
+
+		if($d['month'] < 10){
+	       	$month = "0".$d['month'];
+	       }else{
+	       	$month = $d['month'];
+	       }
+		$data = array(
+		'staff_id' => $staff_id,
+		'user_check_in' => $date,
+		'month' => $month,
+		'year' => $d['year'],
+		'day_type' => $daytype,
+		'added_by' => '1',
+		'added_on' => date('Y-m-d h:i:s')
+		);
+ 		$tableName =  STAFF_ATTENDANCE_TABLE;
+		$result = $this->Staff_model->saveData($tableName, $data);
+		if($result != false){
+			$response['success'] = true;
+ 	 		$response['error'] = false;
+ 	 		$response['successMsg'] = "Submit Successfully";
+		}else{
+			$response['error'] = true;
+ 	 		$response['success'] = false;
+			$response['Msg'] = "Error!!! Please contact IT Dept";
+		}
 		echo json_encode($response);
-		
-	}
+ 	}
 		public function staffpaymaster()
 	{
 		$select = 'staff_id,staff_first_name';

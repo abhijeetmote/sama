@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 10, 2016 at 02:49 PM
+-- Generation Time: Dec 16, 2016 at 12:34 PM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -910,6 +910,25 @@ INSERT INTO `slab_wise_payment` (`slab_wise_pay_id`, `site_id`, `slab_no`, `pay_
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `staff_attendance`
+--
+
+CREATE TABLE IF NOT EXISTS `staff_attendance` (
+`staff_attnd_id` int(11) NOT NULL,
+  `staff_id` int(11) NOT NULL,
+  `user_check_in` datetime NOT NULL,
+  `month` varchar(20) NOT NULL,
+  `year` varchar(20) NOT NULL,
+  `day_type` tinyint(2) NOT NULL,
+  `added_by` int(11) NOT NULL,
+  `added_on` datetime NOT NULL,
+  `updated_by` int(11) NOT NULL,
+  `updated_on` datetime NOT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `staff_master`
 --
 
@@ -1415,6 +1434,12 @@ ALTER TABLE `slab_wise_payment`
  ADD PRIMARY KEY (`slab_wise_pay_id`);
 
 --
+-- Indexes for table `staff_attendance`
+--
+ALTER TABLE `staff_attendance`
+ ADD PRIMARY KEY (`staff_attnd_id`);
+
+--
 -- Indexes for table `staff_master`
 --
 ALTER TABLE `staff_master`
@@ -1618,6 +1643,11 @@ MODIFY `site_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
 --
 ALTER TABLE `slab_wise_payment`
 MODIFY `slab_wise_pay_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `staff_attendance`
+--
+ALTER TABLE `staff_attendance`
+MODIFY `staff_attnd_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `staff_master`
 --

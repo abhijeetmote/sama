@@ -36,54 +36,29 @@
 					<div class="alert-box"></div>
 					<!-- PAGE CONTENT BEGINS -->
 					<form class="form-horizontal" role="form" id="staffatten">						
-					<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">Select Staff First Name</label>
-								
-							<div class="col-sm-4">
-								<select class="chosen-select form-control" name="staff_f_name" id="form-field-select-3" data-placeholder="Choose a Staff...">
-									<?php
-										foreach ($staffdata as $val) 
-										{
-											if($val->staff_id == $staff[0]->staff_id){
-												echo '<option selected value="'.$val->staff_first_name.'">'.$val->staff_first_name.'</option>';
-											}else
-											{
-												echo '<option value="'.$val->staff_first_name.'">'.$val->staff_first_name.'</option>';
-											}
-										
-										}
-										echo '<input type="hidden" value="'.$val->staff_id[0].'" name="id">';
-									?>
-									
-								</select>
-							</div>	
-					</div>
-					<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right">Select Staff Last Name</label>
+                    <div class="form-group">
+							<label class="col-sm-2 no-padding-right">Select staff</label>
 
 							<div class="col-sm-4">
-								<select class="chosen-select form-control" name="staff_l_name" id="form-field-select-3" data-placeholder="Choose a Staff LastName...">
-									<?php 
-										foreach ($staffDrop as $val) 
+								<select class="chosen-select form-control" name="staff_name" id="staff_name" data-placeholder="Choose a Staff...">
+									<?php
+										foreach ($staffdetails as $val) 
 										{
-											if($val->staff_id == $staff[0]->staff_id){
-												echo '<option selected value="'.$val->staff_last_name.'">'.$val->staff_last_name.'</option>';
-											}else{
-												echo '<option value="'.$val->staff_last_name.'">'.$val->staff_last_name.'</option>';
-											}
+											echo '<option value="'.$val["staff_id"].'">'.$val["staff_first_name"].' '.$val["staff_last_name"].'</option>';
+
 										}
 									?>
-									
+
 								</select>
 							</div>	
-					</div>
+						</div>
 					<div class="form-group">
 							<label class="col-sm-2 no-padding-right" for="form-field-2"> Enter Check In*</label>
 
 							<div class="col-sm-9">
-								 
-								<input type="text" id="staff_in_dt" data-date-format="dd-mm-yyyy" name="staff_in_dt" placeholder="Enter Inn Date" class="date-picker col-xs-10 col-sm-5 mandatory-field" 
-								value="<?php //if(isset($staff)): echo $staff[0]->staff_dob; endif; ?>" />
+
+								<input type="text" id="staff_in_dt" data-date-format="dd-mm-yyyy" name="staff_in_dt" placeholder="Enter Inn Date" class="col-xs-10 col-sm-5 mandatory-field" 
+								value="<?php echo date('Y-m-d h:i:s'); ?>" readonly />
 								<span style="width:10px;height:35px;" class="input-group-addon">
 									<i class="fa fa-calendar bigger-110"></i>
 								</span>
@@ -91,34 +66,34 @@
 									<span class="middle input-text-error" id="staff_in_dt_errorlabel"></span>
 								</span>
 							</div>
-					</div> 
-					<!--<div class="form-group">
-							<label class="col-sm-2 no-padding-right" for="form-field-2"> Enter Check Out</label>
+						</div> 
 
-							<div class="col-sm-9">
-								 
-								<input type="text" id="staff_out_dt" data-date-format="dd-mm-yyyy" name="staff_out_dt" placeholder="Enter Attendence Date" class="date-picker col-xs-10 col-sm-5" 
-								value="<?php //if(isset($staff)): echo $staff[0]->staff_dob; endif; ?>" />
-								<span style="width:10px;height:35px;" class="input-group-addon">
-									<i class="fa fa-calendar bigger-110"></i>
-								</span>
-								<span class="help-inline col-xs-12 col-sm-7">
-									<span class="middle input-text-error" id="staff_out_dt_errorlabel"></span>
-								</span>
-							</div>
-					</div>-->
-					<div class="form-group">
-				<label class="col-sm-2 control-label no-padding-right">Select Staff Check-In-Check-Out</label>
-				<div class="col-sm-4">
+						<div class="form-group">
+							<label class="col-sm-2 no-padding-right">Select Staff Check-In-Check-Out</label>
+							<div class="col-sm-4">
 								<select class="chosen-select form-control" name="staff_in_out" id="form-field-select-3" data-placeholder="Choose a Staff...">
-									 <option selected value="1">In</option>
-									<option value="0">Out</option>
+									<option selected value="1">In</option>
+									<!-- <option value="0">Out</option> -->
 									<input type="hidden" value="" name="id">
-									
-									
+
+
 								</select>
 							</div>	
+						</div>	
+						<div class="form-group">
+							<label class="col-sm-2 no-padding-right">Select Day(Full/Half)</label>
+							<div class="col-sm-4">
+								<label>
+									<input type="radio" class="ace" <?php if(isset($labour[0]->day_type) && $labour[0]->day_type == 1) { echo "checked";} ?> value="1" name="daytype" id="half">
+										<span class="lbl">Half Day</span>
+									</label>
+
+									<label>
+										<input type="radio" class="ace" value="2" <?php if(isset($labour[0]->day_type) && $labour[0]->day_type == 2) { echo "checked";} ?> name="daytype" id="full">
+										<span class="lbl">Full Day</span>
+									</label>
 							</div>	
+						</div>
 						<div class="clearfix form-actions">
 							<div class="col-md-offset-3 col-md-9">
 								<button class="btn btn-info test" type="submit">

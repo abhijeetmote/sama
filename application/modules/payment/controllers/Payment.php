@@ -165,6 +165,9 @@ class Payment extends MX_Controller {
 		 	 		$response['success'] = true;
 					$response['successMsg'] = "Payment Made SuccsessFully !!!";
 					//$response['redirect'] = base_url()."driver/driverList";
+							 	 	
+
+
 		 	 	} else {
 			 		$this->db->trans_rollback();
 			 		$response['error'] = true;
@@ -178,6 +181,7 @@ class Payment extends MX_Controller {
  		$response['success'] = false;
 		$response['errorMsg'] = "Error!!! Please contact IT Dept";
  	}
+<<<<<<< 12e8f6720dd1562ebcb06beee7b54454acb6a593
 
  	 
 		 	 	//pay out table entry starts
@@ -191,6 +195,22 @@ class Payment extends MX_Controller {
 
  				);*/
 	 
+=======
+	
+			//pay out table entry starts
+ 				$pay_out_data = array(
+					'site_id' => $site_id,
+					'pay_from' => $from_ledger,
+					'pay_to' => $to_ledger,
+					'amount' => $payment_amount,
+					'added_by' => 1,
+					'added_on' => date('Y-m-d h:i:s')
+
+ 				);
+ 				$payout_table= PAYOUT_DATA_TABLE;
+ 				$pay_out_data = $this->payment_model->saveData($payout_table,$pay_out_data);
+
+>>>>>>> 5d614bf9b2b249c351c740423494b42cc7dff895
 	echo json_encode($response);
  	}
 

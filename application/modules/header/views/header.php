@@ -322,6 +322,16 @@
 
 								<b class="arrow"></b>
 							</li>
+							<li class="">
+								<a href="<?php echo base_url(); ?>staff/staffAtten">
+									<i class="menu-icon fa fa-caret-right"></i>
+
+									Staff Attendence
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+
 
 						</ul>
 					</li>

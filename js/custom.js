@@ -58,7 +58,7 @@ var array = [
 	{name: "site_update", value: baseUrl + "site/siteUpdate"},
 	{name: "staffmaster", value: baseUrl + "staff/addstaff"},
 	{name: "staffList", value: baseUrl + "staff/staffDelete"},
-	{name: "staffatten", value: baseUrl + "staff/addattend"},
+	{name: "staffatten", value: baseUrl + "staff/staffAttnSubmit"},
 	{name: "staff_update", value: baseUrl + "staff/staffUpdate"},
 	{name: "staffPaymaster", value: baseUrl + "staff/PaymentAdd"},
 	{name: "staff_payupdate", value: baseUrl + "staff/staffUpdate"},
