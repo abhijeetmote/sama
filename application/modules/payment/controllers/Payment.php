@@ -181,7 +181,7 @@ class Payment extends MX_Controller {
  		$response['success'] = false;
 		$response['errorMsg'] = "Error!!! Please contact IT Dept";
  	}
-<<<<<<< 12e8f6720dd1562ebcb06beee7b54454acb6a593
+//<<<<<<< 12e8f6720dd1562ebcb06beee7b54454acb6a593
 
  	 
 		 	 	//pay out table entry starts
@@ -195,7 +195,7 @@ class Payment extends MX_Controller {
 
  				);*/
 	 
-=======
+//=======
 	
 			//pay out table entry starts
  				$pay_out_data = array(
@@ -210,7 +210,7 @@ class Payment extends MX_Controller {
  				$payout_table= PAYOUT_DATA_TABLE;
  				$pay_out_data = $this->payment_model->saveData($payout_table,$pay_out_data);
 
->>>>>>> 5d614bf9b2b249c351c740423494b42cc7dff895
+//>>>>>>> 5d614bf9b2b249c351c740423494b42cc7dff895
 	echo json_encode($response);
  	}
 

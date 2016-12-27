@@ -77,8 +77,10 @@ class Site extends MX_Controller {
 	public function viewsite()
 	{
 		
-		$data['list'] = $this->helper_model->selectAll('site_id,site_name,address,start_date,end_date,total_amount,spend_amount,comment', 'site_master');
-
+			$site_table =  SITE_MASTER;
+ 		$filds = "site_id,site_name,address,start_date,end_date,comment";
+ 		$data['list'] = $this->Site_model->getSiteLit($filds,$site_table);
+		
  		/*echo "<pre>";
  		print_r($data);
  		exit();*/

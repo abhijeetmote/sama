@@ -19,7 +19,7 @@ class Labour_model extends CI_Model {
 		return $result;
 	}
 
-	public function getDriverLit($data,$table){
+	public function getLabourLit($data,$table){
 
 		$result = $this->helper_model->selectAll($data,$table);
 		return $result;

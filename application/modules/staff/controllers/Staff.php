@@ -340,7 +340,95 @@ class Staff extends MX_Controller {
 		}
 		echo json_encode($response);
  	}
-		public function staffpaymaster()
+		
+
+public function staffAttendReport(){
+ 		$staff_table =  STAFF_MASTER;
+ 		$filds = "staff_id,staff_first_name,staff_last_name";
+ 		$data['staff'] = $this->Staff_model->getStaffList($filds,$staff_table);
+		//echo "<pre>"; print_r($data);exit();
+		$this->header->index();
+		$this->load->view('staffAttnReport', $data);
+		$this->footer->index();
+ 	}
+
+ 	public function attnReport(){
+ 		$from_date = date('Y-m-d', strtotime($_POST['from_date']));
+ 		$to_date = date('Y-m-d', strtotime($_POST['to_date']."+ 1 day"));
+ 		/*echo json_encode($to_date);
+ 		exit();*/
+ 		$staff_id = $_POST['staff'];
+ 		$staff = $this->helper_model->selectQuery("SELECT staff_id,user_check_in,day_type,DATE_FORMAT(user_check_in, '%Y-%m-%d') as date from staff_attendance where user_check_in >= '$from_date' and user_check_in <= '$to_date' and staff_id = '$staff_id'");
+
+ 		
+
+ 		$tableName =  "company_holidays";
+ 		$select = "*";
+ 		$where = "holiday_date >= '$from_date' and holiday_date <= '$to_date'";
+ 		$holidays = $this->Staff_model->getwheredata($select,$tableName,$where);
+		$dateDiff = date_diff(date_create($to_date), date_create($from_date));
+
+		$staffCnt = count($staff);
+		$holidayCnt = count($holidays);
+		$leaves = $staffCnt - $dateDiff->days;
+
+		$holidayArray = array();
+		foreach ($holidays as $key => $value) {
+			$holidayArray[$key] = $value->holiday_date;
+		}
+
+		$staffArray = array();
+		foreach ($staff as $key => $value) {
+			$staffArray[$key] = $value['date'];
+		}
+
+		$data = "";
+		for ($i=0; $i < $dateDiff->days; $i++) 
+		{ 
+			$j = 0;
+			$key = array_search($from_date, $holidayArray);
+			if($key !== false){
+				
+				$data .= '<tr>
+						<td>'.$from_date.'</td>
+						<td>Holiday</td>
+					</tr>';
+				$j++;
+			}
+
+			$key = array_search($from_date, $staffArray);
+			if($key !== false){
+				if($staff[$key]['day_type']=='2')
+				{
+				$data .= '<tr>
+						<td>'.$from_date.'</td>
+						<td>Present at '.$staff[$key]['user_check_in'].'</td>
+					</tr>';
+				$j++;
+				}
+				else
+				{
+					$data .= '<tr>
+						<td>'.$from_date.'</td>
+						<td>Present at '.$staff[$key]['user_check_in'].'(Half Day)</td>
+					</tr>';
+				$j++;
+				}
+			}
+			if($j == 0){
+				$data .= '<tr>
+						<td>'.$from_date.'</td>
+						<td>Leave</td>
+					</tr>';
+			}
+			$from_date = date('Y-m-d', strtotime('+1 day', strtotime($from_date)));
+		}
+		$response['response'] = $data;
+		$response['labour'] = $holidays;
+		echo json_encode($response);
+ 	}
+
+	public function staffpaymaster()
 	{
 		$select = 'staff_id,staff_first_name';
 		$tableName = 'staff_attendance';

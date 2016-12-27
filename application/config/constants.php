@@ -22,6 +22,7 @@ define('LABOUR_TABLE', 'labour_master');
 define('CONTRACTOR_TABLE', 'contractors_master');
 define('VENDOR_TABLE', 'vendors_master');
 define('STAFF_MASTER', 'staff_master');
+define('SITE_MASTER', 'site_master');
 define('LEDGER_TABLE', 'ledger_master');
 define('BOOKING_TABLE', 'booking_master');
 define('PASSENGER_TABLE', 'passenger_details');
@@ -63,7 +64,8 @@ define("ADVANCE_SALARY", "advance_salary");
 define("SALARY_PAID_NARRATION", "salary paid");
 define("INVOICE_PAID_NARRATION", "booking payment");
 define('SLAB_WISE_TABLE', 'slab_wise_payment');
-
+define('PAYOUT_DATA_TABLE', 'pay_out_data');
+define('PAYIN_DATA_TABLE', 'pay_in_data');
 /*
 |--------------------------------------------------------------------------
 | File Stream Modes

@@ -288,8 +288,7 @@
 							</li>
 						</ul>
 					</li>
-
-										<li class="">
+					<li class="">
 						<a href="#" class="dropdown-toggle">
 							<i class="menu-icon fa fa-desktop"></i>
 							<span class="menu-text">
@@ -331,7 +330,15 @@
 
 								<b class="arrow"></b>
 							</li>
+							<li class="">
+								<a href="<?php echo base_url(); ?>staff/staffAttendReport">
+									<i class="menu-icon fa fa-caret-right"></i>
 
+									Staff Attendance Report
+								</a>
+
+								<b class="arrow"></b>
+							</li>
 
 						</ul>
 					</li>

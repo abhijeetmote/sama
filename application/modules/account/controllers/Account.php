@@ -531,6 +531,19 @@ class Account extends MX_Controller {
 		$response['errorMsg'] = "Error!!! Please contact IT Dept";
  	}
  	 
+
+ 	 //pay in table entry starts
+ 				$pay_in_data = array(
+					'site_id' => $site_id,
+					'pay_from' => $from_ledger,
+					'amount' => $payment_amount,
+					'added_by' => 1,
+					'added_on' => date('Y-m-d h:i:s')
+
+ 				);
+ 				$payin_table= PAYIN_DATA_TABLE;
+ 				$pay_in_data = $this->account_model->saveData($payin_table,$pay_in_data);
+
 	echo json_encode($response);
  	}
 
@@ -1902,7 +1915,7 @@ class Account extends MX_Controller {
 
 		$cnt=$slablist[0]->pay_slabs;
 		
-		$slabdet = $this->helper_model->selectQuery("SELECT slab_no FROM slab_wise_pay where site_id='".$s_id."' ORDER BY FIELD(slab_no) DESC LIMIT 1");
+		//$slabdet = $this->helper_model->selectQuery("SELECT slab_no FROM slab_wise_pay where site_id='".$s_id."' ORDER BY FIELD(slab_no) DESC LIMIT 1");
 		if(!empty($cnt)){
 			$response['success'] = true;
 			$i=1;

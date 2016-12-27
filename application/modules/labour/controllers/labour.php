@@ -149,7 +149,7 @@ class Labour extends MX_Controller {
  	public function labourList(){
  		$labour_table =  LABOUR_TABLE;
  		$filds = "labour_id,labour_fname,labour_mname,labour_lname,labour_add,labour_photo,labour_bdate,labour_mobno,labour_mobno1,site_id,ledger_id";
- 		$data['list'] = $this->labour_model->getDriverLit($filds,$labour_table);
+ 		$data['list'] = $this->labour_model->getLabourLit($filds,$labour_table);
  		//echo "<pre>";print_r($data['list']);
         $this->header->index();
 		$this->load->view('labourList', $data);
@@ -335,7 +335,7 @@ class Labour extends MX_Controller {
  	public function labourAttendReport(){
  		$labour_table =  LABOUR_TABLE;
  		$filds = "labour_id,labour_fname,labour_lname";
- 		$data['labour'] = $this->labour_model->getDriverLit($filds,$labour_table);
+ 		$data['labour'] = $this->labour_model->getLabourLit($filds,$labour_table);
 		//echo "<pre>"; print_r($data);exit();
 		$this->header->index();
 		$this->load->view('labourAttnReport', $data);
@@ -388,7 +388,7 @@ class Labour extends MX_Controller {
 
 			$key = array_search($from_date, $labourArray);
 			if($key !== false){
-				if($labour[$key]['user_check_in']=='2')
+				if($labour[$key]['day_type']=='2')
 				{
 				$data .= '<tr>
 						<td>'.$from_date.'</td>

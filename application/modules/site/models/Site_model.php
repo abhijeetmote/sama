@@ -34,6 +34,11 @@ public function viewsitedet($siteid)
 		return $result;
 	
 }
+public function getSiteLit($data,$table){
+
+		$result = $this->helper_model->selectAll($data,$table);
+		return $result;
+	}
 
 	
 }
