@@ -77,7 +77,7 @@ class Site extends MX_Controller {
 	public function viewsite()
 	{
 		
-			$site_table =  SITE_MASTER;
+		$site_table =  SITE_MASTER;
  		$filds = "site_id,site_name,address,start_date,end_date,comment";
  		$data['list'] = $this->Site_model->getSiteLit($filds,$site_table);
 		
