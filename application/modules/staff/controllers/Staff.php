@@ -11,8 +11,6 @@ class Staff extends MX_Controller {
 		$this->load->model('helper/helper_model');
 	}
 
-	
-
 	public function staffMaster()
 	{
 		$this->header->index();
@@ -35,6 +33,7 @@ class Staff extends MX_Controller {
 		 $staff_qual = isset($_POST['staff_qual']) ? $_POST['staff_qual'] : "";
 		 $basic_pay = isset($_POST['basic_pay']) ? $_POST['basic_pay'] : "";
 		 $staff_status = isset($_POST['staff_status']) ? $_POST['staff_status'] : "";
+		 $profilephoto = isset($_FILES['profilephoto']) ? $_FILES['profilephoto'] : "";
 
 		  //bdate conversion
 		 if(isset($staff_dob) && !empty($staff_dob)){
@@ -51,12 +50,21 @@ class Staff extends MX_Controller {
 		 	$staff_gen = 2;
 		 }
 		 
+		 //file upload
+		  $_FILES['profilephoto']['name']."<br>";
+			$_FILES['profilephoto']['tmp_name'];
+			$isfile=basename($_FILES['profilephoto']['name']);
+			$newname=$isfile;
+			$sizeinmb=25;
+			$staff_profile_photo=FILE_UPLOAD.$staff_f_name."_".$newname;
+
 		 $data = array(
 			'staff_first_name' => $staff_f_name,
 			'staff_last_name' => $staff_l_name,
 			'staff_badge_number' => $staff_badge,
 			'staff_contact_number' => $staff_contact_number,
 			'staff_email_id' => $staff_email,
+			'staff_profile_photo' => isset($_FILES['profilephoto']) ? $staff_profile_photo : "",
 			'staff_address_1' => $staff_add1,
 			'staff_address_2' => $staff_add2,
 			'staff_gender' => $staff_gen,
@@ -66,6 +74,14 @@ class Staff extends MX_Controller {
 			'status' => $staff_status,
 			'added_on' => date('Y-m-d h:i:s')
 		);
+
+
+			if($isfile!=''){
+
+			$imgerr=$this->helper_model->do_upload($_FILES['profilephoto']['name'],$_FILES['profilephoto']['tmp_name'],$sizeinmb,$newname,$staff_f_name);
+
+
+			}
  	$staff_table =  "staff_master";
 
  	$this->db->trans_begin();
@@ -179,7 +195,6 @@ class Staff extends MX_Controller {
 		$data['staff'] = $this->Staff_model->getData($select, $tableName, $column, $value);
 		$data['update'] = true;
 		$this->header->index();
-	
 		$this->load->view('StaffAdd', $data);
 		$this->footer->index();
  	}
@@ -199,6 +214,7 @@ class Staff extends MX_Controller {
 		 $staff_qual = isset($_POST['staff_qual']) ? $_POST['staff_qual'] : "";
 		 $basic_pay = isset($_POST['basic_pay']) ? $_POST['basic_pay'] : "";
 		 $staff_status = isset($_POST['staff_status']) ? $_POST['staff_status'] : "";
+		 $staff_profile_photo = isset($_POST['staff_profile_photo']) ? $_POST['staff_profile_photo'] : "";
 		
 		  //bdate conversion
 		 if(isset($staff_dob) && !empty($staff_dob)){
@@ -223,6 +239,7 @@ class Staff extends MX_Controller {
 			'staff_badge_number' => $staff_badge,
 			'staff_contact_number' => $staff_contact_number,
 			'staff_email_id' => $staff_email,
+			'staff_profile_photo' => $staff_profile_photo,
 			'staff_address_1' => $staff_add1,
 			'staff_address_2' => $staff_add2,
 			'staff_gender' => $staff_gen,

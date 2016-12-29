@@ -161,7 +161,28 @@
 									<span class="middle input-text-error" id="staff_status_errorlabel"></span>
 								</span>
 							</div>
-						</div>				
+						</div>	
+						<?php if(isset($staff)){?>
+							<div class="form-group files">
+							<label class="col-sm-2 no-padding-right" for="">Staff Profile Photo</label>
+							<div class="col-sm-4">
+							<img src="<?php echo base_url().$staff[0]->staff_profile_photo; ?>" />
+							<input type="file" id="profilephoto" name="profilephoto" />
+							
+						</div>
+						</div>
+						<?php } else {?>
+						 <div class="form-group files">
+							<label class="col-sm-2 no-padding-right" for="">Staff Profile Photo</label>
+
+							<div class="col-sm-4">
+								<input type="file" id="profilephoto" name="profilephoto" />
+								<span class="help-inline col-xs-12 col-sm-7">
+									<span class="middle input-text-error" id="profilephoto_errorlabel" ></span>
+								</span>
+							</div>
+						</div>
+						<?php } ?>			
 						<div class="clearfix form-actions">
 							<div class="col-md-offset-3 col-md-9">
 								<button class="btn btn-info test" type="submit">

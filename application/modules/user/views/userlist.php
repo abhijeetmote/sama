@@ -8,7 +8,7 @@
 				</li>
 
 				 
-				<li class="active">Form Elements</li>
+				<li class="active">User</li>
 			</ul><!-- /.breadcrumb -->
 
 			<div class="nav-search" id="nav-search">

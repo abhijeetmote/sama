@@ -78,7 +78,6 @@ class Contractor extends MX_Controller {
 		$entity_type = GROUP_ENTITY;
 		$where =  array('context' =>  $context, 'entity_type' => $entity_type);
  	 	$groupid = $this->Contractor_model->getGroupId($select,$ledgertable,$context,$entity_type,$where);
- 	 	
  	 	$parent_data = $groupid->ledger_account_id;
  	 	$reporting_head = REPORT_HEAD_EXPENSE;
  	 	$nature_of_account = DR;
