@@ -151,7 +151,7 @@
 																	<i class="ace-icon fa fa-pencil bigger-130"></i>
 																</a>
 
-																<a class="red" href="#">
+																<a class="red" href="#" id="<?php echo $item->site_id; ?>">
 																	<i class="ace-icon fa fa-trash-o bigger-130"></i>
 																</a>
 															</div>

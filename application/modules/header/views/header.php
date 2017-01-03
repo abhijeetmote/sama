@@ -551,13 +551,13 @@
 								<a href="<?php echo base_url(); ?>payment/expenseMaster">
 									<i class="menu-icon fa fa-caret-right"></i>
 
-									Make Payment
+									Make Payment(Pay out)
 								</a>
 
 								<b class="arrow"></b>
 							</li>
 
-							<li class="">
+							<!--<li class="">
 								<a href="<?php echo base_url(); ?>payment/journalEntry">
 									<i class="menu-icon fa fa-caret-right"></i>
 
@@ -565,7 +565,7 @@
 								</a>
 
 								<b class="arrow"></b>
-							</li>
+							</li>-->
 
 							<li class="">
 								<a href="<?php echo base_url(); ?>payment/advancesalaryMaster">
@@ -585,7 +585,7 @@
 
 								<b class="arrow"></b>
 							</li>
-<!-- 							<li class="">
+ 							<li class="">
 								<a href="<?php echo base_url(); ?>payment/PayOutreport">
 									<i class="menu-icon fa fa-caret-right"></i>
 
@@ -593,7 +593,7 @@
 								</a>
 
 								<b class="arrow"></b>
-							</li> -->
+							</li> 
 
 							 
 						</ul>
@@ -638,7 +638,7 @@
 								<a href="<?php echo base_url(); ?>account/addAmount">
 									<i class="menu-icon fa fa-caret-right"></i>
 
-									Add Amt (Cash/Bank)
+									Add Amt (Pay In (Cash/Bank))
 								</a>
 
 								<b class="arrow"></b>

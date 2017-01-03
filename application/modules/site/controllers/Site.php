@@ -160,7 +160,8 @@ class Site extends MX_Controller {
         echo json_encode($response);
  	}
 	 	public function siteDelete(){
-        $site_id = $_POST['site_id'];
+        $site_id = $_POST['id'];
+        //echo "test".$site_id;
         $resultMaster = $this->helper_model->delete('site_master','site_id',$site_id);
         if($resultMaster != false){
         	//$resultDetails = $this->helper_model->delete('vehicle_details','vehicle_id',$vehicle_id);

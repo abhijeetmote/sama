@@ -54,7 +54,7 @@ var array = [
 	{name: "get-driver-sal", value: baseUrl + "payment/getDriverSal"},
 	{name: "sal-paid", value: baseUrl + "payment/salPaid"},
 	{name: "siteadd", value: baseUrl + "site/addsite"},
-	{name: "siteList", value: baseUrl + "vehicle/siteDelete"},
+	{name: "siteList", value: baseUrl + "site/siteDelete"},
 	{name: "site_update", value: baseUrl + "site/siteUpdate"},
 	{name: "staffmaster", value: baseUrl + "staff/addstaff"},
 	{name: "staffList", value: baseUrl + "staff/staffDelete"},
