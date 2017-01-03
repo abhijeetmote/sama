@@ -288,8 +288,7 @@ jQuery(function($) {
 		                if(data.success == true){
 		                	 //alert(data);
 							 //console.log(data);
-		      
-		                	$('#slab_id').append(data.successMsg);
+		                   	$('#slab_id').html(data.successMsg);
 		                	$('#slab_id').trigger("chosen:updated");
 		                	$("#slab_id").trigger("liszt:updated");
 		                
@@ -302,7 +301,56 @@ jQuery(function($) {
 			}
 		});
 
+		$(document).on('change','#pay_type', function() {
+		
+			var p_type = $(this).val();
+			var s_id = $("#site_id").val();
+			
+			if(s_id != "" && p_type == "2")
+			{
+				var obj = array.filter(function(obj){
+		            return obj.name === 'get_slab_det'
+		        })[0];
 
+		        var uri = obj['value'];
+
+		        jobject = {
+		            's_id' : s_id,
+		            'p_type' : p_type
+		        }
+		        
+		        $.ajax({
+		            url: uri,
+		            method: 'POST',
+		            crossDomain: true,
+		            data: jobject,
+		            dataType: 'json',
+		            beforeSend: function (xhr) {
+		               
+		            },
+		            success: function (data) {
+		            	 
+		                if(data.success == true){
+		                	 //alert(data);
+							 //console.log(data);
+		                   	$('#slab_id').html(data.successMsg);
+		                	$('#slab_id').trigger("chosen:updated");
+		                	$("#slab_id").trigger("liszt:updated");
+		                
+		                }
+		            },
+		            error: function (xhr, ajaxOptions, thrownError) {
+		                console.log(thrownError);
+		            }
+		        });
+			}
+			else
+			{
+				$('#slab_id').html('');		                	
+				$('#slab_id').trigger("chosen:updated");
+		        $("#slab_id").trigger("liszt:updated");
+			}
+		});
 		 
 	
 	});	

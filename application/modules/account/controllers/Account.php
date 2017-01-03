@@ -15,10 +15,7 @@ class Account extends MX_Controller {
 		$this->load->model('helper/selectEnhanced_to');
 		$this->load->model('helper/MonthlyPeriodListener');
 		$this->load->model('helper/YearlyPeriodListener');
-		$this->load->model('helper/ReporttransactiontotalListener');
-		//SelectEnhanced
-		//$this->load->library('session');
-		
+		$this->load->model('helper/ReporttransactiontotalListener');		
 	}
 
 	public function addAccount()
