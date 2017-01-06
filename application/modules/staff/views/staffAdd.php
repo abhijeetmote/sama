@@ -166,7 +166,7 @@
 							<div class="form-group files">
 							<label class="col-sm-2 no-padding-right" for="">Staff Profile Photo</label>
 							<div class="col-sm-4">
-							<img src="<?php echo base_url().$staff[0]->staff_profile_photo; ?>" />
+							<img style="width:50%;" src="<?php echo base_url().$staff[0]->staff_profile_photo; ?>" />
 							<input type="file" id="profilephoto" name="profilephoto" />
 							
 						</div>

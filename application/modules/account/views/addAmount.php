@@ -68,7 +68,7 @@
                                 </span>
                             </div>
                 	</div>
-					<div class="form-group">
+					<div class="form-group" style="display:none;" id="slabdiv">
                             <label class="col-sm-1 no-padding-right" for="form-field-2">Payment Slab</label>
 							<div class="col-sm-4">
                                 <select  name="slab_id" id="slab_id" class="chosen-select form-control">                        
@@ -305,6 +305,14 @@ jQuery(function($) {
 		
 			var p_type = $(this).val();
 			var s_id = $("#site_id").val();
+
+			if(p_type == 2){
+				$("#slabdiv").css("display", "block");
+				$("#slab_id").chosen();
+				$("#slab_id_chosen").css("width","100%");
+			}else{
+				$("#slabdiv").css("display", "none");
+			}
 			
 			if(s_id != "" && p_type == "2")
 			{

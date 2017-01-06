@@ -84,7 +84,7 @@
 							<label class="col-sm-2 no-padding-right">Select Day(Full/Half)</label>
 							<div class="col-sm-4">
 								<label>
-									<input type="radio" class="ace" <?php if(isset($labour[0]->day_type) && $labour[0]->day_type == 1) { echo "checked";} ?> value="1" name="daytype" id="half">
+									<input type="radio" class="ace" <?php if(isset($labour[0]->day_type) && $labour[0]->day_type == 1) { echo "checked";} ?> value="1" name="daytype" id="half" checked="checked">
 										<span class="lbl">Half Day</span>
 									</label>
 

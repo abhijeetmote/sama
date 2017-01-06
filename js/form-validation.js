@@ -364,7 +364,7 @@ function check_ispan(obj,event) {
     if (!panReg.test(pan)) {
         //$(obj).val("");
 
-        console.log(panid);
+        //console.log(panid);
         $("#" + panid +"_errorlabel").html("Please enter valid Pan number");
         $("#" + panid).focus();
         event.preventDefault();

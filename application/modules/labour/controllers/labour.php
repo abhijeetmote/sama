@@ -38,6 +38,18 @@ class Labour extends MX_Controller {
 		 $labour_mobile1 = isset($_POST['labour_mobile1']) ? $_POST['labour_mobile1'] : "";
 		 $site_id=isset($_POST['site_id']) ? $_POST['site_id'] : "";
 
+		 $select = "labour_id";
+		 $tableName = "labour_master";
+		 $column = "labour_mobno";
+		 $value = $labour_mobile;
+		 $labourResult = $this->labour_model->getData($select,$tableName,$column, $value);
+		 if(!empty($labourResult)){
+		 	$response['error'] = true;
+		 	$response['success'] = false;
+			$response['errorMsg'] = "Error!!! Labour already exist";			
+			echo json_encode($response);
+			exit();	
+		 }
 		 
 		 //bdate conversion
 		 if(isset($labour_dob) && !empty($labour_dob)){
@@ -298,11 +310,32 @@ class Labour extends MX_Controller {
  	} 
 
  	public function labourAttnSubmit(){
-        $labour_id = $_POST['labour_name'];
-        $date = $_POST['labour_in_dt'];
-
+        @$labour_id = $_POST['labour_name'];
+        @$date = $_POST['labour_in_dt'];
+		@$daytype= $_POST['daytype'];
 		$d = date_parse_from_format("Y-m-d", $date);
-		$daytype= $_POST['daytype'];
+
+        if($labour_id == ""){
+        	$response['error'] = true;
+		 	$response['success'] = false;
+			$response['errorMsg'] = "Error!!! Select labour";			
+			echo json_encode($response);
+			exit();	
+        }
+        if($date == ""){
+        	$response['error'] = true;
+		 	$response['success'] = false;
+			$response['errorMsg'] = "Error!!! Select date";			
+			echo json_encode($response);
+			exit();	
+        }
+        if($daytype == ""){
+        	$response['error'] = true;
+		 	$response['success'] = false;
+			$response['errorMsg'] = "Error!!! Select daytype";			
+			echo json_encode($response);
+			exit();	
+        }	
 
 		if($d['month'] < 10){
 	       	$month = "0".$d['month'];
@@ -327,7 +360,7 @@ class Labour extends MX_Controller {
 		}else{
 			$response['error'] = true;
  	 		$response['success'] = false;
-			$response['Msg'] = "Error!!! Please contact IT Dept";
+			$response['errorMsg'] = "Error!!! Please contact IT Dept";
 		}
 		echo json_encode($response);
  	}

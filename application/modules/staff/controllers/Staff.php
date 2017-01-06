@@ -35,6 +35,20 @@ class Staff extends MX_Controller {
 		 $staff_status = isset($_POST['staff_status']) ? $_POST['staff_status'] : "";
 		 $profilephoto = isset($_FILES['profilephoto']) ? $_FILES['profilephoto'] : "";
 
+		 $select = "staff_id";
+		 $tableName = "staff_master";
+		 $column = "staff_email_id";
+		 $value = $staff_email;
+		 $staffResult = $this->Staff_model->getData($select,$tableName,$column, $value);
+
+		 if(!empty($staffResult)){
+		 	$response['error'] = true;
+		 	$response['success'] = false;
+			$response['errorMsg'] = "Error!!! Staff already exist";			
+			echo json_encode($response);
+			exit();	
+		 }
+
 		  //bdate conversion
 		 if(isset($staff_dob) && !empty($staff_dob)){
 		 	$staff_dob = $this->helper_model->dbDate($staff_dob);
@@ -233,13 +247,13 @@ class Staff extends MX_Controller {
 
 		 $ledger_acount_id = isset($_POST['ledger_acount_id']) ? $_POST['ledger_acount_id'] : "";
 
+		
 		  $staff_update = array(
 			'staff_first_name' => $staff_f_name,
 			'staff_last_name' => $staff_l_name,
 			'staff_badge_number' => $staff_badge,
 			'staff_contact_number' => $staff_contact_number,
 			'staff_email_id' => $staff_email,
-			'staff_profile_photo' => $staff_profile_photo,
 			'staff_address_1' => $staff_add1,
 			'staff_address_2' => $staff_add2,
 			'staff_gender' => $staff_gen,
@@ -249,6 +263,18 @@ class Staff extends MX_Controller {
 			'status' => $staff_status,
 			'added_on' => date('Y-m-d h:i:s')
 		);
+
+		if($_FILES['profilephoto']['name'] != ''){
+			$_FILES['profilephoto']['name']."<br>";
+			$_FILES['profilephoto']['tmp_name'];
+			$isfile=basename($_FILES['profilephoto']['name']);
+			$newname=$isfile;
+			$sizeinmb=25;
+			$staff_profile_photo=FILE_UPLOAD.$staff_f_name."_".$newname;
+
+			$imgerr=$this->helper_model->do_upload($_FILES['profilephoto']['name'],$_FILES['profilephoto']['tmp_name'],$sizeinmb,$newname,$staff_f_name);
+			$staff_update['staff_profile_photo'] = $staff_profile_photo;
+		}
      
 		$this->db->trans_begin();
 		$staff_table = STAFF_MASTER;
@@ -324,11 +350,33 @@ class Staff extends MX_Controller {
 	}
 	
 	public function staffAttnSubmit(){
-        $staff_id = $_POST['staff_name'];
-        $date = $_POST['staff_in_dt'];
+        @$staff_id = $_POST['staff_name'];
+        @$date = $_POST['staff_in_dt'];
 
 		$d = date_parse_from_format("Y-m-d", $date);
-		$daytype= $_POST['daytype'];
+		@$daytype= $_POST['daytype'];
+
+		if($staff_id == ""){
+        	$response['error'] = true;
+		 	$response['success'] = false;
+			$response['errorMsg'] = "Error!!! Select staff";			
+			echo json_encode($response);
+			exit();	
+        }
+        if($date == ""){
+        	$response['error'] = true;
+		 	$response['success'] = false;
+			$response['errorMsg'] = "Error!!! Select date";			
+			echo json_encode($response);
+			exit();	
+        }
+        if($daytype == ""){
+        	$response['error'] = true;
+		 	$response['success'] = false;
+			$response['errorMsg'] = "Error!!! Select daytype";			
+			echo json_encode($response);
+			exit();	
+        }
 
 		if($d['month'] < 10){
 	       	$month = "0".$d['month'];

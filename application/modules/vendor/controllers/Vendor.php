@@ -46,6 +46,20 @@ class Vendor extends MX_Controller {
 		 $vendor_cst = isset($_POST['vendor_cst']) ? $_POST['vendor_cst'] : "";
 		 $vendor_gst = isset($_POST['vendor_gst']) ? $_POST['vendor_gst'] : "";
 		 $site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
+
+		 $select = "vendor_id";
+		 $tableName = "vendors_master";
+		 $column = "vendor_pan_num";
+		 $value = $vendor_pan_num;
+		 $vendorResult = $this->Vendor_model->getData($select,$tableName,$column, $value);
+		 if(!empty($vendorResult)){
+		 	$response['error'] = true;
+		 	$response['success'] = false;
+			$response['errorMsg'] = "Error!!! Vendor already exist";			
+			echo json_encode($response);
+			exit();	
+		 }
+
 		 $data = array(
 			'vendor_name' => $vendor_name,
 			'vendor_contact_number' => $vendor_mobile_number,
