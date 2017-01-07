@@ -564,7 +564,7 @@ public function advancesalaryMaster()
 	echo json_encode($response);
  	}
 
- 	public function driverSal(){
+ 	public function staffSal(){
  		$this->header->index();
 		$grp_table = LEDGER_TABLE;
 		 
@@ -615,9 +615,9 @@ public function advancesalaryMaster()
  			$data['salary_month'] = $salary_month;
  			$data['salary_year'] = $salary_year;
 
- 			$driver_table =  DRIVER_TABLE;
-	 		$filds = "driver_id,driver_fname,driver_mname,driver_lname,driver_add,driver_photo,driver_bdate,driver_mobno,driver_mobno1,driver_licno,driver_licexpdate,driver_panno,is_da,is_night_allowance,ledger_id,driver_fix_pay,driver_da,driver_na";
-	 		$driverlist = $this->payment_model->getDriverLit($filds,$driver_table);
+ 			$driver_table =  STAFF_MASTER;
+	 		$filds = "staff_id,staff_first_name,staff_last_name,staff_badge_number,staff_contact_number,staff_email_id,staff_dob,staff_gender,staff_qualification,staff_profile_photo,ledger_account_id,staff_basic_pay";
+	 		$stafflist = $this->payment_model->getStaffLit($filds,$driver_table);
 
 			//echo json_encode($driverlist);exit();
 
@@ -629,101 +629,103 @@ public function advancesalaryMaster()
 	 		//echo json_encode($driverlist);exit();
 			
 			$driverAttnData = array();
-			for ($i=0; $i < count($driverlist); $i++) { 
-				$driverAttnData[$i]['name'] = $driverlist[$i]->driver_fname." ".$driverlist[$i]->driver_lname;
-				$driverId = $driverlist[$i]->driver_id;
-				$ledgerId = $driverlist[$i]->ledger_id;
+			for ($i=0; $i < count($stafflist); $i++) { 
+				$staffAttnData[$i]['name'] = $stafflist[$i]->staff_first_name." ".$stafflist[$i]->staff_last_name;
+				$staffId = $stafflist[$i]->staff_id;
+				$ledgerId = $stafflist[$i]->ledger_account_id;
 				//echo json_encode($driverAttnData);exit();
 				if(!empty($holidays)){
-					$driverAttnData[$i]['holidays'] = $holidays[0]->cnt;
+					$staffAttnData[$i]['holidays'] = $holidays[0]->cnt;
 				}else{
-					$driverAttnData[$i]['holidays'] = 0;
+					$staffAttnData[$i]['holidays'] = 0;
 				}
 				$$driverPerDayDA = 0;
 
 				$driverPerDayNA = 0;
-				$driver_fix_pay = $driverlist[$i]->driver_fix_pay;
-				$tableName =  'driver_salary_paid';
+				$staff_fix_pay = $stafflist[$i]->staff_basic_pay;
+				$tableName =  'staff_salary_paid';
 		 		$select = '*';
 		 		$where = "salary_month = '$salary_month' and salary_year = '$salary_year' and ledger_account_id = '$ledgerId'";
-				$driverSalPaid = $this->payment_model->getwheredata($select,$tableName,$where);
+				$staffSalPaid = $this->payment_model->getwheredata($select,$tableName,$where);
 
-				$tableName =  "driver_attendance";
+				$tableName =  "staff_attendance";
 		 		$select = 'count(*) as cnt';
-		 		$where = "month = '$salary_month' and year = '$salary_year' and driver_id = '$driverId'";
-				$driverAttn = $this->payment_model->getwheredata($select,$tableName,$where);
-				$driverAttnData[$i]['Attn'] = $driverAttn[0]->cnt;
+		 		$where = "month = '$salary_month' and year = '$salary_year' and staff_id = '$staffId'";
+				$staffAttn = $this->payment_model->getwheredata($select,$tableName,$where);
+				$staffAttnData[$i]['Attn'] = $staffAttn[0]->cnt;
 
 				$tableName =  ADVANCE_SALARY;
 		 		$select = 'transaction_amount';
 		 		$where = "salary_month = '$salary_month' and salary_year = '$salary_year' and ledger_account_id = '$ledgerId'";
-				$driverAdvPaid = $this->payment_model->getwheredata($select,$tableName,$where);
+				$staffAdvPaid = $this->payment_model->getwheredata($select,$tableName,$where);
 				//echo json_encode($ledger_id);exit();
-				if(!empty($driverAdvPaid)){
-					$advSal = $driverAdvPaid[0]->transaction_amount;
+				if(!empty($staffAdvPaid)){
+					$advSal = $staffAdvPaid[0]->transaction_amount;
 				}else{
 					$advSal = 0;
 				}
 
-				if($driverlist[$i]->is_da == 1)
+				/*if($stafflist[$i]->is_da == 1)
 				{
 					$driverPerDayDA = $driver_da/30;
 				}
 
-				if($driverlist[$i]->is_night_allowance == 1)
+				if($stafflist[$i]->is_night_allowance == 1)
 				{
 					$driverPerDayNA = $driver_na/30;
-				}
+				}*/
 				
-				$driverPerDaySal = $driver_fix_pay/30;
+				$staffPerDaySal = $staff_fix_pay/30;
 
-				$workingDay = $driverAttn[0]->cnt + $holidays[0]->cnt;
+				$workingDay = $staffAttn[0]->cnt + $holidays[0]->cnt;
 
-				$workingDaysSal = $workingDay * $driverPerDaySal;
-				$workingDaysSal += $workingDay * $driverPerDayDA;
-				$workingDaysSal += $workingDay * $driverPerDayNA;
+				$workingDaysSal = $workingDay * $staffPerDaySal;
+				//$workingDaysSal += $workingDay * $driverPerDayDA;
+				//$workingDaysSal += $workingDay * $driverPerDayNA;
 
-				if($driverAttn[0]->cnt > 0){
-					$driverAttnData[$i]['totalSal'] = $workingDaysSal - $advSal;
+				if($staffAttn[0]->cnt > 0){
+					$staffAttnData[$i]['totalSal'] = $workingDaysSal - $advSal;
 				}else{
-					$driverAttnData[$i]['totalSal'] = 0;
+					$staffAttnData[$i]['totalSal'] = 0;
 				}
 
-				$driverAttnData[$i]['ledgerId'] = $ledgerId;
+				$staffAttnData[$i]['ledgerId'] = $ledgerId;
 
-				$driverAttnData[$i]['advSal'] = $advSal;
-				if(empty($driverSalPaid)){	
-					$driverAttnData[$i]['paidStatus'] = "unpaid";
+				$staffAttnData[$i]['advSal'] = $advSal;
+				if(empty($staffSalPaid)){	
+					$staffAttnData[$i]['paidStatus'] = "unpaid";
 				}else{
-					$driverAttnData[$i]['paidStatus'] = "paid";
+					$staffAttnData[$i]['paidStatus'] = "paid";
 				}
 			}
-			$data['driverAttnData'] = $driverAttnData;
+			$data['staffAttnData'] = $staffAttnData;
 		}
 
 		/*echo "<pre>";
 		print_r($data);
 		exit();*/
-		$this->load->view('driverSalary',$data);
+		$this->load->view('staffSalary',$data);
 		$this->footer->index();
  	}
 
  	
 
+ 	
  	public function salPaid()
  	{
- 		$driverList = $_POST['data'];
- 		$salary_month = $_POST['salary_month'];
- 		$salary_year = $_POST['salary_year'];
- 		$from_ledger = $_POST['from_ledger'];
+ 		 $staffList = $_POST['data'];
+ 		 $salary_month = $_POST['salary_month'];
+ 		 $salary_year = $_POST['salary_year'];
+ 		 $from_ledger = $_POST['from_ledger'];
+ 		 //echo json_encode($staffList); exit;
 
- 		for ($i= 0; $i < count($driverList); $i++) { 
+ 		for ($i= 0; $i < count($staffList); $i++) { 
  			//echo json_encode($val[0]['sal']);exit();
- 			if($driverList[0]['sal'] > 0)
+ 			if($staffList[0]['sal'] > 0)
 	 		{	
-	 			$to_ledger = $driverList[0]['ledgerId'];
-	 			$sal = $driverList[0]['sal'];
-	 			$tableName = "driver_salary_paid";
+	 			$to_ledger = $staffList[0]['ledgerId'];
+	 			$sal = $staffList[0]['sal'];
+	 			$tableName = "staff_salary_paid";
 		 		$select = "count(*) as cnt";
 		 		$where = "salary_month = '$salary_month' and salary_year = '$salary_year' and ledger_account_id = '$to_ledger'";
 		 		$alreadyPaid = $this->payment_model->getwheredata($select,$tableName,$where);
@@ -739,7 +741,7 @@ public function advancesalaryMaster()
 						'added_by' => 1,
 						'added_on' => date('Y-m-d h:i:s')
 					);
-				 	$tableName =  "driver_salary_paid";
+				 	$tableName =  "staff_salary_paid";
 
 				 	$this->db->trans_begin();
 
@@ -761,7 +763,7 @@ public function advancesalaryMaster()
 							'transaction_date' => date('Y-m-d h:i:s'),
 							'ledger_account_id' => $from_ledger,
 							'ledger_account_name' => $from_ledger_name,
-							'transaction_type' => $dr,
+							'transaction_type' => $cr,
 							'payment_reference' => "",
 							'transaction_amount' => $sal,
 							'txn_from_id' => 0,
@@ -791,7 +793,7 @@ public function advancesalaryMaster()
 									'transaction_date' => date('Y-m-d h:i:s'),
 									'ledger_account_id' => $to_ledger,
 									'ledger_account_name' => $to_ledger_name,
-									'transaction_type' => $cr,
+									'transaction_type' => $dr,
 									'payment_reference' => "",
 									'transaction_amount' => $sal,
 									'txn_from_id' => $from_transaction_id,
@@ -807,6 +809,10 @@ public function advancesalaryMaster()
 
 					 	 	if(isset($to_transaction) && !empty($to_transaction)){
 					 	 		$this->db->trans_commit();
+					 	 		$response['error'] = false;
+						 		$response['success'] = true;
+								$response['successMsg'] = "Paid SuccsessFully";
+								$response['redirect'] = base_url()."payment/staffSal";
 					 	 	} else {
 						 		$this->db->trans_rollback();
 					 		}
@@ -818,13 +824,18 @@ public function advancesalaryMaster()
 							$response['errorMsg'] = "Error!!! Please contact IT Dept";
 					 	}
 				 	}
+		 		} else {
+
+		 				//$this->db->trans_commit();
+			 	 		$response['error'] = false;
+				 		$response['success'] = true;
+						$response['successMsg'] = "salary allready paid";
+						$response['redirect'] = base_url()."payment/driverSal";
 		 		}
 		 	}
  		}
 
- 		$response['error'] = false;
- 		$response['success'] = true;
-		$response['successMsg'] = "Paid SuccsessFully";
+
 
  		echo json_encode($response);
  	}

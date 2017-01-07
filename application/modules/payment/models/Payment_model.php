@@ -19,7 +19,7 @@ class Payment_model extends CI_Model {
 		return $result;
 	}
 
-	public function getDriverLit($data,$table){
+	public function getStaffLit($data,$table){
 
 		$result = $this->helper_model->selectAll($data,$table);
 		return $result;

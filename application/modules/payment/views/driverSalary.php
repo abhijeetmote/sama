@@ -1,3 +1,5 @@
+
+
 <div class="main-content">
 	<div class="main-content-inner">
 		<div class="breadcrumbs ace-save-state" id="breadcrumbs">
@@ -141,7 +143,7 @@
 														<td><?php echo $val['Attn']; ?></td>
 														<td><?php echo $val['holidays']; ?></td>
 														<td><?php echo $val['advSal']; ?></td>
-														<td><?php echo $val['totalSal']; ?></td>
+														<td><?php echo number_format($val['totalSal'],2); ?></td>
 														<td><?php echo $val['paidStatus']; ?></td>
 													</tr>
 												<?php endforeach; ?>										
@@ -954,6 +956,12 @@ jQuery(function($) {
         	}
         	val[i] = data;
         });
+
+        if(val.length == 0){
+        	alert('Select Driver');
+        	return false;
+        }
+
 		var salary_month = "<?php echo $salary_month; ?>";
 		var salary_year = "<?php echo $salary_year; ?>";
 		var from_ledger = $("#to_ledger").val();
@@ -970,6 +978,7 @@ jQuery(function($) {
 	            'salary_year': salary_year,
 	            'from_ledger': from_ledger
 	        }
+
 	        
 	        $.ajax({
 	            url: uri,
@@ -982,7 +991,8 @@ jQuery(function($) {
 	            },
 	            success: function (data) {
 	            	if(data.success == true){
-	            		//location.reload();
+	            		alert(data.successMsg);
+	            		location.reload();
 	            	}else{
 	            		alert(data.errorMsg);
 	            	}

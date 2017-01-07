@@ -120,7 +120,8 @@
 							<div class="col-sm-4">
 							<div class="radio">								
 							<label>
-								<input name="staff_gen" value="Male" <?php if(isset($staff) && $staff[0]->staff_gender == 0): ?>checked="checked"<?php ; endif; ?> id="staff_gen" class="ace" type="radio">
+								<input name="staff_gen" value="Male" <?php if(isset($staff) && $staff[0]->staff_gender == 0): ?>checked="checked"<?php ; endif; ?>
+								<?php if(!isset($staff)): ?>checked="checked"<?php ; endif; ?> id="staff_gen" class="ace" type="radio">
 								<span class="lbl">Male</span>
 							</label
 							<div class="radio">								
