@@ -181,28 +181,19 @@ class Payment extends MX_Controller {
  		$response['success'] = false;
 		$response['errorMsg'] = "Error!!! Please contact IT Dept";
  	}
-//<<<<<<< 12e8f6720dd1562ebcb06beee7b54454acb6a593
 
- 	 
-		 	 	//pay out table entry starts
- 				/*$pay_out= array(
-					'site_id' = $site_id,
-					'pay_from' = ,
-					'pay_to' = ,
-					'amount' = ,
-					'added_by' = ,
-					'added_on' = ,
-
- 				);*/
-	 
-//=======
 	
 			//pay out table entry starts
+ 				$comment="Paid From Payout";
  				$pay_out_data = array(
 					'site_id' => $site_id,
 					'pay_from' => $from_ledger,
 					'pay_to' => $to_ledger,
 					'amount' => $payment_amount,
+					'narration' => $payment_amount,
+					'pay_mode' => $payment_amount,
+					'ref_no' => $payment_amount,
+					'comment'=> $comment,
 					'added_by' => 1,
 					'added_on' => date('Y-m-d h:i:s')
 

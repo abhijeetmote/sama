@@ -302,8 +302,14 @@ class Labour extends MX_Controller {
  	public function labourAttend(){
 
  		$date = date('Y-m-d');
-        $data['labourdetails'] = $this->helper_model->selectQuery("SELECT labour_id,labour_fname,labour_lname FROM labour_master where labour_id not in (select labour_id from labour_attendance where DATE_FORMAT(user_check_in, '%Y-%m-%d') = '$date')");
-        //echo "<pre>"; print_r($data);exit();
+        $data['labourdetails'] = $this->helper_model->selectQuery("SELECT labour_id,labour_fname,labour_lname,site_id FROM labour_master where labour_id not in (select labour_id from labour_attendance where DATE_FORMAT(user_check_in, '%Y-%m-%d') = '$date')");
+
+        $select = 'site_id,site_name';
+		$tableName = 'site_master';
+		$column = "isactive";
+		$value = "1";
+		$data['sitelist'] = $this->labour_model->getData($select, $tableName, $column, $value);
+        //print_r($data['labourdetails']);exit;
         $this->header->index();
         $this->load->view('labourAttend',$data);
 		$this->footer->index();
@@ -311,6 +317,7 @@ class Labour extends MX_Controller {
 
  	public function labourAttnSubmit(){
         @$labour_id = $_POST['labour_name'];
+        $site_id =$_POST['labour_site'];
         @$date = $_POST['labour_in_dt'];
 		@$daytype= $_POST['daytype'];
 		$d = date_parse_from_format("Y-m-d", $date);
@@ -344,6 +351,7 @@ class Labour extends MX_Controller {
 	       }
 		$data = array(
 		'labour_id' => $labour_id,
+		'site_id' => $site_id,
 		'user_check_in' => $date,
 		'month' => $month,
 		'year' => $d['year'],
@@ -381,7 +389,7 @@ class Labour extends MX_Controller {
  		/*echo json_encode($to_date);
  		exit();*/
  		$labour_id = $_POST['labour'];
- 		$labour = $this->helper_model->selectQuery("SELECT labour_id,user_check_in,day_type,DATE_FORMAT(user_check_in, '%Y-%m-%d') as date from labour_attendance where user_check_in >= '$from_date' and user_check_in <= '$to_date' and labour_id = '$labour_id'");
+ 		$labour = $this->helper_model->selectQuery("SELECT labour_id,site_id,user_check_in,day_type,DATE_FORMAT(user_check_in, '%Y-%m-%d') as date from labour_attendance where user_check_in >= '$from_date' and user_check_in <= '$to_date' and labour_id = '$labour_id'");
 
  		
 
@@ -408,6 +416,8 @@ class Labour extends MX_Controller {
 		$data = "";
 		for ($i=0; $i < $dateDiff->days; $i++) 
 		{ 
+			
+
 			$j = 0;
 			$key = array_search($from_date, $holidayArray);
 			if($key !== false){
@@ -415,17 +425,28 @@ class Labour extends MX_Controller {
 				$data .= '<tr>
 						<td>'.$from_date.'</td>
 						<td>Holiday</td>
+						<td></td>
 					</tr>';
 				$j++;
 			}
 
 			$key = array_search($from_date, $labourArray);
 			if($key !== false){
+
+			$labour_site = $labour[$key]['site_id'];
+			$tableName =  "site_master";
+ 			$select = "site_name";
+ 			$where = "site_id = '$labour_site'";
+			
+			//$where = 'site_id='".$labour_site."'';
+			$sitename = $this->labour_model->getwheredata($select,$tableName,$where);
+			
 				if($labour[$key]['day_type']=='2')
 				{
 				$data .= '<tr>
 						<td>'.$from_date.'</td>
 						<td>Present at '.$labour[$key]['user_check_in'].'</td>
+						<td>'.$sitename[0]->site_name.'</td>
 					</tr>';
 				$j++;
 				}
@@ -434,6 +455,7 @@ class Labour extends MX_Controller {
 					$data .= '<tr>
 						<td>'.$from_date.'</td>
 						<td>Present at '.$labour[$key]['user_check_in'].'(Half Day)</td>
+						<td>'.$sitename[0]->site_name.'</td>
 					</tr>';
 				$j++;
 				}
@@ -442,6 +464,7 @@ class Labour extends MX_Controller {
 				$data .= '<tr>
 						<td>'.$from_date.'</td>
 						<td>Leave</td>
+						<td></td>
 					</tr>';
 			}
 			$from_date = date('Y-m-d', strtotime('+1 day', strtotime($from_date)));

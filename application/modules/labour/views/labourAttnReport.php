@@ -125,6 +125,9 @@
 												<th>
 													Attn
 												</th>
+												<th>
+													Present At site
+												</th>
 											</tr>
 										</thead>
 

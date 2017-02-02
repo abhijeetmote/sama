@@ -62,13 +62,27 @@ class Contractor extends MX_Controller {
 			'added_by' => '1',
 			'added_on' => date('Y-m-d h:i:s')
 		);
- 	$contractor_table =  CONTRACTOR_TABLE;
 
- 	$this->db->trans_begin();
- 	 //driver record insertion
- 	$contractor_id = $this->Contractor_model->saveData($contractor_table,$data);
+		  $select = "contractor_id";
+		 $contractor_table = CONTRACTOR_TABLE;
+		 $column = "contractor_pan_num";
+		 $value = $contractor_pan_num;
+		 $contractorResult = $this->Contractor_model->getData($select,$contractor_table,$column, $value);
+		 if(!empty($contractorResult)){
+		 	$response['error'] = true;
+		 	$response['success'] = false;
+			$response['errorMsg'] = "Error!!! Contractor already exist";			
+			echo json_encode($response);
+			exit();	
+		 }
 
- 	//diver data insertion end
+ 		$contractor_table =  CONTRACTOR_TABLE;
+
+ 		$this->db->trans_begin();
+ 		 //contractor record insertion
+ 		$contractor_id = $this->Contractor_model->saveData($contractor_table,$data);
+
+ 	//contractor data insertion end
 
  	//Ledger data insertion start
  	if(isset($contractor_id) && !empty($contractor_id)) {
@@ -127,7 +141,6 @@ class Contractor extends MX_Controller {
 
 
 	if(isset($update_id) && !empty($update_id)){
-		
 		$this->db->trans_commit();
 		$response['success'] = true;
 		$response['error'] = false;

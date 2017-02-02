@@ -52,6 +52,23 @@
 								</select>
 							</div>	
 						</div>
+						<div class="form-group">
+							<label class="col-sm-2 no-padding-right">Select Site</label>
+								
+							<div class="col-sm-4">
+								<select class="chosen-select form-control" name="labour_site" id="labour_site" data-placeholder="Choose a Site...">
+									<?php 
+										foreach ($sitelist as $val) {
+											if(isset($labourdetails) && $val->site_id == $labourdetails[0]['site_id']){
+												echo '<option selected value="'.$val->site_id.'">'.$val->site_name.'</option>';
+											}else{
+												echo '<option value="'.$val->site_id.'">'.$val->site_name.'</option>';
+											}
+										}
+									?>
+								</select>
+							</div>	
+						</div>
 
 						<div class="form-group">
 							<label class="col-sm-2 no-padding-right" for="form-field-2"> Enter Check In*</label>
