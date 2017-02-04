@@ -302,8 +302,8 @@ class Labour extends MX_Controller {
  	public function labourAttend(){
 
  		$date = date('Y-m-d');
-        $data['labourdetails'] = $this->helper_model->selectQuery("SELECT labour_id,labour_fname,labour_lname,site_id FROM labour_master where labour_id not in (select labour_id from labour_attendance where DATE_FORMAT(user_check_in, '%Y-%m-%d') = '$date')");
-
+        $data['labourdetails'] = $this->helper_model->selectQuery("SELECT labour_master.labour_id,labour_fname,labour_lname,labour_attendance.site_id FROM labour_master,labour_attendance where labour_master.labour_id not in (select labour_id from labour_attendance where DATE_FORMAT(user_check_in, '%Y-%m-%d') = '$date')");
+        
         $select = 'site_id,site_name';
 		$tableName = 'site_master';
 		$column = "isactive";

@@ -24,6 +24,11 @@ class Payment_model extends CI_Model {
 		$result = $this->helper_model->selectAll($data,$table);
 		return $result;
 	}
+	public function getlabourLit($data,$table){
+
+		$result = $this->helper_model->selectAll($data,$table);
+		return $result;
+	}
 
 	public function getGroupId($select,$tableName,$context,$entity_type,$where){
 

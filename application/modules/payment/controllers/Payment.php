@@ -400,7 +400,7 @@ public function advancesalaryMaster()
                                  )), "optgroup");
 
 
-		$filter_param_to = array('driver');
+		$filter_param_to = array('staff');
 
 		$filter_ledgers_to = $this->helper_model->sorted_array($ret_arr[0],0,$filter_param_to);
 		$ledger_data_to = $this->selectEnhanced_to->__construct("to_ledger", $filter_ledgers_to, array(
@@ -829,6 +829,150 @@ public function advancesalaryMaster()
 
 
  		echo json_encode($response);
+ 	}
+ 	 	
+ 	public function labourSal(){
+ 		$this->header->index();
+		$grp_table = LEDGER_TABLE;
+		 
+
+		$ledger_data = $this->payment_model->getDataOrder('*',$grp_table,'parent_id','asc');
+		//echo "<pre>";
+		//print_r($ledger_data);
+		$ret_arr = $this->helper_model->_getLedGrpListRecur($ledger_data, array(), 0, array(), $entity_type="");
+		$filter_param_from = array('bank','cash');
+		
+		$filter_ledgers_from = $this->helper_model->sorted_array($ret_arr[0],0,$filter_param_from);
+		//echo "test";exit;
+		//print_r($filter_ledgers_from);exit;
+		$ledger_data = $this->selectEnhanced->__construct("from_ledger", $filter_ledgers_from, array(
+                                'useEmpty' => true,
+                                'emptyText' => '--Select--',
+                                'options' => array(
+                                                'children' =>  array(
+                                                                "type" => GROUP_CHILDREN_OPTION_DIS,
+                                                                'options' => array (
+                                                                             'nature' =>  function($arr){return isset($arr['nature'])? $arr['nature']:false;},
+                                                                             'entity_type' =>  function($arr){return isset($arr['entity_type'])? $arr['entity_type']:false;},
+                                                                             'behaviour' => function($arr){return isset($arr['behaviour'])? $arr['behaviour']:false;}
+                                                                  )
+                                    
+                                                 )                    
+                                                         
+                                 )), "optgroup");
+
+
+		
+
+		
+		$data['to_select'] = $this->selectEnhanced->render("to_ledger",'to_ledger','to_ledger','');
+
+
+		$data['months'] = array('01' => 'JAN','02' => 'FEB','03' => 'MAR','04' => 'APR','05' => 'MAY',
+						'06' => 'JUN','07' => 'JUL','08' => 'AUG','09' => 'SEP','10' => 'OCT',
+						'11' => 'NOV','12' => 'DEC' );
+		$current_year = date('Y');
+		$next_year = $current_year + 1;
+		$data['years'] =  array($current_year => $current_year, $next_year => $next_year);
+
+		if($this->uri->segment(3) != "" && $this->uri->segment(4) != ""){
+			$salary_month = $this->uri->segment(3);
+ 			$salary_year = $this->uri->segment(4);
+
+ 			$data['salary_month'] = $salary_month;
+ 			$data['salary_year'] = $salary_year;
+
+ 			$labour_table =  LABOUR_TABLE;
+	 		$filds = "labour_id,labour_fname,labour_lname,labour_bdate,labour_mobno,labour_dob,labour_photo,ledger_account_id";
+	 		$labourlist = $this->payment_model->getlabourLit($filds,$labour_table);
+
+			//echo json_encode($driverlist);exit();
+
+	 		$tableName = "company_holidays";
+	 		$select = "count(*) as cnt";
+	 		$where = "month = '$salary_month' and year = '$salary_year'";
+	 		$holidays = $this->payment_model->getwheredata($select,$tableName,$where);
+
+	 		//echo json_encode($driverlist);exit();
+			
+			$driverAttnData = array();
+			for ($i=0; $i < count($labourlist); $i++) { 
+				$labourAttnData[$i]['name'] = $labourlist[$i]->labour_fname." ".$labourlist[$i]->labour_lname;
+				$labourId = $labourlist[$i]->staff_id;
+				$ledgerId = $labourlist[$i]->ledger_account_id;
+				//echo json_encode($driverAttnData);exit();
+				if(!empty($holidays)){
+					$labourAttnData[$i]['holidays'] = $holidays[0]->cnt;
+				}else{
+					$labourAttnData[$i]['holidays'] = 0;
+				}
+				$$driverPerDayDA = 0;
+
+				$driverPerDayNA = 0;
+				$staff_fix_pay = $stafflist[$i]->staff_basic_pay;
+				$tableName =  'staff_salary_paid';
+		 		$select = '*';
+		 		$where = "salary_month = '$salary_month' and salary_year = '$salary_year' and ledger_account_id = '$ledgerId'";
+				$staffSalPaid = $this->payment_model->getwheredata($select,$tableName,$where);
+
+				$tableName =  "staff_attendance";
+		 		$select = 'count(*) as cnt';
+		 		$where = "month = '$salary_month' and year = '$salary_year' and staff_id = '$staffId'";
+				$staffAttn = $this->payment_model->getwheredata($select,$tableName,$where);
+				$staffAttnData[$i]['Attn'] = $staffAttn[0]->cnt;
+
+				$tableName =  ADVANCE_SALARY;
+		 		$select = 'transaction_amount';
+		 		$where = "salary_month = '$salary_month' and salary_year = '$salary_year' and ledger_account_id = '$ledgerId'";
+				$staffAdvPaid = $this->payment_model->getwheredata($select,$tableName,$where);
+				//echo json_encode($ledger_id);exit();
+				if(!empty($staffAdvPaid)){
+					$advSal = $staffAdvPaid[0]->transaction_amount;
+				}else{
+					$advSal = 0;
+				}
+
+				/*if($stafflist[$i]->is_da == 1)
+				{
+					$driverPerDayDA = $driver_da/30;
+				}
+
+				if($stafflist[$i]->is_night_allowance == 1)
+				{
+					$driverPerDayNA = $driver_na/30;
+				}*/
+				
+				$staffPerDaySal = $staff_fix_pay/30;
+
+				$workingDay = $staffAttn[0]->cnt + $holidays[0]->cnt;
+
+				$workingDaysSal = $workingDay * $staffPerDaySal;
+				//$workingDaysSal += $workingDay * $driverPerDayDA;
+				//$workingDaysSal += $workingDay * $driverPerDayNA;
+
+				if($staffAttn[0]->cnt > 0){
+					$staffAttnData[$i]['totalSal'] = $workingDaysSal - $advSal;
+				}else{
+					$staffAttnData[$i]['totalSal'] = 0;
+				}
+
+				$staffAttnData[$i]['ledgerId'] = $ledgerId;
+
+				$staffAttnData[$i]['advSal'] = $advSal;
+				if(empty($staffSalPaid)){	
+					$staffAttnData[$i]['paidStatus'] = "unpaid";
+				}else{
+					$staffAttnData[$i]['paidStatus'] = "paid";
+				}
+			}
+			$data['staffAttnData'] = $staffAttnData;
+		}
+
+		/*echo "<pre>";
+		print_r($data);
+		exit();*/
+		$this->load->view('labourSalary',$data);
+		$this->footer->index();
  	}
  	public function PayInreport()
  	{

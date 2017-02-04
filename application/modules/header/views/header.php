@@ -583,6 +583,14 @@
 
 								<b class="arrow"></b>
 							</li>
+							<li class="">
+								<a href="<?php echo base_url(); ?>payment/labourSal">
+									<i class="menu-icon fa fa-caret-right"></i>
+									Labour Salary
+								</a>
+
+								<b class="arrow"></b>
+							</li>
 
 							<li class="">
 								<a href="<?php echo base_url(); ?>payment/advancesalaryMaster">

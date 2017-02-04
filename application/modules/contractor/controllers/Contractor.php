@@ -12,7 +12,6 @@ class Contractor extends MX_Controller {
 	}
 
 	
-
 	public function contractorMaster()
 	{	
 		$select = 'site_id,site_name';
@@ -43,6 +42,20 @@ class Contractor extends MX_Controller {
 		 $contractor_cst = isset($_POST['contractor_cst']) ? $_POST['contractor_cst'] : "";
 		 $contractor_gst = isset($_POST['contractor_gst']) ? $_POST['contractor_gst'] : "";
 		 $site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
+
+		  $select = "contractor_id";
+		 $tableName = CONTRACTOR_TABLE;
+		 $column = "contractor_pan_num";
+		 $value = $contractor_pan_num;
+		 $contractorResult = $this->Contractor_model->getData($select,$tableName,$column, $value);
+		 if(!empty($contractorResult)){
+		 	$response['error'] = true;
+		 	$response['success'] = false;
+			$response['errorMsg'] = "Error!!! Contractor already exist";			
+			echo json_encode($response);
+			exit();	
+		 }
+
 		 $data = array(
 			'contractor_name' => $contractor_name,
 			'contractor_contact_number' => $contractor_mobile_number,
