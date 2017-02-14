@@ -142,6 +142,27 @@
                                 </span>
                             </div>
 						</div>
+
+						<div class="form-group">
+
+							<label class="col-sm-2 no-padding-right" for="form-field-2">Salary status</label>
+						
+                            <div class="col-sm-4">
+                              	<select name="salary_status" class="chosen-select form-control">
+                                	<option value="0" <?php if(isset($labour) && $labour[0]->salary_status == 0){ echo "selected"; } ?> >Daily</option>	
+                                	<option value="1" <?php if(isset($labour) && $labour[0]->salary_status == 1){ echo "selected"; } ?> >Monthly</option>	
+                                </select>
+                            </div>
+
+                            <label class="col-sm-2 no-padding-right" for="">Wages</label>
+
+							<div class="col-sm-4">
+								<input type="text" id="labour_wages" name="labour_wages" value="<?php if(isset($labour)): echo $labour[0]->labour_wages; endif; ?>" placeholder="Enter Labour Wages" class="col-xs-10 col-sm-12 mandatory-field" />
+								<span class="help-inline col-xs-12 col-sm-7">
+									<span class="middle input-text-error" id="labour_wages_errorlabel"></span>
+								</span>
+							</div>
+						</div>
 						<div class="clearfix form-actions">
 							<div class="col-md-offset-3 col-md-9">
 								<button class="btn btn-info test" type="submit">

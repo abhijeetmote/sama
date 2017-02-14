@@ -40,7 +40,8 @@
 							<label class="col-sm-2 no-padding-right">Select Labour</label>
 
 							<div class="col-sm-4">
-								<select class="chosen-select form-control" name="labour_name" id="labour_name" data-placeholder="Choose a labour...">
+								<select class="chosen-select form-control chzn-select" name="labour_name" id="labour_name" data-placeholder="Choose a labour...">
+									<option></option>
 									<?php
 										foreach ($labourdetails as $val) 
 										{
@@ -110,6 +111,24 @@
 										<input type="radio" class="ace" value="2" <?php if(isset($labour[0]->day_type) && $labour[0]->day_type == 2) { echo "checked";} ?> name="daytype" id="full">
 										<span class="lbl">Full Day</span>
 									</label>
+							</div>	
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 no-padding-right">Salary Type</label>
+							<div class="col-sm-9">
+								<label>
+									<input type="text" id="salary_type" class="col-xs-10 col-sm-12" readonly="">
+									<span class="lbl"></span>
+								</label>
+							</div>	
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 no-padding-right">Wages</label>
+							<div class="col-sm-9">
+								<label>
+									<input type="text" id="wages" name="wages" class="col-xs-10 col-sm-12">
+									<span class="lbl"></span>
+								</label>
 							</div>	
 						</div>
 						<div class="clearfix form-actions">
@@ -607,12 +626,46 @@ $(this).find('.modal-chosen').chosen();
 
 
 
-$(document).one('ajaxloadstart.page', function(e) {
-	autosize.destroy('textarea[class*=autosize]')
+	$(document).one('ajaxloadstart.page', function(e) {
+		autosize.destroy('textarea[class*=autosize]')
 
-	$('.limiterBox,.autosizejs').remove();
-	$('.daterangepicker.dropdown-menu,.colorpicker.dropdown-menu,.bootstrap-datetimepicker-widget.dropdown-menu').remove();
-});
+		$('.limiterBox,.autosizejs').remove();
+		$('.daterangepicker.dropdown-menu,.colorpicker.dropdown-menu,.bootstrap-datetimepicker-widget.dropdown-menu').remove();
+	});
+
+	$(".chzn-select").chosen().change(function() {
+		var id = $(this).val();
+		var obj = array.filter(function(obj){
+            return obj.name === 'laboutAttn'
+        })[0];
+        var uri = obj['value'];
+
+        jobject = {
+            'id' : id
+        }
+        
+		$.ajax({
+            url: uri,
+            method: 'POST',
+            crossDomain: true,
+            data: jobject,
+            dataType: 'json',
+            beforeSend: function (xhr) {
+                //$('.icon'+id).addClass('ace-icon fa fa-spinner fa-spin orange bigger-125');
+            },
+            success: function (data) {
+            	var status = "Daily";
+            	if(data[0].salary_status == 1){
+            		var status = "Monthly";
+            	}
+            	$("#salary_type").val(status);
+            	$("#wages").val(data[0].labour_wages);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError);
+            }
+        });
+	})
 
 });
 </script>

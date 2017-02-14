@@ -46,7 +46,7 @@ class Payment extends MX_Controller {
                                  )), "optgroup");
 
 
-		$filter_param_to = array('driver','vendor');
+		$filter_param_to = array('driver','vendor','contractor');
 
 		$filter_ledgers_to = $this->helper_model->sorted_array($ret_arr[0],0,$filter_param_to);
 		$ledger_data_to = $this->selectEnhanced_to->__construct("to_ledger", $filter_ledgers_to, array(
@@ -120,15 +120,15 @@ class Payment extends MX_Controller {
 				'added_by' => 1,
 				'added_on' => date('Y-m-d h:i:s')
 			);
- 	$transaction_table =  TRANSACTION_TABLE;
+	 	$transaction_table =  TRANSACTION_TABLE;
 
- 	$this->db->trans_begin();
- 	 //From transaction
- 	$from_transaction_id = $this->payment_model->saveData($transaction_table,$from_data);
- 
+	 	$this->db->trans_begin();
+	 	 //From transaction
+	 	$from_transaction_id = $this->payment_model->saveData($transaction_table,$from_data);
+	 
 
- 	//to leadger trans data insertion start
- 	if(isset($from_transaction_id) && !empty($from_transaction_id)) {
+	 	//to leadger trans data insertion start
+	 	if(isset($from_transaction_id) && !empty($from_transaction_id)) {
 		 
 			 	$select = " * ";
 				$ledgertable = LEDGER_TABLE ;
@@ -175,12 +175,12 @@ class Payment extends MX_Controller {
 					$response['errorMsg'] = "Error!!! Please contact IT Dept";
 		 		}
 
- 	} else {
- 		$this->db->trans_rollback();
- 		$response['error'] = true;
- 		$response['success'] = false;
-		$response['errorMsg'] = "Error!!! Please contact IT Dept";
- 	}
+	 	} else {
+	 		$this->db->trans_rollback();
+	 		$response['error'] = true;
+	 		$response['success'] = false;
+			$response['errorMsg'] = "Error!!! Please contact IT Dept";
+	 	}
 
 	
 			//pay out table entry starts
@@ -190,7 +190,7 @@ class Payment extends MX_Controller {
 					'pay_from' => $from_ledger,
 					'pay_to' => $to_ledger,
 					'amount' => $payment_amount,
-					'narration' => $payment_amount,
+					'narration' => $expenseMaster,
 					'pay_mode' => $payment_amount,
 					'ref_no' => $payment_amount,
 					'comment'=> $comment,
@@ -201,8 +201,8 @@ class Payment extends MX_Controller {
  				$payout_table= PAYOUT_DATA_TABLE;
  				$pay_out_data = $this->payment_model->saveData($payout_table,$pay_out_data);
 
-//>>>>>>> 5d614bf9b2b249c351c740423494b42cc7dff895
-	echo json_encode($response);
+	
+		echo json_encode($response);
  	}
 
  	
@@ -302,15 +302,15 @@ class Payment extends MX_Controller {
 				'added_by' => 1,
 				'added_on' => date('Y-m-d h:i:s')
 			);
- 	$transaction_table =  TRANSACTION_TABLE;
+	 	$transaction_table =  TRANSACTION_TABLE;
 
- 	$this->db->trans_begin();
- 	 //From transaction
- 	$from_transaction_id = $this->payment_model->saveData($transaction_table,$from_data);
- 
+	 	$this->db->trans_begin();
+	 	 //From transaction
+	 	$from_transaction_id = $this->payment_model->saveData($transaction_table,$from_data);
+	 
 
- 	//to leadger trans data insertion start
- 	if(isset($from_transaction_id) && !empty($from_transaction_id)) {
+	 	//to leadger trans data insertion start
+	 	if(isset($from_transaction_id) && !empty($from_transaction_id)) {
 		 
 
 			 	$select = " * ";
@@ -354,20 +354,20 @@ class Payment extends MX_Controller {
 					$response['errorMsg'] = "Error!!! Please contact IT Dept";
 		 		}
 
- 	} else {
- 		$this->db->trans_rollback();
- 		$response['error'] = true;
- 		$response['success'] = false;
-		$response['errorMsg'] = "Error!!! Please contact IT Dept";
+	 	} else {
+	 		$this->db->trans_rollback();
+	 		$response['error'] = true;
+	 		$response['success'] = false;
+			$response['errorMsg'] = "Error!!! Please contact IT Dept";
+	 	}
+
+	 	 
+		 
+		echo json_encode($response);
  	}
 
- 	 
-	 
-	echo json_encode($response);
- 	}
 
-
-public function advancesalaryMaster()
+	public function advancesalaryMaster()
 	{
 		
 		$this->header->index();
@@ -489,17 +489,17 @@ public function advancesalaryMaster()
 				'added_by' => 1,
 				'added_on' => date('Y-m-d h:i:s')
 			);
- 	$transaction_table =  TRANSACTION_TABLE;
- 	$advance_salary =  ADVANCE_SALARY;
+	 	$transaction_table =  TRANSACTION_TABLE;
+	 	$advance_salary =  ADVANCE_SALARY;
 
- 	$this->db->trans_begin();
- 	 //From transaction
- 	$from_transaction_id = $this->payment_model->saveData($transaction_table,$from_data);
- 	$advance_salary_id = $this->payment_model->saveData($advance_salary,$advance_sal_data);
- 
+	 	$this->db->trans_begin();
+	 	 //From transaction
+	 	$from_transaction_id = $this->payment_model->saveData($transaction_table,$from_data);
+	 	$advance_salary_id = $this->payment_model->saveData($advance_salary,$advance_sal_data);
+	 
 
- 	//to leadger trans data insertion start
- 	if(isset($from_transaction_id) && !empty($from_transaction_id) && !empty($advance_salary_id)) {
+	 	//to leadger trans data insertion start
+	 	if(isset($from_transaction_id) && !empty($from_transaction_id) && !empty($advance_salary_id)) {
 		 
 
 			 	$select = " * ";
@@ -543,16 +543,16 @@ public function advancesalaryMaster()
 					$response['errorMsg'] = "Error!!! Please contact IT Dept";
 		 		}
 
- 	} else {
- 		$this->db->trans_rollback();
- 		$response['error'] = true;
- 		$response['success'] = false;
-		$response['errorMsg'] = "Error!!! Please contact IT Dept";
- 	}
+	 	} else {
+	 		$this->db->trans_rollback();
+	 		$response['error'] = true;
+	 		$response['success'] = false;
+			$response['errorMsg'] = "Error!!! Please contact IT Dept";
+	 	}
 
- 	 
-	 
-	echo json_encode($response);
+	 	 
+		 
+		echo json_encode($response);
  	}
 
  	public function staffSal(){
@@ -630,59 +630,38 @@ public function advancesalaryMaster()
 				}else{
 					$staffAttnData[$i]['holidays'] = 0;
 				}
-				$$driverPerDayDA = 0;
 
-				$driverPerDayNA = 0;
 				$staff_fix_pay = $stafflist[$i]->staff_basic_pay;
+				$staffPerDaySal = $staff_fix_pay/30;
+
 				$tableName =  'staff_salary_paid';
 		 		$select = '*';
 		 		$where = "salary_month = '$salary_month' and salary_year = '$salary_year' and ledger_account_id = '$ledgerId'";
 				$staffSalPaid = $this->payment_model->getwheredata($select,$tableName,$where);
 
 				$tableName =  "staff_attendance";
-		 		$select = 'count(*) as cnt';
+		 		$select = 'day_type';
 		 		$where = "month = '$salary_month' and year = '$salary_year' and staff_id = '$staffId'";
 				$staffAttn = $this->payment_model->getwheredata($select,$tableName,$where);
-				$staffAttnData[$i]['Attn'] = $staffAttn[0]->cnt;
-
-				$tableName =  ADVANCE_SALARY;
-		 		$select = 'transaction_amount';
-		 		$where = "salary_month = '$salary_month' and salary_year = '$salary_year' and ledger_account_id = '$ledgerId'";
-				$staffAdvPaid = $this->payment_model->getwheredata($select,$tableName,$where);
-				//echo json_encode($ledger_id);exit();
-				if(!empty($staffAdvPaid)){
-					$advSal = $staffAdvPaid[0]->transaction_amount;
-				}else{
-					$advSal = 0;
-				}
-
-				/*if($stafflist[$i]->is_da == 1)
-				{
-					$driverPerDayDA = $driver_da/30;
-				}
-
-				if($stafflist[$i]->is_night_allowance == 1)
-				{
-					$driverPerDayNA = $driver_na/30;
-				}*/
 				
-				$staffPerDaySal = $staff_fix_pay/30;
-
-				$workingDay = $staffAttn[0]->cnt + $holidays[0]->cnt;
-
-				$workingDaysSal = $workingDay * $staffPerDaySal;
-				//$workingDaysSal += $workingDay * $driverPerDayDA;
-				//$workingDaysSal += $workingDay * $driverPerDayNA;
-
-				if($staffAttn[0]->cnt > 0){
-					$staffAttnData[$i]['totalSal'] = $workingDaysSal - $advSal;
-				}else{
-					$staffAttnData[$i]['totalSal'] = 0;
+				$cnt = 0;
+				$workingDaysSal = 0;
+				foreach ($staffAttn as $key => $val) {
+					if($val->day_type == 1){
+						$workingDaysSal += $staffPerDaySal/2;
+					}else{
+						$workingDaysSal += $staffPerDaySal;
+					}
+					$cnt++;
 				}
+
+				$workingDaysSal += $holidays[0]->cnt * $staffPerDaySal;
+
+				$staffAttnData[$i]['totalSal'] = $workingDaysSal;
 
 				$staffAttnData[$i]['ledgerId'] = $ledgerId;
-
-				$staffAttnData[$i]['advSal'] = $advSal;
+				$staffAttnData[$i]['attn'] = $cnt; //$staffAttn[0]->cnt;
+				
 				if(empty($staffSalPaid)){	
 					$staffAttnData[$i]['paidStatus'] = "unpaid";
 				}else{
@@ -699,19 +678,14 @@ public function advancesalaryMaster()
 		$this->footer->index();
  	}
 
- 	
-
- 	
- 	public function salPaid()
+ 	public function staffSalPaid()
  	{
- 		 $staffList = $_POST['data'];
- 		 $salary_month = $_POST['salary_month'];
- 		 $salary_year = $_POST['salary_year'];
- 		 $from_ledger = $_POST['from_ledger'];
- 		 //echo json_encode($staffList); exit;
+ 		$staffList = $_POST['data'];
+ 		$salary_month = $_POST['salary_month'];
+ 		$salary_year = $_POST['salary_year'];
+ 		$from_ledger = $_POST['from_ledger'];
 
  		for ($i= 0; $i < count($staffList); $i++) { 
- 			//echo json_encode($val[0]['sal']);exit();
  			if($staffList[0]['sal'] > 0)
 	 		{	
 	 			$to_ledger = $staffList[0]['ledgerId'];
@@ -720,13 +694,12 @@ public function advancesalaryMaster()
 		 		$select = "count(*) as cnt";
 		 		$where = "salary_month = '$salary_month' and salary_year = '$salary_year' and ledger_account_id = '$to_ledger'";
 		 		$alreadyPaid = $this->payment_model->getwheredata($select,$tableName,$where);
-		 		//echo json_encode($alreadyPaid);exit();
 		 		if($alreadyPaid[0]->cnt == 0){
 		 			$from_data = array(
 						'transaction_date' => date('Y-m-d h:i:s'),
 						'ledger_account_id' => $to_ledger,
 						'transaction_amount' => $sal,
-						'memo_desc' => 'Salary Paid',
+						'memo_desc' => 'Labour Salary Paid',
 						'salary_month' => $salary_month,
 						'salary_year' => $salary_year,
 						'added_by' => 1,
@@ -736,9 +709,9 @@ public function advancesalaryMaster()
 
 				 	$this->db->trans_begin();
 
-				 	$driverPaid = $this->payment_model->saveData($tableName,$from_data);
+				 	$staffPaid = $this->payment_model->saveData($tableName,$from_data);
 
-				 	if($driverPaid != false){
+				 	if($staffPaid != false){
 				 		$cr = CR;
 				 		$dr = DR;
 				 		$select = "*";
@@ -778,20 +751,19 @@ public function advancesalaryMaster()
 							
 						 	$to_ledger_name = $ledger_details->ledger_account_name;
 						 	 
-							  
 						 	// transaction data data insertion start
-							 $to_data = array(
-									'transaction_date' => date('Y-m-d h:i:s'),
-									'ledger_account_id' => $to_ledger,
-									'ledger_account_name' => $to_ledger_name,
-									'transaction_type' => $dr,
-									'payment_reference' => "",
-									'transaction_amount' => $sal,
-									'txn_from_id' => $from_transaction_id,
-									'memo_desc' => SALARY_PAID_NARRATION,
-									'added_by' => 1,
-									'added_on' => date('Y-m-d h:i:s')
-								);
+							$to_data = array(
+								'transaction_date' => date('Y-m-d h:i:s'),
+								'ledger_account_id' => $to_ledger,
+								'ledger_account_name' => $to_ledger_name,
+								'transaction_type' => $dr,
+								'payment_reference' => "",
+								'transaction_amount' => $sal,
+								'txn_from_id' => $from_transaction_id,
+								'memo_desc' => SALARY_PAID_NARRATION,
+								'added_by' => 1,
+								'added_on' => date('Y-m-d h:i:s')
+							);
 							$transaction_table =  TRANSACTION_TABLE;
 
 							 //From transaction
@@ -816,12 +788,135 @@ public function advancesalaryMaster()
 					 	}
 				 	}
 		 		} else {
+	 				//$this->db->trans_commit();
+		 	 		$response['error'] = false;
+			 		$response['success'] = true;
+					$response['successMsg'] = "salary allready paid";
+					$response['redirect'] = base_url()."payment/staffSal";
+		 		}
+		 	}
+ 		}
 
-		 				//$this->db->trans_commit();
-			 	 		$response['error'] = false;
-				 		$response['success'] = true;
-						$response['successMsg'] = "salary allready paid";
-						$response['redirect'] = base_url()."payment/driverSal";
+
+
+ 		echo json_encode($response);
+ 	}
+ 	
+ 	public function labourSalPaid()
+ 	{
+ 		$labourList = $_POST['data'];
+ 		$salary_month = $_POST['salary_month'];
+ 		$salary_year = $_POST['salary_year'];
+ 		$from_ledger = $_POST['from_ledger'];
+
+ 		for ($i= 0; $i < count($labourList); $i++) { 
+ 			if($labourList[0]['sal'] > 0)
+	 		{	
+	 			$to_ledger = $labourList[0]['ledgerId'];
+	 			$sal = $labourList[0]['sal'];
+	 			$tableName = "labour_salary_paid";
+		 		$select = "count(*) as cnt";
+		 		$where = "salary_month = '$salary_month' and salary_year = '$salary_year' and ledger_account_id = '$to_ledger'";
+		 		$alreadyPaid = $this->payment_model->getwheredata($select,$tableName,$where);
+		 		if($alreadyPaid[0]->cnt == 0){
+		 			$from_data = array(
+						'transaction_date' => date('Y-m-d h:i:s'),
+						'ledger_account_id' => $to_ledger,
+						'transaction_amount' => $sal,
+						'memo_desc' => 'Labour Salary Paid',
+						'salary_month' => $salary_month,
+						'salary_year' => $salary_year,
+						'added_by' => 1,
+						'added_on' => date('Y-m-d h:i:s')
+					);
+				 	$tableName =  "labour_salary_paid";
+
+				 	$this->db->trans_begin();
+
+				 	$labourPaid = $this->payment_model->saveData($tableName,$from_data);
+
+				 	if($labourPaid != false){
+				 		$cr = CR;
+				 		$dr = DR;
+				 		$select = "*";
+						$ledgertable = LEDGER_TABLE ;
+						//echo "aa";
+				 	 	$where =  "ledger_account_id = '$from_ledger'";
+				 		$ledger_details = $this->payment_model->getwheresingle($select,$ledgertable,$where);
+
+				 		$from_ledger_name = $ledger_details->ledger_account_name;
+ 	 	 
+				 		// transaction data data insertion start
+					 	$from_data = array(
+							'transaction_date' => date('Y-m-d h:i:s'),
+							'ledger_account_id' => $from_ledger,
+							'ledger_account_name' => $from_ledger_name,
+							'transaction_type' => $cr,
+							'payment_reference' => "",
+							'transaction_amount' => $sal,
+							'txn_from_id' => 0,
+							'memo_desc' => SALARY_PAID_NARRATION,
+							'added_by' => 1,
+							'added_on' => date('Y-m-d h:i:s')
+						);
+						$transaction_table =  TRANSACTION_TABLE;
+
+						//From transaction
+					 	$from_transaction_id = $this->payment_model->saveData($transaction_table,$from_data);
+					 
+
+					 	//to leadger trans data insertion start
+					 	if(isset($from_transaction_id) && !empty($from_transaction_id)) {
+							$select = " * ";
+							$ledgertable = LEDGER_TABLE ;
+
+						 	$where =  "ledger_account_id = '$to_ledger'";
+							$ledger_details = $this->payment_model->getwheresingle($select,$ledgertable,$where);
+							
+						 	$to_ledger_name = $ledger_details->ledger_account_name;
+						 	 
+						 	// transaction data data insertion start
+							$to_data = array(
+								'transaction_date' => date('Y-m-d h:i:s'),
+								'ledger_account_id' => $to_ledger,
+								'ledger_account_name' => $to_ledger_name,
+								'transaction_type' => $dr,
+								'payment_reference' => "",
+								'transaction_amount' => $sal,
+								'txn_from_id' => $from_transaction_id,
+								'memo_desc' => SALARY_PAID_NARRATION,
+								'added_by' => 1,
+								'added_on' => date('Y-m-d h:i:s')
+							);
+							$transaction_table =  TRANSACTION_TABLE;
+
+							 //From transaction
+							$to_transaction = $this->payment_model->saveData($transaction_table,$to_data);
+
+
+					 	 	if(isset($to_transaction) && !empty($to_transaction)){
+					 	 		$this->db->trans_commit();
+					 	 		$response['error'] = false;
+						 		$response['success'] = true;
+								$response['successMsg'] = "Paid SuccsessFully";
+								$response['redirect'] = base_url()."payment/labourSal";
+					 	 	} else {
+						 		$this->db->trans_rollback();
+					 		}
+
+					 	} else {
+					 		$this->db->trans_rollback();
+					 		$response['error'] = true;
+					 		$response['success'] = false;
+							$response['errorMsg'] = "Error!!! Please contact IT Dept";
+					 	}
+				 	}
+		 		} else {
+	 				//$this->db->trans_commit();
+		 	 		$response['error'] = false;
+			 		$response['success'] = true;
+					$response['successMsg'] = "salary allready paid";
+					$response['redirect'] = base_url()."payment/labourSal";
 		 		}
 		 	}
  		}
@@ -831,7 +926,8 @@ public function advancesalaryMaster()
  		echo json_encode($response);
  	}
  	 	
- 	public function labourSal(){
+ 	public function labourSal()
+ 	{
  		$this->header->index();
 		$grp_table = LEDGER_TABLE;
 		 
@@ -883,98 +979,65 @@ public function advancesalaryMaster()
  			$data['salary_year'] = $salary_year;
 
  			$labour_table =  LABOUR_TABLE;
-	 		$filds = "labour_id,labour_fname,labour_lname,labour_bdate,labour_mobno,labour_dob,labour_photo,ledger_account_id";
+	 		$filds = "labour_id,labour_fname,labour_lname,labour_bdate,labour_mobno,labour_photo,ledger_id,labour_wages";
 	 		$labourlist = $this->payment_model->getlabourLit($filds,$labour_table);
 
-			//echo json_encode($driverlist);exit();
+			//echo json_encode($labourlist);exit();
 
 	 		$tableName = "company_holidays";
 	 		$select = "count(*) as cnt";
 	 		$where = "month = '$salary_month' and year = '$salary_year'";
 	 		$holidays = $this->payment_model->getwheredata($select,$tableName,$where);
 
-	 		//echo json_encode($driverlist);exit();
+	 		//echo json_encode($holidays);exit();
 			
 			$driverAttnData = array();
 			for ($i=0; $i < count($labourlist); $i++) { 
 				$labourAttnData[$i]['name'] = $labourlist[$i]->labour_fname." ".$labourlist[$i]->labour_lname;
-				$labourId = $labourlist[$i]->staff_id;
-				$ledgerId = $labourlist[$i]->ledger_account_id;
-				//echo json_encode($driverAttnData);exit();
+				$labourId = $labourlist[$i]->labour_id;
+				$ledgerId = $labourlist[$i]->ledger_id;
 				if(!empty($holidays)){
 					$labourAttnData[$i]['holidays'] = $holidays[0]->cnt;
 				}else{
 					$labourAttnData[$i]['holidays'] = 0;
 				}
-				$$driverPerDayDA = 0;
 
-				$driverPerDayNA = 0;
-				$staff_fix_pay = $stafflist[$i]->staff_basic_pay;
-				$tableName =  'staff_salary_paid';
+				$labour_fix_pay = $labourlist[$i]->labour_wages;
+				
+				$tableName =  'labour_salary_paid';
 		 		$select = '*';
 		 		$where = "salary_month = '$salary_month' and salary_year = '$salary_year' and ledger_account_id = '$ledgerId'";
-				$staffSalPaid = $this->payment_model->getwheredata($select,$tableName,$where);
+				$labourSalPaid = $this->payment_model->getwheredata($select,$tableName,$where);
 
-				$tableName =  "staff_attendance";
-		 		$select = 'count(*) as cnt';
-		 		$where = "month = '$salary_month' and year = '$salary_year' and staff_id = '$staffId'";
-				$staffAttn = $this->payment_model->getwheredata($select,$tableName,$where);
-				$staffAttnData[$i]['Attn'] = $staffAttn[0]->cnt;
-
-				$tableName =  ADVANCE_SALARY;
-		 		$select = 'transaction_amount';
-		 		$where = "salary_month = '$salary_month' and salary_year = '$salary_year' and ledger_account_id = '$ledgerId'";
-				$staffAdvPaid = $this->payment_model->getwheredata($select,$tableName,$where);
-				//echo json_encode($ledger_id);exit();
-				if(!empty($staffAdvPaid)){
-					$advSal = $staffAdvPaid[0]->transaction_amount;
+				$tableName =  "labour_attendance";
+		 		$select = 'sum(labour_wages) as total, count(*) as cnt';
+		 		$where = "month = '$salary_month' and year = '$salary_year' and labour_id = '$labourId'";
+				$labourAttn = $this->payment_model->getwheredata($select,$tableName,$where);
+				if($labourAttn[0]->total > 0){
+					$labourAttnData[$i]['totalSal'] = $labourAttn[0]->total;
 				}else{
-					$advSal = 0;
+					$labourAttnData[$i]['totalSal'] = 0;
 				}
 
-				/*if($stafflist[$i]->is_da == 1)
-				{
-					$driverPerDayDA = $driver_da/30;
-				}
+				$labourAttnData[$i]['attn'] = $labourAttn[0]->cnt;
 
-				if($stafflist[$i]->is_night_allowance == 1)
-				{
-					$driverPerDayNA = $driver_na/30;
-				}*/
-				
-				$staffPerDaySal = $staff_fix_pay/30;
+				$labourAttnData[$i]['ledgerId'] = $ledgerId;
 
-				$workingDay = $staffAttn[0]->cnt + $holidays[0]->cnt;
-
-				$workingDaysSal = $workingDay * $staffPerDaySal;
-				//$workingDaysSal += $workingDay * $driverPerDayDA;
-				//$workingDaysSal += $workingDay * $driverPerDayNA;
-
-				if($staffAttn[0]->cnt > 0){
-					$staffAttnData[$i]['totalSal'] = $workingDaysSal - $advSal;
+				if(empty($labourSalPaid)){	
+					$labourAttnData[$i]['paidStatus'] = "unpaid";
 				}else{
-					$staffAttnData[$i]['totalSal'] = 0;
-				}
-
-				$staffAttnData[$i]['ledgerId'] = $ledgerId;
-
-				$staffAttnData[$i]['advSal'] = $advSal;
-				if(empty($staffSalPaid)){	
-					$staffAttnData[$i]['paidStatus'] = "unpaid";
-				}else{
-					$staffAttnData[$i]['paidStatus'] = "paid";
+					$labourAttnData[$i]['paidStatus'] = "paid";
 				}
 			}
-			$data['staffAttnData'] = $staffAttnData;
+			$data['labourAttnData'] = $labourAttnData;
 		}
-
 		/*echo "<pre>";
 		print_r($data);
 		exit();*/
 		$this->load->view('labourSalary',$data);
 		$this->footer->index();
  	}
- 	public function PayInreport()
+ 	public function Payreport()
  	{
 
  		$this->header->index();
@@ -986,18 +1049,38 @@ public function advancesalaryMaster()
 		$data['years'] =  array($current_year => $current_year, $next_year => $next_year);
 
 		if($this->uri->segment(3) != "" && $this->uri->segment(4) != ""){
-			$salary_month = $this->uri->segment(3);
- 			$salary_year = $this->uri->segment(4);
+			$from_date = $this->uri->segment(3);
+ 			$to_date = $this->uri->segment(4);
+ 			$siteId = $this->uri->segment(5);
+ 			$reportType = $this->uri->segment(6);
 
- 			$data['salary_month'] = $salary_month;
- 			$data['salary_year'] = $salary_year;
+ 			$data['from'] = $from_date;
+ 			$data['to'] = $to_date;
+ 			$data['siteId'] = $siteId;
+ 			$data['reportType'] = $reportType;
+
+ 			if($reportType == 'PayIn'){
+ 				$select = "pay.*, sm.site_name, lm.ledger_account_name, lm.context";
+	 			$tableName = "pay_in_data pay, site_master sm, ledger_master lm";
+	 			$where = "pay.site_id = sm.site_id and pay.pay_from = lm.ledger_account_id and pay.added_on >= '$from_date' and pay.added_on <= '$to_date' and pay.site_id='$siteId' order by pay.added_on desc";
+
+		 		$data['data'] = $this->payment_model->getwheredata($select,$tableName,$where); 
+		 		$data['payindata'] = true;
+ 			}else{
+ 				$select = "pay.*, sm.site_name, lm.ledger_account_name, lm1.ledger_account_name as to_ledger";
+	 			$tableName = "pay_out_data pay, site_master sm, ledger_master lm, ledger_master lm1";
+	 			$where = "pay.site_id = sm.site_id and pay.pay_from = lm.ledger_account_id and pay.pay_to = lm1.ledger_account_id and pay.added_on BETWEEN '$from_date' AND '$to_date' and pay.site_id='$siteId'";
+
+	 			$data['payoutdata'] = true;
+		 		$data['data'] = $this->payment_model->getwheredata($select,$tableName,$where); 
+ 			}
  		}
  		$select = 'site_id,site_name';
 		$tableName = 'site_master';
 		$column = "isactive";
 		$value = "1";
 		$data['sitelist'] = $this->payment_model->getData($select, $tableName, $column, $value);
-		$this->load->view('payinreport',$data);
+		$this->load->view('payreport',$data);
 		$this->footer->index();
  	}
  	public function payindata()

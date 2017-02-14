@@ -398,6 +398,7 @@ class Staff extends MX_Controller {
 			$response['success'] = true;
  	 		$response['error'] = false;
  	 		$response['successMsg'] = "Submit Successfully";
+ 	 		$response['redirect'] = base_url()."staff/staffAtten";
 		}else{
 			$response['error'] = true;
  	 		$response['success'] = false;
@@ -407,7 +408,7 @@ class Staff extends MX_Controller {
  	}
 		
 
-public function staffAttendReport(){
+	public function staffAttendReport(){
  		$staff_table =  STAFF_MASTER;
  		$filds = "staff_id,staff_first_name,staff_last_name";
  		$data['staff'] = $this->Staff_model->getStaffList($filds,$staff_table);

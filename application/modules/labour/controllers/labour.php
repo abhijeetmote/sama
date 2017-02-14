@@ -36,7 +36,9 @@ class Labour extends MX_Controller {
 		 $labour_address = isset($_POST['labour_address']) ? trim($_POST['labour_address']) : "";
 		 $labour_mobile = isset($_POST['labour_mobile']) ? $_POST['labour_mobile'] : "";
 		 $labour_mobile1 = isset($_POST['labour_mobile1']) ? $_POST['labour_mobile1'] : "";
-		 $site_id=isset($_POST['site_id']) ? $_POST['site_id'] : "";
+		 $site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
+		 $salary_status = isset($_POST['salary_status']) ? $_POST['salary_status'] : 0;
+		 $labour_wages = isset($_POST['labour_wages']) ? $_POST['labour_wages'] : 0;
 
 		 $select = "labour_id";
 		 $tableName = "labour_master";
@@ -71,6 +73,8 @@ class Labour extends MX_Controller {
 				'labour_mobno1' => $labour_mobile1,
 				'labour_add' => $labour_address,
 				'site_id'=>$site_id,	
+				'salary_status' => $salary_status,	
+				'labour_wages' => $labour_wages,	
 				'isactive' => '1',
 				'added_by' => '1',
 				'added_on' => date('Y-m-d h:i:s')
@@ -220,6 +224,8 @@ class Labour extends MX_Controller {
 		 $labour_night = isset($_POST['night']) ? 2 : 1;
 		 $ledger_id = isset($_POST['ledger_id']) ? $_POST['ledger_id'] : "";
 		 $site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
+		 $salary_status = isset($_POST['salary_status']) ? $_POST['salary_status'] : 0;
+		 $labour_wages = isset($_POST['labour_wages']) ? $_POST['labour_wages'] : 0;
 		 //bdate conversion
 		 if(isset($labour_dob) && !empty($labour_dob)){
 		 	$labour_dob = $this->helper_model->dbDate($labour_dob);
@@ -248,6 +254,8 @@ class Labour extends MX_Controller {
 				'is_da' => $labour_da,
 				'is_night_allowance' => $labour_night,
 				'site_id' => $site_id,
+				'salary_status' => $salary_status,
+				'labour_wages' => $labour_wages,
 				'isactive' => '1',
 				'updated_by' => '1',
 				'updated_on' => date('Y-m-d h:i:s')
@@ -309,7 +317,7 @@ class Labour extends MX_Controller {
 		$column = "isactive";
 		$value = "1";
 		$data['sitelist'] = $this->labour_model->getData($select, $tableName, $column, $value);
-        //print_r($data['labourdetails']);exit;
+        //echo "<pre>";print_r($data['labourdetails']);exit;
         $this->header->index();
         $this->load->view('labourAttend',$data);
 		$this->footer->index();
@@ -320,6 +328,7 @@ class Labour extends MX_Controller {
         $site_id =$_POST['labour_site'];
         @$date = $_POST['labour_in_dt'];
 		@$daytype= $_POST['daytype'];
+		@$wages= $_POST['wages'];
 		$d = date_parse_from_format("Y-m-d", $date);
 
         if($labour_id == ""){
@@ -345,19 +354,39 @@ class Labour extends MX_Controller {
         }	
 
 		if($d['month'] < 10){
-	       	$month = "0".$d['month'];
-	       }else{
-	       	$month = $d['month'];
-	       }
+			$month = "0".$d['month'];
+		}else{
+			$month = $d['month'];
+		}
+
+        $select = 'salary_status,labour_wages';
+		$tableName = 'labour_master';
+		$column = "labour_id";
+		$value = $labour_id;
+		$labourData = $this->labour_model->getData($select, $tableName, $column, $value);
+		if($labourData[0]->salary_status == 0){
+			$labour_wages = $wages;
+			$salary_type = 0;
+		}else{
+			$labour_wages = $labourData[0]->labour_wages/30;
+			$salary_type = 1;
+		}
+
+		if($daytype == 1){
+			$labour_wages = $labour_wages/2;
+		}
+
 		$data = array(
-		'labour_id' => $labour_id,
-		'site_id' => $site_id,
-		'user_check_in' => $date,
-		'month' => $month,
-		'year' => $d['year'],
-		'day_type' => $daytype,
-		'added_by' => '1',
-		'added_on' => date('Y-m-d h:i:s')
+			'labour_id' => $labour_id,
+			'site_id' => $site_id,
+			'user_check_in' => $date,
+			'month' => $month,
+			'year' => $d['year'],
+			'day_type' => $daytype,
+			'salary_type' => $salary_type,
+			'labour_wages' => $labour_wages,
+			'added_by' => '1',
+			'added_on' => date('Y-m-d h:i:s')
 		);
  		$tableName =  LABOUR_ATTENDANCE_TABLE;
 		$result = $this->labour_model->saveData($tableName, $data);
@@ -473,4 +502,15 @@ class Labour extends MX_Controller {
 		$response['labour'] = $holidays;
 		echo json_encode($response);
  	}
+
+ 	public function getData(){
+ 		$id = $_POST['id'];
+ 		
+        $select = 'salary_status,labour_wages';
+		$tableName = 'labour_master';
+		$column = "labour_id";
+		$value = $id;
+		$data = $this->labour_model->getData($select, $tableName, $column, $value);
+        echo json_encode($data);
+ 	} 
 }

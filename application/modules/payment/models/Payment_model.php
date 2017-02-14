@@ -54,7 +54,8 @@ class Payment_model extends CI_Model {
 	public function getwheredata($select,$tableName,$where){
 
 		$result = $this->helper_model->selectwhere($select,$tableName,$where);
-		//echo $this->db->last_query();
+		//echo $this->db->last_query();exit();
+		//echo "<pre>";print_r($result); exit();
 		return $result;
 	}
 

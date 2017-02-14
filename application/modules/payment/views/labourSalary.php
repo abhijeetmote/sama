@@ -41,19 +41,19 @@
 					<div class="form-group">
                             <label class="col-sm-1 no-padding-right" for="form-field-2"><b class="red"> * </b>For Month</label>
                              <div class="col-sm-3">
-	                                <select style="width:250px;" data-placeholder="Salary Month" name="salary_month" id="salary_month" class="chosen-select form-control">
-											<?php
-												foreach ($months as $key=>$val) 
-												{			
-											?>								
-													<option <?php if(isset($salary_month) && $val[$key] == $salary_month){ echo "selected"; } ?> value="<?php echo $key; ?>" <?php if($key >= date('m')) {if( $key == date('m')): echo "selected"; endif; ?>><?php echo $val; }?></option>
-											<?php
-												}
-											?>
-	                                </select>
-	                                <span class="help-inline col-xs-12 col-sm-7">
-	                                    <span class="middle input-text-error" id="salary_month_errorlabel"></span>
-	                                </span>
+                                <select style="width:250px;" data-placeholder="Salary Month" name="salary_month" id="salary_month" class="chosen-select form-control">
+										<?php
+											foreach ($months as $key=>$val) 
+											{			
+										?>								
+											<option <?php if(isset($salary_month) && $key == $salary_month){ echo "selected"; } ?> value="<?php echo $key; ?>" <?php if($key >= date('m')) {if( $key == date('m')): echo "selected"; endif; ?>><?php echo $val; }?></option>
+										<?php
+											}
+										?>
+                                </select>
+                                <span class="help-inline col-xs-12 col-sm-7">
+                                    <span class="middle input-text-error" id="salary_month_errorlabel"></span>
+                                </span>
 		                    </div>
 
                              <label class="col-sm-1 no-padding-right" style="margin-left:85px;" for="form-field-2"><b class="red"> * </b>For Year</label>	
@@ -119,8 +119,6 @@
 													</th>
 													<th>Name</th>
 													<th>Present</th>
-													<th>Holidays</th>
-													<th>Adv Sal</th>
 													<th>Total Sal</th>
 													<th>Paid Status</th>
 												</tr>
@@ -128,7 +126,7 @@
 
 											<tbody>
 												<?php 
-													foreach ($staffAttnData as $key => $val): 
+													foreach ($labourAttnData as $key => $val): 
 												?>
 													<tr>
 														<td class="center">
@@ -138,9 +136,7 @@
 															</label>
 														</td>
 														<td><?php echo $val['name']; ?></td>
-														<td><?php echo $val['Attn']; ?></td>
-														<td><?php echo $val['holidays']; ?></td>
-														<td><?php echo $val['advSal']; ?></td>
+														<td><?php echo $val['attn']; ?></td>
 														<td><?php echo number_format($val['totalSal'],2); ?></td>
 														<td><?php echo $val['paidStatus']; ?></td>
 													</tr>
@@ -271,7 +267,7 @@
 			bAutoWidth: false,
 			"aoColumns": [
 			  { "bSortable": false },
-			  null, null,null, null, null,
+			  null, null,null,
 			  { "bSortable": false }
 			],
 			"aaSorting": [],
@@ -904,40 +900,7 @@ jQuery(function($) {
 		var salary_month = $("#salary_month").val();
 		var salary_year = $("#salary_year").val();
 
-		window.location.href = baseUrl+"payment/staffSal/"+salary_month+"/"+salary_year;
-		/*if(salary_month != "" && salary_year != ""){
-			var obj = array.filter(function(obj){
-	            return obj.name === 'get-driver-sal'
-	        })[0];
-
-	        var uri = obj['value'];
-
-	        jobject = {
-	            'salary_month' : salary_month,
-	            'salary_year' : salary_year
-	        }
-	        
-	        $.ajax({
-	            url: uri,
-	            method: 'POST',
-	            crossDomain: true,
-	            data: jobject,
-	            dataType: 'json',
-	            beforeSend: function (xhr) {
-	                //$('.icon'+id).addClass('ace-icon fa fa-spinner fa-spin orange bigger-125');
-	            },
-	            success: function (data) {
-	            	if(data.res != ""){
-	            		$("#driverList").html(data.res);
-	            	}else{
-	            		$("#driverList").html("");
-	            	}
-	            },
-	            error: function (xhr, ajaxOptions, thrownError) {
-	                console.log(thrownError);
-	            }
-	        });
-		}*/
+		window.location.href = baseUrl+"payment/labourSal/"+salary_month+"/"+salary_year;
 	});
 
 	$(document).on('click','.salPaid', function() {
@@ -956,7 +919,7 @@ jQuery(function($) {
         });
 
         if(val.length == 0){
-        	alert('Select Staff');
+        	alert('Select Labour');
         	return false;
         }
        
@@ -965,7 +928,7 @@ jQuery(function($) {
 		var from_ledger = $("#to_ledger").val();
 		if(salary_month != "" && salary_year != ""){
 			var obj = array.filter(function(obj){
-	            return obj.name === 'sal-paid'
+	            return obj.name === 'labour-sal-paid'
 	        })[0];
 
 	        var uri = obj['value'];
@@ -988,12 +951,12 @@ jQuery(function($) {
 	                //$('.icon'+id).addClass('ace-icon fa fa-spinner fa-spin orange bigger-125');
 	            },
 	            success: function (data) {
-/*	            	if(data.success == true){
+	            	if(data.success == true){
 	            		alert(data.successMsg);
 	            		location.reload();
 	            	}else{
 	            		alert(data.errorMsg);
-	            	}*/
+	            	}
 	            },
 	            error: function (xhr, ajaxOptions, thrownError) {
 	                console.log(thrownError);

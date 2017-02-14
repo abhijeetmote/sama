@@ -27,7 +27,7 @@
 			
 			<div class="page-header">
 				<h1>
-					Staff Salary
+					PayIn/PayOut Report
 				</h1>
 			</div><!-- /.page-header -->
 
@@ -36,42 +36,57 @@
 					<div class="alert-box"></div>
 					<!-- PAGE CONTENT BEGINS -->
 					<form class="form-horizontal" role="form">						
-						 
+					
+                    <div class="form-group">
+                    		<label class="col-sm-1  no-padding-right" for="">From Date</label>
 
-					<div class="form-group">
-                            <label class="col-sm-1 no-padding-right" for="form-field-2"><b class="red"> * </b>For Month</label>
-                             <div class="col-sm-3">
-	                                <select style="width:250px;" data-placeholder="Salary Month" name="salary_month" id="salary_month" class="chosen-select form-control">
-											<?php
-												foreach ($months as $key=>$val) 
-												{			
-											?>								
-													<option <?php if(isset($salary_month) && $key == $salary_month){ echo "selected"; } ?> value="<?php echo $key; ?>" <?php if($key >= date('m')) {if( $key == date('m')): echo "selected"; endif; ?>><?php echo $val; }?></option>
-											<?php
-												}
-											?>
-	                                </select>
-	                                <span class="help-inline col-xs-12 col-sm-7">
-	                                    <span class="middle input-text-error" id="salary_month_errorlabel"></span>
-	                                </span>
-		                    </div>
+							<div class="col-sm-3">
+								<input type="text" data-date-format="dd-mm-yyyy" id="frm_date" name="frm_date" class="date-picker col-xs-10 col-sm-12" value="<?php if(isset($from)){ echo $from; } ?>"/>
+								<span style="width:10px;height:35px;" class="input-group-addon">
+									<i class="fa fa-calendar bigger-110"></i>
+								</span>
+							</div>
+							<label class="col-sm-1  no-padding-right" for="">To Date</label>
 
-                             <label class="col-sm-1 no-padding-right" style="margin-left:85px;" for="form-field-2"><b class="red"> * </b>For Year</label>	
-                   			<div class="col-sm-3">
-	                                <select style="width:250px;" data-placeholder="Salary Year" name="salary_year" id="salary_year" class="chosen-select form-control">
-											<?php
-												foreach ($years as $val) 
-												{			
-											?>								
-													<option <?php if(isset($salary_year) && $val == $salary_year){ echo "selected"; } ?> value="<?php echo $val; ?>" <?php if(  $val == date('Y')): echo "selected"; endif; ?>><?php echo $val; ?></option>
-											<?php
-												}
-											?>
-	                                </select>
-	                                <span class="help-inline col-xs-12 col-sm-7">
-	                                    <span class="middle input-text-error" id="salary_year_errorlabel"></span>
-	                                </span>
-		                    </div>
+							<div class="col-sm-3">
+								<input type="text" data-date-format="dd-mm-yyyy" id="to_date" name="to_date" class="date-picker col-xs-10 col-sm-12" value="<?php if(isset($to)){ echo $to; } ?>"/>
+								<span style="width:10px;height:35px;" class="input-group-addon">
+									<i class="fa fa-calendar bigger-110"></i>
+								</span>
+							</div>
+                    </div>
+
+                    <div class="form-group">
+                    	<label class="col-sm-1 no-padding-right" for="form-field-2">Site Name</label>
+						
+                            <div class="col-sm-3">
+                              <select  name="site_id" id="site_id" class=" form-control">
+                                    
+									<?php 
+										foreach ($sitelist as $val) {
+									?>
+										<option value="<?php echo $val->site_id; ?>" <?php if(isset($siteId) && $val->site_id == $siteId){ echo "selected"; } ?>><?php echo $val->site_name ?></option>
+									<?php
+										}
+									?>
+                                    
+                                </select>
+                                <span class="help-inline col-xs-12 col-sm-7">
+                                    <span class="middle input-text-error" id="site_id_errorlabel"></span>
+                                </span>
+                            </div>
+                               <label class="col-sm-1 no-padding-right" for="form-field-2">Report Type</label>
+						
+                            <div class="col-sm-3">
+                              <select  name="report_type" id="report_type" class="chosen-select form-control">
+                                    <option value="PayIn" <?php if(isset($reportType) && $reportType == "PayIn"){ echo "selected"; } ?>> PayIn Report</option>
+                                    <option value="PayOut" <?php if(isset($reportType) && $reportType == "PayOut"){ echo "selected"; } ?>>PayOut Report</option>
+                                    
+                                </select>
+                                <span class="help-inline col-xs-12 col-sm-7">
+                                    <span class="middle input-text-error" id="site_id_errorlabel"></span>
+                                </span>
+                            </div>
                     </div>	
 
                     
@@ -100,7 +115,7 @@
 											<div class="pull-right tableTools-container"></div>
 										</div>
 										<div class="table-header">
-											Invoice
+											Pay In/Out Report
 										</div>
 
 										<!-- div.table-responsive -->
@@ -108,80 +123,58 @@
 										<!-- div.dataTables_borderWrap -->
 										<form class="form" id="bookingList"></form>
 										<div>
-										<table id="dynamic-table" class="table table-striped table-bordered table-hover">
-											<thead>
-												<tr>
-													<th class="center">
-														<label class="pos-rel">
-															<input type="checkbox" class="ace" />
-															<span class="lbl"></span>
-														</label>
-													</th>
-													<th>Name</th>
-													<th>Present</th>
-													<th>Holidays</th>
-													<th>Total Sal</th>
-													<th>Paid Status</th>
-												</tr>
-											</thead>
-
-											<tbody>
-												<?php 
-													foreach ($staffAttnData as $key => $val): 
-												?>
+											<table id="dynamic-table" class="table table-striped table-bordered table-hover">
+												<thead>
 													<tr>
-														<td class="center">
+														<th class="center">
 															<label class="pos-rel">
-															<input type='checkbox' class="ace salcheck salPaidCheck<?php echo $val['ledgerId']; ?>" value="<?php echo $val['ledgerId']; ?>" data-id="<?php echo $val['ledgerId']; ?>" data-sal="<?php echo $val['totalSal'];?>" >
-															<span class="lbl"></span>
+																<input type="checkbox" class="ace" />
+																<span class="lbl"></span>
 															</label>
-														</td>
-														<td><?php echo $val['name']; ?></td>
-														<td><?php echo $val['attn']; ?></td>
-														<td><?php echo $val['holidays']; ?></td>
-														<td><?php echo number_format($val['totalSal'],2); ?></td>
-														<td><?php echo $val['paidStatus']; ?></td>
+														</th>
+														<th>Site Name</th>
+														<th>From Ledger</th>
+														<?php if(isset($payoutdata)): ?>
+														<th>To Ledger</th>
+														<?php endif; ?>
+														<th>Narration</th>
+														<th>Amount</th>
+														<th>Cash/Bank</th>
+														<th>Date</th>
+														
 													</tr>
-												<?php endforeach; ?>										
-											</tbody>
-										</table>
+												</thead>
+
+												<tbody>
+													<?php 
+														foreach ($data as $key => $val): 
+													?>
+														<tr>
+															<td class="center">
+																<label class="pos-rel">
+																<input type='checkbox' class="ace salcheck" value="" >
+																<span class="lbl"></span>
+																</label>
+															</td>
+															<td><?php echo $val->site_name; ?></td>
+															<td><?php echo $val->ledger_account_name; ?></td>
+															<?php if(isset($payoutdata)): ?>
+															<td><?php echo $val->to_ledger; ?></td>
+															<?php endif; ?>
+															<td><?php echo $val->narration; ?></td>
+															<td><?php echo $val->amount; ?></td>
+															<td><?php echo $val->context; ?></td>
+															<td><?php echo $val->added_on; ?></td>
+														</tr>
+													<?php endforeach; ?>										
+												</tbody>
+											</table>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-
-					<div class="form-group" style="margin-top:5%;">
-                        <label class="col-sm-1 no-padding-right" for="form-field-2"><b class="red"> * </b>FROM</label>
-                         <div class="col-sm-3">
-                       
-                            <?php 
-                            	echo $to_select;
-                            ?>
-                            <span class="help-inline col-xs-12 col-sm-7">
-                                <span class="middle input-text-error" id="to_ledger_errorlabel"></span>
-                            </span>
-                        </div>
-
-                        <label class="col-sm-1 no-padding-right" for="form-field-2"><b class="red"> * </b>PAYMENT MODE</label>	
-
-	                    <div class="col-sm-3">
-                            <select style="width:250px;" data-placeholder="Payment Mode" name="payment_mode" id="payment_mode" class="form-control">
-                                <option value="cash">cash</option>
-                                <option value="bank">bank</option>
-                            </select>
-                            <span class="help-inline col-xs-12 col-sm-7">
-                                <span class="middle input-text-error" id="payment_mode_errorlabel"></span>
-                            </span>
-	                    </div>
-
-	                    <div class="col-sm-3">
-							<button class="btn btn-info salPaid" type="button">
-								<i class="iconcategory"></i>
-								Submit
-							</button>
-						</div>
-                    </div>	
 						
 					</form>
 				</div><!-- /.col -->
@@ -267,11 +260,7 @@
 		//.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
 		.DataTable( {
 			bAutoWidth: false,
-			"aoColumns": [
-			  { "bSortable": false },
-			  null, null,null, null,
-			  { "bSortable": false }
-			],
+			
 			"aaSorting": [],
 			
 			
@@ -899,10 +888,12 @@ jQuery(function($) {
 <script type="text/javascript">
 	$(document).on('click','.salSubmit', function() {
 		var baseUrl = $('#baseUrl').val();
-		var salary_month = $("#salary_month").val();
-		var salary_year = $("#salary_year").val();
+		var from_date = $("#frm_date").val();
+		var to_date = $("#to_date").val();
+		var site_id = $("#site_id").val();
+		var report_type = $("#report_type").val();
 
-		window.location.href = baseUrl+"payment/staffSal/"+salary_month+"/"+salary_year;
+		window.location.href = baseUrl+"payment/Payreport/"+from_date+"/"+to_date+"/"+site_id+"/"+report_type;
 	});
 
 	$(document).on('click','.salPaid', function() {
@@ -919,18 +910,12 @@ jQuery(function($) {
         	}
         	val[i] = data;
         });
-
-        if(val.length == 0){
-        	alert('Select Staff');
-        	return false;
-        }
-       
 		var salary_month = "<?php echo $salary_month; ?>";
 		var salary_year = "<?php echo $salary_year; ?>";
 		var from_ledger = $("#to_ledger").val();
 		if(salary_month != "" && salary_year != ""){
 			var obj = array.filter(function(obj){
-	            return obj.name === 'staff-sal-paid'
+	            return obj.name === 'sal-paid'
 	        })[0];
 
 	        var uri = obj['value'];
@@ -941,7 +926,6 @@ jQuery(function($) {
 	            'salary_year': salary_year,
 	            'from_ledger': from_ledger
 	        }
-
 	        
 	        $.ajax({
 	            url: uri,
@@ -954,8 +938,7 @@ jQuery(function($) {
 	            },
 	            success: function (data) {
 	            	if(data.success == true){
-	            		alert(data.successMsg);
-	            		location.reload();
+	            		//location.reload();
 	            	}else{
 	            		alert(data.errorMsg);
 	            	}

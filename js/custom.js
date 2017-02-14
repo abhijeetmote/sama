@@ -70,6 +70,9 @@ var array = [
 	{name: "inward_submit", value: baseUrl + "inventory/inwardSubmit"},
 	{name: "outward_submit", value: baseUrl + "inventory/outwardSubmit"},
 	{name: "billpayment", value: baseUrl+"vendor/billPayment"},
+	{name: "laboutAttn", value: baseUrl+"labour/getData"},
+	{name: "labour-sal-paid", value: baseUrl + "payment/labourSalPaid"},
+	{name: "staff-sal-paid", value: baseUrl + "payment/staffSalPaid"},
 	
 	
 
