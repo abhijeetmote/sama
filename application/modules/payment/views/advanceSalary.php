@@ -113,7 +113,7 @@
                              <label class="col-sm-1 no-padding-right" for="form-field-2"><b class="red"> * </b>NARRATION</label>	
                             <div class="col-sm-4">
                            
-                                <textarea id="narration" name="narration"  placeholder="Enter Narration" class="col-xs-10 col-sm-9 mandatory-field" >Advance salary</textarea>
+                                <textarea id="narration" name="narration"  placeholder="Enter Narration" class="col-xs-10 col-sm-9 mandatory-field" >Advance salary to staff</textarea>
                                 <span class="help-inline col-xs-12 col-sm-7">
                                     <span class="middle input-text-error" id="narration_errorlabel"></span>
                                 </span>
