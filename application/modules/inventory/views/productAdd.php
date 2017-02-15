@@ -106,9 +106,9 @@
 							<label class="col-sm-3 control-label no-padding-right" for="form-field-2"> Enter Item Name</label>
 
 							<div class="col-sm-9">
-								<input type="text" id="p_name" name="p_name" placeholder="" class="col-xs-10 col-sm-5 mandatory-field" value="<?php if(isset($product)): echo $product[0]->p_name; endif; ?>" />
+								<input type="text" id="p_name" name="p_name" placeholder="Enter Item name" class="col-xs-10 col-sm-5 mandatory-field" value="<?php if(isset($product)): echo $product[0]->p_name; endif; ?>" />
 								<span class="help-inline col-xs-12 col-sm-7">
-									<span class="middle input-text-error" id="p_name_errorlabel">Enter Item Name</span>
+									<span class="middle input-text-error" id="p_name_errorlabel"></span>
 								</span>
 							</div>
 						</div>
@@ -116,9 +116,9 @@
 							<label class="col-sm-3 control-label no-padding-right" for="form-field-2"> Product Description</label>
 
 							<div class="col-sm-9">
-								<input type="text" id="p_desc" name="p_desc" placeholder="" class="mandatory-field col-xs-10 col-sm-5" value="<?php if(isset($product)): echo $product[0]->p_desc; endif; ?>" />
+								<input type="text" id="p_desc" name="p_desc" placeholder="Enter Description" class="mandatory-field col-xs-10 col-sm-5" value="<?php if(isset($product)): echo $product[0]->p_desc; endif; ?>" />
 								<span class="help-inline col-xs-12 col-sm-7">
-									<span class="middle input-text-error" id="p_desc_errorlabel">Enter Product Description</span>
+									<span class="middle input-text-error" id="p_desc_errorlabel"></span>
 								</span>
 							</div>
 						</div>
@@ -126,9 +126,9 @@
 							<label class="col-sm-3 control-label no-padding-right" for="form-field-2"> Unit</label>
 
 							<div class="col-sm-9">
-								<input type="text" id="p_unit" name="p_unit" placeholder="" class="col-xs-10 col-sm-5" value="<?php if(isset($product)): echo $product[0]->p_unit; endif; ?>" />
+								<input type="text" id="p_unit" name="p_unit" placeholder="Enter Unit" class="col-xs-10 col-sm-5 mandatory-field" value="<?php if(isset($product)): echo $product[0]->p_unit; endif; ?>" />
 								<span class="help-inline col-xs-12 col-sm-7">
-									<span class="middle input-text-error" id="p_unit_errorlabel">Enter Unit</span>
+									<span class="middle input-text-error" id="p_unit_errorlabel"></span>
 								</span>
 							</div>
 						</div>
@@ -137,9 +137,9 @@
 							<label class="col-sm-3 control-label no-padding-right" for="form-field-2">Unit Price</label>
 
 							<div class="col-sm-9">
-								<input type="text" id="p_price" name="p_price" placeholder="" class="col-xs-10 col-sm-5" value="<?php if(isset($product)): echo $product[0]->p_unit_price; endif; ?>" />
+								<input type="text" id="p_price" name="p_price" placeholder="Enter Price" class="col-xs-10 col-sm-5 mandatory-field" value="<?php if(isset($product)): echo $product[0]->p_unit_price; endif; ?>" />
 								<span class="help-inline col-xs-12 col-sm-7">
-									<span class="middle input-text-error" id="p_price_errorlabel">Enter Unit Price</span>
+									<span class="middle input-text-error" id="p_price_errorlabel"></span>
 								</span>
 							</div>
 						</div>

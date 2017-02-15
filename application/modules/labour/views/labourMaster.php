@@ -46,7 +46,7 @@
 								</span>
 							</div>
 
-							<label class="col-sm-2  no-padding-right" for="">Labour Middle Name</label>
+							<label class="col-sm-2 no-padding-right" for="">Labour Middle Name</label>
 
 							<div class="col-sm-4">
 								<input type="text" id="labour_mname" name="labour_mname" value="<?php if(isset($labour)): echo $labour[0]->labour_mname; endif; ?>" placeholder="Enter Labour Middle Name" class="col-xs-10 col-sm-12" onKeyUp="javascript:return check_isalphanumeric(event,this);"/>

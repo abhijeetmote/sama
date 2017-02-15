@@ -926,8 +926,7 @@ class Payment extends MX_Controller {
  		echo json_encode($response);
  	}
  	 	
- 	public function labourSal()
- 	{
+ 	public function labourSal(){
  		$this->header->index();
 		$grp_table = LEDGER_TABLE;
 		 
@@ -1062,7 +1061,7 @@ class Payment extends MX_Controller {
  			if($reportType == 'PayIn'){
  				$select = "pay.*, sm.site_name, lm.ledger_account_name, lm.context";
 	 			$tableName = "pay_in_data pay, site_master sm, ledger_master lm";
-	 			$where = "pay.site_id = sm.site_id and pay.pay_from = lm.ledger_account_id and pay.added_on >= '$from_date' and pay.added_on <= '$to_date' and pay.site_id='$siteId' order by pay.added_on desc";
+	 			$where = "pay.site_id = sm.site_id and pay.pay_from = lm.ledger_account_id and pay.added_on >= '$from_date' and pay.added_on <= '$to_date' and pay.site_id='$siteId'";
 
 		 		$data['data'] = $this->payment_model->getwheredata($select,$tableName,$where); 
 		 		$data['payindata'] = true;
