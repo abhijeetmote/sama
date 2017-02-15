@@ -72,7 +72,7 @@
 
 												<td><?php echo $val->staff_first_name; ?></td>
 												<td><?php echo $val->staff_last_name; ?></td>
-												<td><?php echo $val->staff_gender; ?></td>
+												<td><?php if($val->staff_gender==1) { echo "Male";}else{echo "Female";} ?></td>
 												<td><?php echo $val->staff_contact_number; ?></td>
 												<td><?php echo $val->staff_address_1; ?></td>
 												<td><?php echo $val->staff_email_id; ?></td>

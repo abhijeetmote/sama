@@ -54,13 +54,13 @@ class Staff extends MX_Controller {
 		 	$staff_dob = $this->helper_model->dbDate($staff_dob);
 		 }
 		 
-		 if(isset($staff_gen) && $staff_gen == "male"){
+		 if(isset($staff_gen) && $staff_gen == "M"){
 		 	$staff_gen = 1;
 		 }
-		 if(isset($staff_gen) && $staff_gen == "male"){
+/*		 if(isset($staff_gen) && $staff_gen == "male"){
 		 	$staff_gen = 1;
-		 }
-		 if(isset($staff_gen) && $staff_gen == "female"){
+		 }*/
+		 if(isset($staff_gen) && $staff_gen == "F"){
 		 	$staff_gen = 2;
 		 }
 		 
@@ -235,15 +235,15 @@ class Staff extends MX_Controller {
 		 	$staff_dob = $this->helper_model->dbDate($staff_dob);
 		 }
 		 
-		 if(isset($staff_gen) && $staff_gen == "Male"){
-		 	$staff_gen = 0;
-		 }
-		 if(isset($staff_gen) && $staff_gen == "Female"){
+		 if(isset($staff_gen) && $staff_gen == "M"){
 		 	$staff_gen = 1;
 		 }
-		 if(isset($staff_gen) && $staff_gen == "female"){
+		 if(isset($staff_gen) && $staff_gen == "F"){
 		 	$staff_gen = 2;
 		 }
+		/* if(isset($staff_gen) && $staff_gen == "female"){
+		 	$staff_gen = 2;
+		 }*/
 
 		 $ledger_acount_id = isset($_POST['ledger_acount_id']) ? $_POST['ledger_acount_id'] : "";
 
