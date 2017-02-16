@@ -610,7 +610,7 @@ class Payment extends MX_Controller {
 	 		$filds = "staff_id,staff_first_name,staff_last_name,staff_badge_number,staff_contact_number,staff_email_id,staff_dob,staff_gender,staff_qualification,staff_profile_photo,ledger_account_id,staff_basic_pay";
 	 		$stafflist = $this->payment_model->getStaffLit($filds,$driver_table);
 
-			//echo json_encode($driverlist);exit();
+			//echo "<pre>";print_r($stafflist);exit();
 
 	 		$tableName = "company_holidays";
 	 		$select = "count(*) as cnt";
@@ -644,15 +644,17 @@ class Payment extends MX_Controller {
 		 		$where = "month = '$salary_month' and year = '$salary_year' and staff_id = '$staffId'";
 				$staffAttn = $this->payment_model->getwheredata($select,$tableName,$where);
 				
-				$cnt = 0;
+				$fullday= 0;
+				$halfday= 0;
 				$workingDaysSal = 0;
 				foreach ($staffAttn as $key => $val) {
 					if($val->day_type == 1){
 						$workingDaysSal += $staffPerDaySal/2;
+						$halfday++;
 					}else{
 						$workingDaysSal += $staffPerDaySal;
+						$fullday++;
 					}
-					$cnt++;
 				}
 
 				$workingDaysSal += $holidays[0]->cnt * $staffPerDaySal;
@@ -660,7 +662,8 @@ class Payment extends MX_Controller {
 				$staffAttnData[$i]['totalSal'] = $workingDaysSal;
 
 				$staffAttnData[$i]['ledgerId'] = $ledgerId;
-				$staffAttnData[$i]['attn'] = $cnt; //$staffAttn[0]->cnt;
+				$staffAttnData[$i]['fullday'] = $fullday; 
+				$staffAttnData[$i]['halfday'] = $halfday; 
 				
 				if(empty($staffSalPaid)){	
 					$staffAttnData[$i]['paidStatus'] = "unpaid";
@@ -1009,16 +1012,24 @@ class Payment extends MX_Controller {
 				$labourSalPaid = $this->payment_model->getwheredata($select,$tableName,$where);
 
 				$tableName =  "labour_attendance";
-		 		$select = 'sum(labour_wages) as total, count(*) as cnt';
+		 		$select = 'labour_wages, day_type';
 		 		$where = "month = '$salary_month' and year = '$salary_year' and labour_id = '$labourId'";
 				$labourAttn = $this->payment_model->getwheredata($select,$tableName,$where);
-				if($labourAttn[0]->total > 0){
-					$labourAttnData[$i]['totalSal'] = $labourAttn[0]->total;
-				}else{
-					$labourAttnData[$i]['totalSal'] = 0;
+				
+				$fullday= 0;
+				$halfday= 0;
+				$labourAttnData[$i]['totalSal'] = 0;
+				foreach ($labourAttn as $key => $val) {
+					if($val->day_type == 1){
+						$halfday++;
+					}else{
+						$fullday++;
+					}
+					$labourAttnData[$i]['totalSal'] += $labourAttn[0]->labour_wages;
 				}
 
-				$labourAttnData[$i]['attn'] = $labourAttn[0]->cnt;
+				$labourAttnData[$i]['fullday'] = $fullday; 
+				$labourAttnData[$i]['halfday'] = $halfday; 
 
 				$labourAttnData[$i]['ledgerId'] = $ledgerId;
 
@@ -1036,7 +1047,7 @@ class Payment extends MX_Controller {
 		$this->load->view('labourSalary',$data);
 		$this->footer->index();
  	}
- 	public function Payreport()
+ 	public function payreport()
  	{
 
  		$this->header->index();
@@ -1061,14 +1072,14 @@ class Payment extends MX_Controller {
  			if($reportType == 'PayIn'){
  				$select = "pay.*, sm.site_name, lm.ledger_account_name, lm.context";
 	 			$tableName = "pay_in_data pay, site_master sm, ledger_master lm";
-	 			$where = "pay.site_id = sm.site_id and pay.pay_from = lm.ledger_account_id and pay.added_on >= '$from_date' and pay.added_on <= '$to_date' and pay.site_id='$siteId'";
+	 			$where = "pay.site_id = sm.site_id and pay.pay_from = lm.ledger_account_id and pay.added_on >= '$from_date' and pay.added_on <= '$to_date' and pay.site_id='$siteId' ORDER BY pay.added_on DESC";
 
 		 		$data['data'] = $this->payment_model->getwheredata($select,$tableName,$where); 
 		 		$data['payindata'] = true;
  			}else{
  				$select = "pay.*, sm.site_name, lm.ledger_account_name, lm1.ledger_account_name as to_ledger";
 	 			$tableName = "pay_out_data pay, site_master sm, ledger_master lm, ledger_master lm1";
-	 			$where = "pay.site_id = sm.site_id and pay.pay_from = lm.ledger_account_id and pay.pay_to = lm1.ledger_account_id and pay.added_on BETWEEN '$from_date' AND '$to_date' and pay.site_id='$siteId'";
+	 			$where = "pay.site_id = sm.site_id and pay.pay_from = lm.ledger_account_id and pay.pay_to = lm1.ledger_account_id and pay.added_on BETWEEN '$from_date' AND '$to_date' and pay.site_id='$siteId' ORDER BY pay.added_on DESC";
 
 	 			$data['payoutdata'] = true;
 		 		$data['data'] = $this->payment_model->getwheredata($select,$tableName,$where); 

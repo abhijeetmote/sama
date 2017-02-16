@@ -118,7 +118,8 @@
 														</label>
 													</th>
 													<th>Name</th>
-													<th>Present</th>
+													<th>Present Fullday</th>
+													<th>Present Halfday</th>
 													<th>Total Sal</th>
 													<th>Paid Status</th>
 												</tr>
@@ -136,7 +137,8 @@
 															</label>
 														</td>
 														<td><?php echo $val['name']; ?></td>
-														<td><?php echo $val['attn']; ?></td>
+														<td><?php echo $val['fullday']; ?></td>
+														<td><?php echo $val['halfday']; ?></td>
 														<td><?php echo number_format($val['totalSal'],2); ?></td>
 														<td><?php echo $val['paidStatus']; ?></td>
 													</tr>
