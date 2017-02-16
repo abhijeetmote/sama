@@ -11,7 +11,6 @@ class Contractor extends MX_Controller {
 		$this->load->model('helper/helper_model');
 	}
 
-	
 	public function contractorMaster()
 	{	
 		$select = 'site_id,site_name';
