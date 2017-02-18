@@ -66,6 +66,7 @@ define("INVOICE_PAID_NARRATION", "booking payment");
 define('SLAB_WISE_TABLE', 'slab_wise_payment');
 define('PAYOUT_DATA_TABLE', 'pay_out_data');
 define('PAYIN_DATA_TABLE', 'pay_in_data');
+define('CONTRACTDET_TABLE', 'contractor_details');
 /*
 |--------------------------------------------------------------------------
 | File Stream Modes

@@ -74,7 +74,7 @@ class Contractor extends MX_Controller {
 			'added_by' => '1',
 			'added_on' => date('Y-m-d h:i:s')
 		);
-
+/*
 		  $select = "contractor_id";
 		 $contractor_table = CONTRACTOR_TABLE;
 		 $column = "contractor_pan_num";
@@ -86,7 +86,7 @@ class Contractor extends MX_Controller {
 			$response['errorMsg'] = "Error!!! Contractor already exist";			
 			echo json_encode($response);
 			exit();	
-		 }
+		 }*/
 
  		$contractor_table =  CONTRACTOR_TABLE;
 
@@ -296,4 +296,117 @@ class Contractor extends MX_Controller {
 
         echo json_encode($response);
  	}
+
+	public function contractortask()
+	{	
+		$select = 'site_id,site_name';
+		$tableName = 'site_master';
+		$column = "isactive";
+		$value = "1";
+		$data['sitelist'] = $this->Contractor_model->getData($select, $tableName, $column, $value);
+		$select = 'contractor_id,contractor_name';
+		$tableName = 'contractors_master';
+		$column = "status";
+		$value = "1";
+		$data['contractorlist'] = $this->Contractor_model->getData($select, $tableName, $column, $value);
+		$this->header->index();
+		$this->load->view('contractortask',$data);
+		$this->footer->index();
+	}
+	public function assigncontract()
+	{
+		 $contractor_id = isset($_POST['contractor_id']) ? $_POST['contractor_id'] : "";
+		 $site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
+		 $contract_amount = isset($_POST['contract_amount']) ? $_POST['contract_amount'] : "";
+		 $start_date = isset($_POST['start_date']) ? $_POST['start_date'] : "";
+		 $end_date = isset($_POST['end_date']) ? $_POST['end_date'] : "";
+		 $remark = isset($_POST['other_remark']) ? $_POST['other_remark'] : "";
+
+		 	if(isset($start_date) && !empty($start_date)){
+		 	$start_date = $this->helper_model->dbDate($start_date);
+			 }
+
+			if(isset($end_date) && !empty($end_date)){
+		 	$end_date = $this->helper_model->dbDate($end_date);
+			 }
+
+			 $data = array(
+			'contractor_id' => $contractor_id,
+			'site_id' => $site_id,
+			'contract_amt' => $contract_amount,
+			'start_date' => $start_date,
+			'end_date' => $end_date,
+			'remark' => $remark,
+			'status' => '1',
+			'added_by' => '1',
+			'added_on' => date('Y-m-d h:i:s')
+		);
+
+		$contract_table =  CONTRACTDET_TABLE;
+
+ 		$this->db->trans_begin();
+ 		 //contractor record insertion
+ 		$contractor_id = $this->Contractor_model->saveData($contract_table,$data);
+
+		 
+	if(isset($contractor_id) && !empty($contractor_id)){
+		$this->db->trans_commit();
+		$response['success'] = true;
+		$response['error'] = false;
+		$response['successMsg'] = "Contract Assigned Successfully";
+		$response['redirect'] = base_url()."contractor/contractList";
+
+	}else{
+		$this->db->trans_rollback();
+ 		$response['error'] = true;
+ 		$response['success'] = false;
+		$response['errorMsg'] = "Error!!! Please contact IT Dept";
+	}
+	echo json_encode($response);
+		
+
+	}
+
+	public function contractList()
+	{
+		/*$contract_table =  CONTRACTDET_TABLE;
+ 		$filds = "contract_id,contract_id,site_id,contract_amount,start_date,end_date";
+ 		$data['list'] = $this->Contractor_model->getVendorLit($filds,$contractor_table);*/
+ 		//echo "<pre>";print_r($data['list']);
+ 		$date = date('Y-m-d');
+ 	
+        $data['contractdetails'] = $this->helper_model->selectQuery("SELECT site_master.site_name,contractors_master.contractor_name,contractor_details.* FROM site_master,contractors_master,contractor_details where site_master.site_id=contractor_details.site_id AND contractors_master.contractor_id=contractor_details.contractor_id");
+     /*   echo "<pre>";print_r($data['contractdetails']);
+        exit();*/
+        $this->header->index();
+		$this->load->view('ContractList', $data);
+		$this->footer->index();
+	}
+
+	public function updatecontractdet($id)
+	{
+		 $select = '*';
+		$tableName = CONTRACTDET_TABLE;
+		$column = 'contract_id';
+		$value = $id;
+		$data['contract'] = $this->Contractor_model->getData($select, $tableName, $column, $value);
+		$data['update'] = true;
+		$select = 'site_id,site_name';
+		$tableName = 'site_master';
+		$column = "isactive";
+		$value = "1";
+		$data['sitelist'] = $this->Contractor_model->getData($select, $tableName, $column, $value);
+		$select = 'contractor_id,contractor_name';
+		$tableName = CONTRACTOR_TABLE;
+		$column = "status";
+		$value = "1";
+		$data['contractorlist'] = $this->Contractor_model->getData($select, $tableName, $column, $value);
+		/*print_r($data);
+		exit();*/
+		$this->header->index();
+		$this->load->view('contractortask', $data);
+		$this->footer->index();
+	
+
+	}
 }

@@ -73,6 +73,7 @@ var array = [
 	{name: "laboutAttn", value: baseUrl+"labour/getData"},
 	{name: "labour-sal-paid", value: baseUrl + "payment/labourSalPaid"},
 	{name: "staff-sal-paid", value: baseUrl + "payment/staffSalPaid"},
+	{name: "contractmaster", value: baseUrl + "contractor/assigncontract"},
 	
 	
 
