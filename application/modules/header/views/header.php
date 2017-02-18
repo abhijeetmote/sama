@@ -410,6 +410,24 @@
 
 								<b class="arrow"></b>
 							</li>
+							<li class="">
+								<a href="<?php echo base_url(); ?>contractor/contractortask">
+									<i class="menu-icon fa fa-caret-right"></i>
+
+									Assign Contract
+								</a>
+
+								<b class="arrow"></b>
+							</li>
+							<li class="">
+								<a href="<?php echo base_url(); ?>contractor/contractList">
+									<i class="menu-icon fa fa-caret-right"></i>
+
+									Contract list
+								</a>
+
+								<b class="arrow"></b>
+							</li>
 						</ul>
 					</li>
 
