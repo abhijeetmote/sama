@@ -379,7 +379,7 @@ class Contractor extends MX_Controller {
      /*   echo "<pre>";print_r($data['contractdetails']);
         exit();*/
         $this->header->index();
-		$this->load->view('ContractList', $data);
+		$this->load->view('contractList', $data);
 		$this->footer->index();
 	}
 

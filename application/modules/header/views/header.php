@@ -610,7 +610,7 @@
 								<b class="arrow"></b>
 							</li>
 
-							<li class="">
+							<!-- <li class="">
 								<a href="<?php echo base_url(); ?>payment/advancesalaryMaster">
 									<i class="menu-icon fa fa-caret-right"></i>
 
@@ -618,25 +618,16 @@
 								</a>
 
 								<b class="arrow"></b>
-							</li>
+							</li> -->
 							<li class="">
-								<a href="<?php echo base_url(); ?>payment/PayInreport">
+								<a href="<?php echo base_url(); ?>payment/payreport">
 									<i class="menu-icon fa fa-caret-right"></i>
 
-									PayIn Report
+									PayIn/Out Report
 								</a>
 
 								<b class="arrow"></b>
 							</li>
- 							<li class="">
-								<a href="<?php echo base_url(); ?>payment/PayOutreport">
-									<i class="menu-icon fa fa-caret-right"></i>
-
-									PayOut Report
-								</a>
-
-								<b class="arrow"></b>
-							</li> 
 
 							 
 						</ul>
@@ -737,7 +728,7 @@
 								<b class="arrow"></b>
 							</li>
 
-							<li class="">
+							<!-- <li class="">
 								<a href="<?php echo base_url(); ?>account/profit_and_loss">
 									<i class="menu-icon fa fa-caret-right"></i>
 
@@ -745,7 +736,7 @@
 								</a>
 
 								<b class="arrow"></b>
-							</li>
+							</li> -->
 
 							 
 						</ul>
