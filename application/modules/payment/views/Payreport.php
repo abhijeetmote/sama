@@ -892,6 +892,14 @@ jQuery(function($) {
 		var to_date = $("#to_date").val();
 		var site_id = $("#site_id").val();
 		var report_type = $("#report_type").val();
+		if(from_date=="")
+		{
+			from_date=0;
+		}
+		if(to_date=="")
+		{
+			to_date=0;
+		}
 
 		window.location.href = baseUrl+"payment/Payreport/"+from_date+"/"+to_date+"/"+site_id+"/"+report_type;
 	});
