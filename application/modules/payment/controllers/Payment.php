@@ -1058,7 +1058,7 @@ class Payment extends MX_Controller {
 		$next_year = $current_year + 1;
 		$data['years'] =  array($current_year => $current_year, $next_year => $next_year);
 
-		if($this->uri->segment(3) != "" && $this->uri->segment(4) != ""){
+		if($this->uri->segment(3)  != "" && $this->uri->segment(4) != ""){
 			$from_date = $this->uri->segment(3);
  			$to_date = $this->uri->segment(4);
  			$siteId = $this->uri->segment(5);
@@ -1090,6 +1090,31 @@ class Payment extends MX_Controller {
 		$column = "isactive";
 		$value = "1";
 		$data['sitelist'] = $this->payment_model->getData($select, $tableName, $column, $value);
+			$from_date = date("Y-m-d", strtotime("-1 months"));
+ 			$to_date = date('Y-m-d');
+ 			$siteId = $this->uri->segment(5);
+ 			$reportType = $this->uri->segment(6);
+
+ 			$data['from'] = $from_date;
+ 			$data['to'] = $to_date;
+ 			$data['siteId'] = $siteId;
+ 			$data['reportType'] = $reportType;
+
+ 			if($reportType == 'PayIn'){
+ 				$select = "pay.*, sm.site_name, lm.ledger_account_name, lm.context";
+	 			$tableName = "pay_in_data pay, site_master sm, ledger_master lm";
+	 			$where = "pay.site_id = sm.site_id and pay.pay_from = lm.ledger_account_id and pay.added_on >= '$from_date' and pay.added_on <= '$to_date' and pay.site_id='$siteId' ORDER BY pay.added_on DESC";
+
+		 		$data['data'] = $this->payment_model->getwheredata($select,$tableName,$where); 
+		 		$data['payindata'] = true;
+ 			}else{
+ 				$select = "pay.*, sm.site_name, lm.ledger_account_name, lm1.ledger_account_name as to_ledger";
+	 			$tableName = "pay_out_data pay, site_master sm, ledger_master lm, ledger_master lm1";
+	 			$where = "pay.site_id = sm.site_id and pay.pay_from = lm.ledger_account_id and pay.pay_to = lm1.ledger_account_id and pay.added_on BETWEEN '$from_date' AND '$to_date' and pay.site_id='$siteId' ORDER BY pay.added_on DESC";
+
+	 			$data['payoutdata'] = true;
+		 		$data['data'] = $this->payment_model->getwheredata($select,$tableName,$where); 
+ 			}
 		$this->load->view('payreport',$data);
 		$this->footer->index();
  	}
