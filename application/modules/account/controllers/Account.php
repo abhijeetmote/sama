@@ -1501,14 +1501,31 @@ class Account extends MX_Controller {
     	$nature = isset($_POST['nature']) ? $_POST['nature'] : "";
     	$behaviour = isset($_POST['behaviour']) ? $_POST['behaviour'] : "";
     	$op_type = isset($_POST['op_type']) ? $_POST['op_type'] : "";
-    	if($behaviour == "asset") {
+
+    	$led_details = $this->account_model->getLedger($parent_id);
+    	
+    	$context = isset($led_details[0]['context']) ? $led_details[0]['context'] : "";
+		
+		if(in_array($context, array('expense','asset','income'))) {
+			$context = $leg_name;
+		} else {
+			$context = $led_details[0]['ledger_account_name'];
+		}
+
+    	if($behaviour == "assets") {
     		$reporting_head = BALANCE_SHEET;
-    	} else {
+    	} else if($behaviour == "expense")  {
+ 	 		$reporting_head = REPORT_HEAD_EXPENSE;
+ 	 	} else {
  	 		$reporting_head = PROFIT_AND_LOSS;
  	 	}
+
+ 	 	if($behaviour == "assets" && $op_type == "group") {
+    		$behaviour = "balance sheet";
+    	}
  	 	$nature_of_account = $nature;
  	 	$op_type = $op_type;
- 	 	$context = $leg_name;
+ 	 	
  	 	// ledger data preparation
 
  	 	$leddata = array(
@@ -1584,14 +1601,38 @@ class Account extends MX_Controller {
     	$behaviour = isset($_POST['behaviour']) ? $_POST['behaviour'] : "";
     	$op_type = isset($_POST['op_type']) ? $_POST['op_type'] : "";
     	$led_id = isset($_POST['led_id']) ? $_POST['led_id'] : "";
-    	if($behaviour == "asset") {
+    	
+
+    	$led_details = $this->account_model->getLedger($parent_id);
+    	
+    	$context = isset($led_details[0]['context']) ? $led_details[0]['context'] : "";
+		
+		if(in_array($context, array('expense','asset','income'))) {
+			$context = $leg_name;
+		} else {
+			$context = $led_details[0]['ledger_account_name'];
+		}
+
+    	if($behaviour == "assets") {
+    		$reporting_head = BALANCE_SHEET;
+    	} else if($behaviour == "expense")  {
+ 	 		$reporting_head = REPORT_HEAD_EXPENSE;
+ 	 	} else {
+ 	 		$reporting_head = PROFIT_AND_LOSS;
+ 	 	}
+
+ 	 	if($behaviour == "assets" && $op_type == "group") {
+    		$behaviour = "balance sheet";
+    	}
+
+    	/*if($behaviour == "asset") {
     		$reporting_head = BALANCE_SHEET;
     	} else {
  	 		$reporting_head = PROFIT_AND_LOSS;
- 	 	}
+ 	 	}*/
  	 	$nature_of_account = $nature;
  	 	$op_type = $op_type;
- 	 	$context = $leg_name;
+ 	 	//$context = $leg_name;
  	 	// ledger data preparation
 
  	 	$leddata = array(
