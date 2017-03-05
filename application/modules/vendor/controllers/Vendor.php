@@ -293,7 +293,7 @@ class Vendor extends MX_Controller {
  	}
 
  	public function vendorbillList(){
- 		//SELECT b.*,cat_name,c.cust_type_id,c.cust_firstname,c.cust_lastname FROM booking_master b,customer_master c,vehicle_category v WHERE b.`cust_id` = c.cust_id and b.vehicle_type = v.cat_id
+ 	  	//SELECT b.*,cat_name,c.cust_type_id,c.cust_firstname,c.cust_lastname FROM booking_master b,customer_master c,vehicle_category v WHERE b.`cust_id` = c.cust_id and b.vehicle_type = v.cat_id
  		
 	 	 $from_date = $this->uri->segment(3);
 		 $to_date = $this->uri->segment(4);

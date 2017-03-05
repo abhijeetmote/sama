@@ -46,7 +46,7 @@ class Payment extends MX_Controller {
                                  )), "optgroup");
 
 
-		$filter_param_to = array('driver','vendor','contractor');
+		$filter_param_to = array('driver','vendor','contractor','siteExpense');
 
 		$filter_ledgers_to = $this->helper_model->sorted_array($ret_arr[0],0,$filter_param_to);
 		$ledger_data_to = $this->selectEnhanced_to->__construct("to_ledger", $filter_ledgers_to, array(
@@ -190,7 +190,7 @@ class Payment extends MX_Controller {
 					'pay_from' => $from_ledger,
 					'pay_to' => $to_ledger,
 					'amount' => $payment_amount,
-					'narration' => $expenseMaster,
+					'narration' => $narration,
 					'pay_mode' => $payment_amount,
 					'ref_no' => $payment_amount,
 					'comment'=> $comment,
