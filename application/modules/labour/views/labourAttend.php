@@ -102,15 +102,17 @@
 						<div class="form-group">
 							<label class="col-sm-2 no-padding-right">Select Day(Full/Half)</label>
 							<div class="col-sm-4">
+								
 								<label>
-									<input type="radio" class="ace" <?php if(isset($labour[0]->day_type) && $labour[0]->day_type == 1) { echo "checked";} ?> value="1" name="daytype" id="half" checked="checked">
+								 <input type="radio" class="ace" value="2" <?php if(isset($labour[0]->day_type) && $labour[0]->day_type == 2) { echo "checked";} ?> name="daytype" id="full" checked="checked">
+									<span class="lbl">Full Day</span>
+								</label>
+								<label>
+									<input type="radio" class="ace" <?php if(isset($labour[0]->day_type) && $labour[0]->day_type == 1) { echo "checked";} ?> value="1" name="daytype" id="half" >
 										<span class="lbl">Half Day</span>
 									</label>
 
-									<label>
-										<input type="radio" class="ace" value="2" <?php if(isset($labour[0]->day_type) && $labour[0]->day_type == 2) { echo "checked";} ?> name="daytype" id="full">
-										<span class="lbl">Full Day</span>
-									</label>
+
 							</div>	
 						</div>
 						<div class="form-group">
