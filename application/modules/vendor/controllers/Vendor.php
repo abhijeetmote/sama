@@ -18,13 +18,13 @@ class Vendor extends MX_Controller {
 	
 	public function vendorMaster()
 	{	
-		$select = 'site_id,site_name';
+/*		$select = 'site_id,site_name';
 		$tableName = 'site_master';
 		$column = "isactive";
 		$value = "1";
-		$data['sitelist'] = $this->Vendor_model->getData($select, $tableName, $column, $value);
+		$data['sitelist'] = $this->Vendor_model->getData($select, $tableName, $column, $value);*/
 		$this->header->index();
-		$this->load->view('VendorAdd',$data);
+		$this->load->view('VendorAdd');
 		$this->footer->index();
 	}
 	public function addvendor()
@@ -45,7 +45,6 @@ class Vendor extends MX_Controller {
 		 $vendor_vat = isset($_POST['vendor_vat']) ? $_POST['vendor_vat'] : "";
 		 $vendor_cst = isset($_POST['vendor_cst']) ? $_POST['vendor_cst'] : "";
 		 $vendor_gst = isset($_POST['vendor_gst']) ? $_POST['vendor_gst'] : "";
-		 $site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
 
 		 $select = "vendor_id";
 		 $tableName = "vendors_master";
@@ -66,7 +65,6 @@ class Vendor extends MX_Controller {
 			'vendor_phone_number' => $vendor_phone_number,
 			'vendor_email' => $vendor_email,
 			'vendor_notes' => $vendor_notes,
-			'site_id' => $site_id,
 			'vendor_service_regn' => $vendor_service_regn,
 			'vendor_pan_num' => $vendor_pan_num,
 			'vendor_section_code' => $vendor_section_code,
@@ -167,11 +165,11 @@ class Vendor extends MX_Controller {
  		$filds = "vendor_id,vendor_name,vendor_contact_number,vendor_phone_number,vendor_address,vendor_email,vendor_pan_num,vendor_payee_name";
  		$data['list'] = $this->Vendor_model->getVendorLit($filds,$vendor_table);
  		//echo "<pre>";print_r($data['list']);
- 		$select = 'site_id,site_name';
+ 		/*$select = 'site_id,site_name';
 		$tableName = 'site_master';
 		$column = "isactive";
 		$value = "1";
-		$data['sitelist'] = $this->Vendor_model->getData($select, $tableName, $column, $value);
+		$data['sitelist'] = $this->Vendor_model->getData($select, $tableName, $column, $value);*/
         $this->header->index();
 		$this->load->view('vendorList', $data);
 		$this->footer->index();
@@ -199,13 +197,13 @@ class Vendor extends MX_Controller {
 		$value = $id;
 		$data['vendor'] = $this->Vendor_model->getData($select, $tableName, $column, $value);
 		$data['update'] = true;
-		$select = 'site_id,site_name';
+		/*$select = 'site_id,site_name';
 		$tableName = 'site_master';
 		$column = "isactive";
 		$value = "1";
-		$data['sitelist'] = $this->Vendor_model->getData($select, $tableName, $column, $value);
+		$data['sitelist'] = $this->Vendor_model->getData($select, $tableName, $column, $value);*/
 		$this->header->index();
-		$this->load->view('VendorAdd', $data);
+		$this->load->view('VendorAdd',$data);
 		$this->footer->index();
  	}
 
@@ -227,7 +225,7 @@ class Vendor extends MX_Controller {
 		 $vendor_gst = isset($_POST['vendor_gst']) ? $_POST['vendor_gst'] : "";
 
 		 $vendor_ledger_id = isset($_POST['vendor_ledger_id']) ? $_POST['vendor_ledger_id'] : "";
-		  $site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
+
 		 $vendor_update = array(
 			'vendor_name' => $vendor_name,
 			'vendor_contact_number' => $vendor_mobile_number,
@@ -242,7 +240,6 @@ class Vendor extends MX_Controller {
 			'vendor_vat' => $vendor_vat,
 			'vendor_cst' => $vendor_cst,
 			'vendor_gst' => $vendor_gst,
-			'site_id' => $site_id,
 			'status' => '1',
 			'updated_by' => '1',
 			'updated_on' => date('Y-m-d h:i:s')

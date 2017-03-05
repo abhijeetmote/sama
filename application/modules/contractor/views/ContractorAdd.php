@@ -175,7 +175,7 @@
 									<span class="middle input-text-error" id="contractor_gst_errorlabel"></span>
 								</span>
 							</div>
-							<label class="col-sm-2 no-padding-right" for="form-field-2">Site Name</label>
+<!-- 							<label class="col-sm-2 no-padding-right" for="form-field-2">Site Name</label>
 						
                             <div class="col-sm-4">
                               <select  name="site_id" id="site_id" class="chosen-select form-control">
@@ -194,7 +194,7 @@
                                 <span class="help-inline col-xs-12 col-sm-7">
                                     <span class="middle input-text-error" id="site_id_errorlabel"></span>
                                 </span>
-                            </div>
+                            </div> -->
 							 
 						</div>
 

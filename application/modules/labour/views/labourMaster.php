@@ -108,8 +108,6 @@
 						</div>
 
 
-					 
-
 
 						<div class="form-group">
 							<label class="col-sm-2  no-padding-right" for="">Labour Mobile2</label>
@@ -121,26 +119,7 @@
 								</span>
 							</div>
 
-							<label class="col-sm-2 no-padding-right" for="form-field-2">Site Name</label>
-						
-                            <div class="col-sm-4">
-                              <select  name="site_id" id="site_id" class="chosen-select form-control">
-                                    
-									<?php
-										foreach ($sitelist as $val) {
-											if(isset($labour) && $val->site_id == $labour[0]->site_id){
-												echo '<option selected value="'.$val->site_id.'">'.$val->site_name.'</option>';
-											}else{
-												echo '<option value="'.$val->site_id.'">'.$val->site_name.'</option>';
-											}
-										}
-									?>
-                                    
-                                </select>
-                                <span class="help-inline col-xs-12 col-sm-7">
-                                    <span class="middle input-text-error" id="site_id_errorlabel"></span>
-                                </span>
-                            </div>
+
 						</div>
 
 						<div class="form-group">

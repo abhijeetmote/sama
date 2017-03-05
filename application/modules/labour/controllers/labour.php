@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+ <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Labour extends MX_Controller {
 
@@ -15,14 +15,14 @@ class Labour extends MX_Controller {
 
 	public function labourMaster()
 	{
-		$select = 'site_id,site_name';
+/*		$select = 'site_id,site_name';
 		$tableName = 'site_master';
 		$column = "isactive";
 		$value = "1";
-		$data['sitelist'] = $this->labour_model->getData($select, $tableName, $column, $value);
+		$data['sitelist'] = $this->labour_model->getData($select, $tableName, $column, $value);*/
 		//echo "<pre>"; print_r($data); exit();
 		$this->header->index();
-		$this->load->view('labourMaster',$data);
+		$this->load->view('labourMaster');
 		$this->footer->index();
 	}
 
@@ -36,7 +36,7 @@ class Labour extends MX_Controller {
 		 $labour_address = isset($_POST['labour_address']) ? trim($_POST['labour_address']) : "";
 		 $labour_mobile = isset($_POST['labour_mobile']) ? $_POST['labour_mobile'] : "";
 		 $labour_mobile1 = isset($_POST['labour_mobile1']) ? $_POST['labour_mobile1'] : "";
-		 $site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
+		 //$site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
 		 $salary_status = isset($_POST['salary_status']) ? $_POST['salary_status'] : 0;
 		 $labour_wages = isset($_POST['labour_wages']) ? $_POST['labour_wages'] : 0;
 
@@ -71,8 +71,7 @@ class Labour extends MX_Controller {
 				'labour_bdate' => $labour_dob,
 				'labour_mobno' => $labour_mobile,
 				'labour_mobno1' => $labour_mobile1,
-				'labour_add' => $labour_address,
-				'site_id'=>$site_id,	
+				'labour_add' => $labour_address,	
 				'salary_status' => $salary_status,	
 				'labour_wages' => $labour_wages,	
 				'isactive' => '1',
@@ -194,11 +193,11 @@ class Labour extends MX_Controller {
 		$value = $id;
 		$data['labour'] = $this->labour_model->getData($select, $tableName, $column, $value);
 		$data['update'] = true;
-		$select = 'site_id,site_name';
+/*		$select = 'site_id,site_name';
 		$tableName = 'site_master';
 		$column = "isactive";
 		$value = "1";
-		$data['sitelist'] = $this->labour_model->getData($select, $tableName, $column, $value);
+		$data['sitelist'] = $this->labour_model->getData($select, $tableName, $column, $value);*/
 		
 		$this->header->index();
 		$this->load->view('labourMaster', $data);
@@ -223,7 +222,7 @@ class Labour extends MX_Controller {
 		 $labour_da = isset($_POST['da']) ? 2 : 1;
 		 $labour_night = isset($_POST['night']) ? 2 : 1;
 		 $ledger_id = isset($_POST['ledger_id']) ? $_POST['ledger_id'] : "";
-		 $site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
+		 //$site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
 		 $salary_status = isset($_POST['salary_status']) ? $_POST['salary_status'] : 0;
 		 $labour_wages = isset($_POST['labour_wages']) ? $_POST['labour_wages'] : 0;
 		 //bdate conversion
@@ -253,7 +252,6 @@ class Labour extends MX_Controller {
 				'labour_na' => $labour_na_pay,
 				'is_da' => $labour_da,
 				'is_night_allowance' => $labour_night,
-				'site_id' => $site_id,
 				'salary_status' => $salary_status,
 				'labour_wages' => $labour_wages,
 				'isactive' => '1',

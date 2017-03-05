@@ -13,13 +13,13 @@ class Contractor extends MX_Controller {
 
 	public function contractorMaster()
 	{	
-		$select = 'site_id,site_name';
+/*		$select = 'site_id,site_name';
 		$tableName = 'site_master';
 		$column = "isactive";
 		$value = "1";
-		$data['sitelist'] = $this->Contractor_model->getData($select, $tableName, $column, $value);
+		$data['sitelist'] = $this->Contractor_model->getData($select, $tableName, $column, $value);*/
 		$this->header->index();
-		$this->load->view('contractorAdd',$data);
+		$this->load->view('contractorAdd');
 		$this->footer->index();
 	}
 	public function addcontractor()
@@ -40,9 +40,9 @@ class Contractor extends MX_Controller {
 		 $contractor_vat = isset($_POST['contractor_vat']) ? $_POST['contractor_vat'] : "";
 		 $contractor_cst = isset($_POST['contractor_cst']) ? $_POST['contractor_cst'] : "";
 		 $contractor_gst = isset($_POST['contractor_gst']) ? $_POST['contractor_gst'] : "";
-		 $site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
+		 //$site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
 
-		  $select = "contractor_id";
+		 $select = "contractor_id";
 		 $tableName = CONTRACTOR_TABLE;
 		 $column = "contractor_pan_num";
 		 $value = $contractor_pan_num;
@@ -61,7 +61,6 @@ class Contractor extends MX_Controller {
 			'contractor_phone_number' => $contractor_phone_number,
 			'contractor_email' => $contractor_email,
 			'contractor_notes' => $contractor_notes,
-			'site_id' => $site_id,
 			'contractor_service_regn' => $contractor_service_regn,
 			'contractor_pan_num' => $contractor_pan_num,
 			'contractor_section_code' => $contractor_section_code,
@@ -201,11 +200,11 @@ class Contractor extends MX_Controller {
 		$value = $id;
 		$data['contractor'] = $this->Contractor_model->getData($select, $tableName, $column, $value);
 		$data['update'] = true;
-		$select = 'site_id,site_name';
+/*		$select = 'site_id,site_name';
 		$tableName = 'site_master';
 		$column = "isactive";
 		$value = "1";
-		$data['sitelist'] = $this->Contractor_model->getData($select, $tableName, $column, $value);
+		$data['sitelist'] = $this->Contractor_model->getData($select, $tableName, $column, $value);*/
 		$this->header->index();
 		$this->load->view('contractorAdd', $data);
 		$this->footer->index();
@@ -213,7 +212,7 @@ class Contractor extends MX_Controller {
 
  	public function contractorUpdate(){        
 
- 		$contractor_name = isset($_POST['contractor_name']) ? $_POST['contractor_name'] : "";
+ 		 $contractor_name = isset($_POST['contractor_name']) ? $_POST['contractor_name'] : "";
 		 $contractor_mobile_number = isset($_POST['contractor_contact_number']) ? $_POST['contractor_contact_number'] : "";
 		 $contractor_phone_number = isset($_POST['contractor_phone_number']) ? $_POST['contractor_phone_number'] : "";
 		 $contractor_email = isset($_POST['contractor_email']) ? $_POST['contractor_email'] : "";
@@ -223,13 +222,9 @@ class Contractor extends MX_Controller {
 		 $contractor_section_code = isset($_POST['contractor_section_code']) ? $_POST['contractor_section_code'] : "";
 		 $contractor_payee_name = isset($_POST['contractor_payee_name']) ? $_POST['contractor_payee_name'] : "";
 		 $contractor_address = isset($_POST['contractor_address']) ? $_POST['contractor_address'] : "";
-
 		 $contractor_vat = isset($_POST['contractor_vat']) ? $_POST['contractor_vat'] : "";
 		 $contractor_cst = isset($_POST['contractor_cst']) ? $_POST['contractor_cst'] : "";
 		 $contractor_gst = isset($_POST['contractor_gst']) ? $_POST['contractor_gst'] : "";
-		 $site_id = isset($_POST['site_id']) ? $_POST['site_id'] : "";
-
-
 
 		 $contractor_ledger_id = isset($_POST['contractor_ledger_id']) ? $_POST['contractor_ledger_id'] : "";
 
@@ -247,7 +242,6 @@ class Contractor extends MX_Controller {
 			'contractor_vat' => $contractor_vat,
 			'contractor_cst' => $contractor_cst,
 			'contractor_gst' => $contractor_gst,
-			'site_id' =>$site_id,
 			'status' => '1',
 			'updated_by' => '1',
 			'updated_on' => date('Y-m-d h:i:s')
